@@ -13,6 +13,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 
 	@Test
 	public void testSingleLeafNode() {
+		
 		TreeNode n1 = new LeafTreeNode(1.0);
         BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
 		n1.accept(v1);
