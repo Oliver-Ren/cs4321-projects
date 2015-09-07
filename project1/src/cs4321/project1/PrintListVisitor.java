@@ -24,15 +24,32 @@ public class PrintListVisitor implements ListVisitor {
 	@Override
 	public void visit(NumberListNode node) {
 		// TODO fill me in
-		result+=node.getData();
+		
+		
+		if(node.getNext()!=null) {
+			result+= node.getData() +" " ;
+			node.getNext().accept(this);
+			
+		} else {
+			result += node.getData();
+			
+		}
+		
 	}
 
 	@Override
 	public void visit(AdditionListNode node) {
 		// TODO fill me in
-		
-		result+= "+ ";
-		node.getNext().accept(this);
+			
+		if(node.getNext()!=null) {
+			
+			result+= "+ ";
+			node.getNext().accept(this);
+		} else {
+			
+			result+="+";
+			
+		}
 		
 				
 	}
@@ -40,29 +57,62 @@ public class PrintListVisitor implements ListVisitor {
 	@Override
 	public void visit(SubtractionListNode node) {
 		// TODO fill me in
-		result+="- ";
-		node.getNext().accept(this);
+		
+		if(node.getNext()!=null) {
+			
+			result+="- ";
+			node.getNext().accept(this);
+		} else {
+			
+			result+="-";
+			
+		}
 	}
 
 	@Override
 	public void visit(MultiplicationListNode node) {
 		// TODO fill me in
-		result+="* ";
-		node.getNext().accept(this);
+		
+		if(node.getNext()!=null) {
+		
+			result+="* ";
+			node.getNext().accept(this);
+		} else {
+			
+			result+="*";
+			
+		}
+		
 	}
 
 	@Override
 	public void visit(DivisionListNode node) {
 		// TODO fill me in
-		result+="/ ";
-		node.getNext().accept(this);
+		
+		if(node.getNext()!=null) {
+			
+			result+="/ ";
+			node.getNext().accept(this);
+		} else {
+			
+			result+="/";
+			
+		}
 	}
 
 	@Override
 	public void visit(UnaryMinusListNode node) {
 		// TODO fill me in
-		result+="~ ";
-		node.getNext().accept(this);
+		
+		if(node.getNext()!=null) {
+			
+			result+="~ ";
+			node.getNext().accept(this);
+		} else {
+			
+			result+="~";
+			
+		}
 
 	}
 
