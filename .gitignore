@@ -1,7 +1,7 @@
 *.class
 
 */bin
-#*/.project
+*/.project
 */.settings
 */.classpath
 *.metadata
