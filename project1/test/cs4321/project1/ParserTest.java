@@ -42,12 +42,14 @@ public class ParserTest {
 
 	}
 
-	public static void printRes(String s) {
+	public static String printRes(String s) {
 		Parser p1 = new Parser(s);
 		TreeNode parseResult1 =  p1.parse();
 		PrintTreeVisitor v1 = new PrintTreeVisitor();
 		parseResult1.accept(v1);
-		System.out.println(v1.getResult());
+        String res = v1.getResult();
+        System.out.println(res);
+        return res;
 	}
 	
 	@Test

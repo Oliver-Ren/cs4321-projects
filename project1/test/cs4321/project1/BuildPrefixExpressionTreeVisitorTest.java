@@ -196,6 +196,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 		result = result.getNext();
 		assertTrue(result instanceof AdditionListNode);
 		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
 		assertEquals(((NumberListNode) result).getData(), num1, DELTA);
 		result = result.getNext();
 		assertTrue(result instanceof NumberListNode);
@@ -212,6 +213,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 		result = result.getNext();
 		assertTrue(result instanceof AdditionListNode);
 		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
 		assertEquals(((NumberListNode) result).getData(), num2, DELTA);
 		result = result.getNext();
 		assertTrue(result instanceof NumberListNode);
@@ -245,6 +247,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 		result = result.getNext();
 		assertTrue(result instanceof SubtractionListNode);
 		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
 		assertEquals(((NumberListNode) result).getData(), num1, DELTA);
 		result = result.getNext();
 		assertTrue(result instanceof NumberListNode);
@@ -261,6 +264,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 		result = result.getNext();
 		assertTrue(result instanceof SubtractionListNode);
 		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
 		assertEquals(((NumberListNode) result).getData(), num2, DELTA);
 		result = result.getNext();
 		assertTrue(result instanceof NumberListNode);
@@ -294,6 +298,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 		result = result.getNext();
 		assertTrue(result instanceof MultiplicationListNode);
 		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
 		assertEquals(((NumberListNode) result).getData(), num1, DELTA);
 		result = result.getNext();
 		assertTrue(result instanceof NumberListNode);
@@ -310,6 +315,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 		result = result.getNext();
 		assertTrue(result instanceof MultiplicationListNode);
 		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
 		assertEquals(((NumberListNode) result).getData(), num2, DELTA);
 		result = result.getNext();
 		assertTrue(result instanceof NumberListNode);
@@ -343,6 +349,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 		result = result.getNext();
 		assertTrue(result instanceof DivisionListNode);
 		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
 		assertEquals(((NumberListNode) result).getData(), num1, DELTA);
 		result = result.getNext();
 		assertTrue(result instanceof NumberListNode);
@@ -359,6 +366,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 		result = result.getNext();
 		assertTrue(result instanceof DivisionListNode);
 		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
 		assertEquals(((NumberListNode) result).getData(), num2, DELTA);
 		result = result.getNext();
 		assertTrue(result instanceof NumberListNode);
@@ -396,6 +404,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
         result = result.getNext();
         assertTrue(result instanceof UnaryMinusListNode);
         result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
         assertEquals(((NumberListNode) result).getData(), num1, DELTA);
         result = result.getNext();
         assertTrue(result instanceof NumberListNode);
@@ -449,6 +458,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
         result = result.getNext();
         assertTrue(result instanceof UnaryMinusListNode);
         result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
         assertEquals(((NumberListNode) result).getData(), num1, DELTA);
         result = result.getNext();
         assertTrue(result instanceof NumberListNode);
@@ -502,6 +512,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
         result = result.getNext();
         assertTrue(result instanceof UnaryMinusListNode);
         result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
         assertEquals(((NumberListNode) result).getData(), num1, DELTA);
         result = result.getNext();
         assertTrue(result instanceof NumberListNode);
@@ -555,6 +566,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
         result = result.getNext();
         assertTrue(result instanceof UnaryMinusListNode);
         result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
         assertEquals(((NumberListNode) result).getData(), num1, DELTA);
         result = result.getNext();
         assertTrue(result instanceof NumberListNode);
