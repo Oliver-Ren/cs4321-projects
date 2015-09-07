@@ -42,4 +42,18 @@ public class ParserTest {
 
 	}
 
+	public static void printRes(String s) {
+		Parser p1 = new Parser(s);
+		TreeNode parseResult1 =  p1.parse();
+		PrintTreeVisitor v1 = new PrintTreeVisitor();
+		parseResult1.accept(v1);
+		System.out.println(v1.getResult());
+	}
+	
+	@Test
+	public void tests() {
+		printRes("( ( ( 1.0 + 2.0 ) ) )");
+		printRes("2 / ( ( ( 1.0 + 2.0 ) ) - 100.132 ) * 909 ");
+	}
+	
 }

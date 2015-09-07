@@ -1,5 +1,6 @@
 package cs4321.project1;
 
+import cs4321.project1.list.DivisionListNode;
 import cs4321.project1.tree.*;
 
 /**
@@ -19,6 +20,20 @@ public class Parser {
 	private String[] tokens;
 	private int currentToken; // pointer to next input token to be processed
 
+	public boolean isEnd() {
+		return (currentToken >= tokens.length);
+	}
+	
+	public boolean isNum(String s) {
+		if (s.isEmpty()) return false;
+		return (s.charAt(0) >= '0' && s.charAt(0) <= '9');
+	}
+	
+	public String getCurTk() {
+		if (isEnd()) return null;
+		return tokens[currentToken++];
+	}
+	
 	/**
 	 * @precondition input represents a valid expression with all tokens
 	 *               separated by spaces, e.g. "3.0 - ( 1.0 + 2.0 ) / - 5.0. All
@@ -48,6 +63,27 @@ public class Parser {
 	private TreeNode factor() {
 
 		// TODO fill me in
+		if (isEnd()) return null;
+		
+		String tk = getCurTk();
+		
+		if (tk.equals("(")) {
+			TreeNode nd = expression();
+			
+			do {
+				tk = getCurTk();
+			} while (tk != null && tk.equals(")"));
+			if (tk != null) currentToken--;
+			
+			return nd;
+		}
+		else if (tk.equals("-")) {
+			return new UnaryMinusTreeNode(factor());
+		}
+		else if (isNum(tk)){
+			return new LeafTreeNode(Double.parseDouble(tk));
+		}
+		
 		return null;
 	}
 
@@ -59,8 +95,23 @@ public class Parser {
 	private TreeNode term() {
 
 		// TODO fill me in
-		return null;
-
+		if (isEnd()) return null;
+		
+		TreeNode left = factor();
+		if (isEnd()) return left;
+		
+		String tk = getCurTk();
+		if (!tk.equals("*") && !tk.equals("/")) {
+			currentToken--;
+			return left;
+		}
+		
+		TreeNode right = factor();
+		
+		if (tk.equals("*"))
+			return new MultiplicationTreeNode(left, right);
+		else
+			return new DivisionTreeNode(left, right);
 	}
 
 	/**
@@ -71,7 +122,22 @@ public class Parser {
 	private TreeNode expression() {
 
 		// TODO fill me in
-		return null;
-
+		if (isEnd()) return null;
+		
+		TreeNode left = term();
+		if (isEnd()) return left;
+		
+		String tk = getCurTk();
+		if (!tk.equals("+") && !tk.equals("-")) {
+			currentToken--;
+			return left;
+		}
+		
+		TreeNode right = term();
+		
+		if (tk.equals("+"))
+			return new AdditionTreeNode(left, right);
+		else
+			return new SubtractionTreeNode(left, right);
 	}
 }
