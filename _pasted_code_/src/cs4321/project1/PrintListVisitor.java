@@ -31,7 +31,7 @@ public class PrintListVisitor implements ListVisitor {
 	public void visit(AdditionListNode node) {
 		// TODO fill me in
 		
-		result+= "+ ";
+		result+= "+";
 		node.getNext().accept(this);
 		
 				
@@ -40,28 +40,28 @@ public class PrintListVisitor implements ListVisitor {
 	@Override
 	public void visit(SubtractionListNode node) {
 		// TODO fill me in
-		result+="- ";
+		result+="-";
 		node.getNext().accept(this);
 	}
 
 	@Override
 	public void visit(MultiplicationListNode node) {
 		// TODO fill me in
-		result+="* ";
+		result+="*";
 		node.getNext().accept(this);
 	}
 
 	@Override
 	public void visit(DivisionListNode node) {
 		// TODO fill me in
-		result+="/ ";
+		result+="/";
 		node.getNext().accept(this);
 	}
 
 	@Override
 	public void visit(UnaryMinusListNode node) {
 		// TODO fill me in
-		result+="~ ";
+		result+="~";
 		node.getNext().accept(this);
 
 	}
