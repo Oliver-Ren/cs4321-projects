@@ -487,8 +487,8 @@ public class BuildPostfixExpressionTreeVisitorTest {
     /**
      * Test cases of two levels starts with an Subtraction.
      * the one of the level 2 is unary minus.
-     * "+, ~, num1, num2, #"
-     * "+, num1, ~, #, #, num2"
+     * "-, ~, num1, num2, #"
+     * "-, num1, ~, #, #, num2"
      */
 	@Test
     public void testTwoLevelWithSubtractionRoot() {
@@ -545,4 +545,226 @@ public class BuildPostfixExpressionTreeVisitorTest {
 
     }
 
+    
+    /**
+     * Test cases of two levels starts with an Multiplication.
+     * the one of the level 2 is unary minus.
+     * "*, ~, num1, num2, #"
+     * "*, num1, ~, #, #, num2"
+     */
+	@Test
+    public void testTwoLevelWithMultiplicationRoot() {
+		double num1 = 2938.13;
+		double num2 = 23.10;
+		TreeNode leaf1 = new LeafTreeNode(num1);
+		TreeNode leaf2 = new LeafTreeNode(num2);
+
+        TreeNode uMinus1 = new UnaryMinusTreeNode(leaf1);
+        TreeNode uMinus2 = new UnaryMinusTreeNode(leaf2);
+        
+        TreeNode root;
+        ListNode result;
+
+        // Multiplication 1
+        root = new MultiplicationTreeNode(uMinus1, leaf2);
+        BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
+        root.accept(v1);
+
+        result = v1.getResult();
+
+		assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), num1, DELTA);
+
+        result = result.getNext();
+        assertTrue(result instanceof UnaryMinusListNode);
+        
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), num2, DELTA);
+
+        result = result.getNext();
+        assertTrue(result instanceof MultiplicationListNode);
+        
+        // Multiplication 2
+        root = new MultiplicationTreeNode(leaf1, uMinus2);
+        BuildPostfixExpressionTreeVisitor v2 = new BuildPostfixExpressionTreeVisitor();
+        root.accept(v2);
+
+        result = v2.getResult();
+
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), num1, DELTA);
+
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), num2, DELTA);
+        
+        result = result.getNext();
+        assertTrue(result instanceof UnaryMinusListNode);
+
+        result = result.getNext();
+        assertTrue(result instanceof MultiplicationListNode);
+
+    }
+
+    /**
+     * Test cases of two levels starts with an Division.
+     * the one of the level 2 is unary minus.
+     * "/, ~, num1, num2, #"
+     * "/, num1, ~, #, #, num2"
+     */
+	@Test
+    public void testTwoLevelWithDivisionRoot() {
+		double num1 = 2938.13;
+		double num2 = 23.10;
+		TreeNode leaf1 = new LeafTreeNode(num1);
+		TreeNode leaf2 = new LeafTreeNode(num2);
+
+        TreeNode uMinus1 = new UnaryMinusTreeNode(leaf1);
+        TreeNode uMinus2 = new UnaryMinusTreeNode(leaf2);
+        
+        TreeNode root;
+        ListNode result;
+
+        // Division 1
+        root = new DivisionTreeNode(uMinus1, leaf2);
+        BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
+        root.accept(v1);
+
+        result = v1.getResult();
+
+		assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), num1, DELTA);
+
+        result = result.getNext();
+        assertTrue(result instanceof UnaryMinusListNode);
+        
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), num2, DELTA);
+
+        result = result.getNext();
+        assertTrue(result instanceof DivisionListNode);
+        
+        // Division 2
+        root = new DivisionTreeNode(leaf1, uMinus2);
+        BuildPostfixExpressionTreeVisitor v2 = new BuildPostfixExpressionTreeVisitor();
+        root.accept(v2);
+
+        result = v2.getResult();
+
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), num1, DELTA);
+
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), num2, DELTA);
+        
+        result = result.getNext();
+        assertTrue(result instanceof UnaryMinusListNode);
+
+        result = result.getNext();
+        assertTrue(result instanceof DivisionListNode);
+
+    }
+
+	/**
+	 * Test with a three-level tree:
+	 * "/, *, D, A, +, #, #, #, #, B, C"
+	 */
+	@Test
+    public void testThreeLevel1() {
+		double a = 2.35;
+		double b = 293.00;
+		double c = 13.23;
+		double d = 20.00;
+		
+		LeafTreeNode na = new LeafTreeNode(a);
+		LeafTreeNode nb = new LeafTreeNode(b);
+		LeafTreeNode nc = new LeafTreeNode(c);
+		LeafTreeNode nd = new LeafTreeNode(d);
+		
+		AdditionTreeNode oAdd = new AdditionTreeNode(nb, nc);
+		MultiplicationTreeNode oMul = new MultiplicationTreeNode(na, oAdd);
+		DivisionTreeNode oDiv = new DivisionTreeNode(oMul, nd);
+		
+		BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
+        oDiv.accept(v1);
+        
+        ListNode result = v1.getResult();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), a, DELTA);
+        
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), b, DELTA);
+
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), c, DELTA);
+
+        result = result.getNext();
+        assertTrue(result instanceof AdditionListNode);
+
+        result = result.getNext();
+        assertTrue(result instanceof MultiplicationListNode);
+        
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), d, DELTA);
+        
+        result = result.getNext();
+        assertTrue(result instanceof DivisionListNode);
+        
+	}
+
+	/**
+	 * Test with a three-level tree:
+	 * "+, *, /, a, b, c, d"
+	 */
+	@Test
+    public void testThreeLevel2() {
+		double a = 2.35;
+		double b = 293.00;
+		double c = 13.23;
+		double d = 20.00;
+		
+		LeafTreeNode na = new LeafTreeNode(a);
+		LeafTreeNode nb = new LeafTreeNode(b);
+		LeafTreeNode nc = new LeafTreeNode(c);
+		LeafTreeNode nd = new LeafTreeNode(d);
+		
+		MultiplicationTreeNode oMul = new MultiplicationTreeNode(na, nb);
+		DivisionTreeNode oDiv = new DivisionTreeNode(nc, nd);
+		AdditionTreeNode oAdd = new AdditionTreeNode(oMul, oDiv);
+		
+		BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
+        oAdd.accept(v1);
+        
+        ListNode result = v1.getResult();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), a, DELTA);
+        
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), b, DELTA);
+
+        result = result.getNext();
+        assertTrue(result instanceof MultiplicationListNode);
+
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), c, DELTA);
+        
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), d, DELTA);
+
+        result = result.getNext();
+        assertTrue(result instanceof DivisionListNode);
+
+        result = result.getNext();
+        assertTrue(result instanceof AdditionListNode);
+        
+	}
 }
