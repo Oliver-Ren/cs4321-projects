@@ -73,14 +73,14 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	/**
 	 * Simple test case for Subtraction
 	 */
-	//@Test
+	@Test
 	public void testSubtractionNode() {
 		TreeNode n1 = new LeafTreeNode(1.0);
 		TreeNode n2 = new LeafTreeNode(2.0);
 		TreeNode n3 = new SubtractionTreeNode(n1, n2);
 		TreeNode n4 = new SubtractionTreeNode(n2, n1);
 		
-        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+        BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
 		n3.accept(v1);
 		ListNode result = v1.getResult();
 		
@@ -95,7 +95,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 		assertTrue(result instanceof SubtractionListNode);
 		
 		
-        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+        BuildPostfixExpressionTreeVisitor v2 = new BuildPostfixExpressionTreeVisitor();
 		n4.accept(v2);
 		result = v2.getResult();
 		
@@ -113,14 +113,14 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	/**
 	 * Simple test case for Multiplication
 	 */
-	//@Test
+	@Test
 	public void testMultiplicationNode() {
 		TreeNode n1 = new LeafTreeNode(1.0);
 		TreeNode n2 = new LeafTreeNode(2.0);
 		TreeNode n3 = new MultiplicationTreeNode(n1, n2);
 		TreeNode n4 = new MultiplicationTreeNode(n2, n1);
 		
-        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+        BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
 		n3.accept(v1);
 		ListNode result = v1.getResult();
 		
@@ -135,7 +135,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 		assertTrue(result instanceof MultiplicationListNode);
 		
 		
-        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+        BuildPostfixExpressionTreeVisitor v2 = new BuildPostfixExpressionTreeVisitor();
 		n4.accept(v2);
 		result = v2.getResult();
 		
@@ -154,14 +154,14 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	/**
 	 * Simple test case for Division
 	 */
-	//@Test
+	@Test
 	public void testDivisionNode() {
 		TreeNode n1 = new LeafTreeNode(1.0);
 		TreeNode n2 = new LeafTreeNode(2.0);
 		TreeNode n3 = new DivisionTreeNode(n1, n2);
 		TreeNode n4 = new DivisionTreeNode(n2, n1);
 		
-        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+        BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
 		n3.accept(v1);
 		ListNode result = v1.getResult();
 		
@@ -176,7 +176,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 		assertTrue(result instanceof DivisionListNode);
 		
 		
-        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+        BuildPostfixExpressionTreeVisitor v2 = new BuildPostfixExpressionTreeVisitor();
 		n4.accept(v2);
 		result = v2.getResult();
 		
@@ -196,7 +196,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	 * a unary minus node and Addition operator at level 2.
 	 * "~, +, #, num1, num2"
 	 */
-	//@Test
+	@Test
 	public void testTwoLevelWithUnaryMinusRootAndAddition() {
 		double num1 = 293.32;
 		double num2 = 38.29;
@@ -208,7 +208,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 		
 		// Addition 1
 		root = new UnaryMinusTreeNode(opAdd1);
-		BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
 		root.accept(v1);
 		
 		ListNode result = v1.getResult();
@@ -228,7 +228,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 		// Addition 2
 		root = new UnaryMinusTreeNode(opAdd2);
 		
-		BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		BuildPostfixExpressionTreeVisitor v2 = new BuildPostfixExpressionTreeVisitor();
 		root.accept(v2);
 		
 		result = v2.getResult();
@@ -254,7 +254,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	 * a unary minus node and Subtraction operator at level 2.
 	 * "~, /, #, num1, num2"
 	 */
-	//@Test
+	@Test
 	public void testTwoLevelWithUnaryMinusRootAndSubtraction() {
 		double num1 = 293.32;
 		double num2 = 38.29;
@@ -266,7 +266,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 		
 		// Subtraction 1
 		root = new UnaryMinusTreeNode(opAdd1);
-		BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
 		root.accept(v1);
 		
 		ListNode result = v1.getResult();
@@ -286,7 +286,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 		// Subtraction 2
 		root = new UnaryMinusTreeNode(opAdd2);
 		
-		BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		BuildPostfixExpressionTreeVisitor v2 = new BuildPostfixExpressionTreeVisitor();
 		root.accept(v2);
 		
 		result = v2.getResult();
@@ -312,7 +312,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	 * a unary minus node and Multiplication operator at level 2.
 	 * "~, *, #, num1, num2"
 	 */
-	//@Test
+	@Test
 	public void testTwoLevelWithUnaryMinusRootAndMultiplication() {
 		double num1 = 293.32;
 		double num2 = 38.29;
@@ -324,7 +324,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 		
 		// Multiplication 1
 		root = new UnaryMinusTreeNode(opAdd1);
-		BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
 		root.accept(v1);
 		
 		ListNode result = v1.getResult();
@@ -344,7 +344,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 		// Multiplication 2
 		root = new UnaryMinusTreeNode(opAdd2);
 		
-		BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		BuildPostfixExpressionTreeVisitor v2 = new BuildPostfixExpressionTreeVisitor();
 		root.accept(v2);
 		
 		result = v2.getResult();
@@ -369,7 +369,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	 * a unary minus node and Division operator at level 2.
 	 * "~, /, #, num1, num2"
 	 */
-	//@Test
+	@Test
 	public void testTwoLevelWithUnaryMinusRootAndDivision() {
 		double num1 = 293.32;
 		double num2 = 38.29;
@@ -381,7 +381,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 		
 		// Division 1
 		root = new UnaryMinusTreeNode(opAdd1);
-		BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
 		root.accept(v1);
 		
 		ListNode result = v1.getResult();
@@ -401,7 +401,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 		// Division 2
 		root = new UnaryMinusTreeNode(opAdd2);
 		
-		BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		BuildPostfixExpressionTreeVisitor v2 = new BuildPostfixExpressionTreeVisitor();
 		root.accept(v2);
 		
 		result = v2.getResult();
@@ -443,7 +443,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 
         // Addition 1
         root = new AdditionTreeNode(uMinus1, leaf2);
-        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+        BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
         root.accept(v1);
 
         result = v1.getResult();
@@ -463,7 +463,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
         
         // Addition 2
         root = new AdditionTreeNode(leaf1, uMinus2);
-        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+        BuildPostfixExpressionTreeVisitor v2 = new BuildPostfixExpressionTreeVisitor();
         root.accept(v2);
 
         result = v2.getResult();
@@ -505,7 +505,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 
         // Subtraction 1
         root = new SubtractionTreeNode(uMinus1, leaf2);
-        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+        BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
         root.accept(v1);
 
         result = v1.getResult();
@@ -525,7 +525,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
         
         // Subtraction 2
         root = new SubtractionTreeNode(leaf1, uMinus2);
-        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+        BuildPostfixExpressionTreeVisitor v2 = new BuildPostfixExpressionTreeVisitor();
         root.accept(v2);
 
         result = v2.getResult();
