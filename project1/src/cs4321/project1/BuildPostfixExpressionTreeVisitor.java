@@ -56,9 +56,10 @@ public class BuildPostfixExpressionTreeVisitor implements TreeVisitor {
 		// TODO fill me in
 		MultiplicationListNode n = new MultiplicationListNode();
 		node.getLeftChild().accept(this);;
+		node.getRightChild().accept(this);
 		dummy.setNext(n);
 		dummy=dummy.getNext();
-		node.getRightChild().accept(this);
+		
 	}
 
 	@Override
@@ -66,9 +67,10 @@ public class BuildPostfixExpressionTreeVisitor implements TreeVisitor {
 		// TODO fill me in
 		SubtractionListNode n = new SubtractionListNode();
 		node.getLeftChild().accept(this);
+		node.getRightChild().accept(this);
 		dummy.setNext(n);
 		dummy=dummy.getNext();
-		node.getRightChild().accept(this);
+		
 		
 	}
 
@@ -77,9 +79,10 @@ public class BuildPostfixExpressionTreeVisitor implements TreeVisitor {
 		// TODO fill me in
 		DivisionListNode n = new DivisionListNode();
 		node.getLeftChild().accept(this);;
+		node.getRightChild().accept(this);
 		dummy.setNext(n);
 		dummy=dummy.getNext();
-		node.getRightChild().accept(this);
+		
 	}
 
 }
