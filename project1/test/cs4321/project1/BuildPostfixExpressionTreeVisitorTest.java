@@ -767,4 +767,54 @@ public class BuildPostfixExpressionTreeVisitorTest {
         assertTrue(result instanceof AdditionListNode);
         
 	}
+
+	/**
+	 * Test with a three-level tree:
+	 * "*, A, +, #, #, B, /, #, #, C, D"
+	 */
+	@Test
+    public void testThreeLevel3() {
+		double a = 2.35;
+		double b = 293.00;
+		double c = 13.23;
+		double d = 20.00;
+		
+		LeafTreeNode na = new LeafTreeNode(a);
+		LeafTreeNode nb = new LeafTreeNode(b);
+		LeafTreeNode nc = new LeafTreeNode(c);
+		LeafTreeNode nd = new LeafTreeNode(d);
+		
+		DivisionTreeNode oDiv = new DivisionTreeNode(nc, nd);
+		AdditionTreeNode oAdd = new AdditionTreeNode(nb, oDiv);
+		MultiplicationTreeNode oMul = new MultiplicationTreeNode(na, oAdd);
+		
+		BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
+        oMul.accept(v1);
+        
+        ListNode result = v1.getResult();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), a, DELTA);
+        
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), b, DELTA);
+        
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), c, DELTA);
+        
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), d, DELTA);
+
+        result = result.getNext();
+        assertTrue(result instanceof DivisionListNode);
+        
+        result = result.getNext();
+        assertTrue(result instanceof AdditionListNode);
+        
+        result = result.getNext();
+        assertTrue(result instanceof MultiplicationListNode);
+
+	}
 }
