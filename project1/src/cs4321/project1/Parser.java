@@ -42,6 +42,7 @@ public class Parser {
 	 *               be matched and properly nested.
 	 */
 	public Parser(String input) {
+		input = "( " + input + " )";
 		this.tokens = input.split("\\s+");
 		currentToken = 0;
 	}
