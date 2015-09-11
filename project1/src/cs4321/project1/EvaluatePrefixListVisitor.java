@@ -82,7 +82,7 @@ public class EvaluatePrefixListVisitor implements ListVisitor {
 		
 		double second = stack1.pop();
 		double first =0;  
-		if(!stack1.isEmpty()) {  // in case of unary list node 
+		if(!(stack2.peek().node instanceof UnaryMinusListNode)) {  // in case of unary list node 
 			first = stack1.pop();
 		}
 		
