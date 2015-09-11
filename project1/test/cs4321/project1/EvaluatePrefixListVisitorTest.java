@@ -160,5 +160,39 @@ public class EvaluatePrefixListVisitorTest {
 		assertEquals(29431.22, v1.getResult(), DELTA);
 	}
 
+	/** Simple Addition with unary minus. 
+	 *  infix: -(A + (-B)), -((-A) + B))
+	 *  prefix: ~ + A ~ B, ~ + ~ A B
+	 */
+	@Test
+	public void testAdditionSimpleWithUnaryMinus() {
+		double num1 = 23.18;
+		double num2 = 382.93;
+		ListNode n1 = new UnaryMinusListNode(); 
+		ListNode n2 = new AdditionListNode(); 
+		ListNode n3 = new NumberListNode(num1); 
+		ListNode n4 = new UnaryMinusListNode();
+		ListNode n5 = new NumberListNode(num2); 
+		n1.setNext(n2);
+		n2.setNext(n3);
+		n3.setNext(n4);
+		n4.setNext(n5);
+		EvaluatePrefixListVisitor v1 = new EvaluatePrefixListVisitor();
+		n1.accept(v1);
+		assertEquals(-(num1 + (-num2)), v1.getResult(), DELTA);
+		
+		ListNode n6 = new UnaryMinusListNode(); 
+		ListNode n7 = new AdditionListNode(); 
+		ListNode n8 = new UnaryMinusListNode();
+		ListNode n9 = new NumberListNode(num1); 
+		ListNode n10 = new NumberListNode(num2); 
+		n6.setNext(n7);
+		n7.setNext(n8);
+		n8.setNext(n9);
+		n9.setNext(n10);
+		EvaluatePrefixListVisitor v2 = new EvaluatePrefixListVisitor();
+		n6.accept(v2);
+		assertEquals(-(-num1 + num2), v2.getResult(), DELTA);
+	}
 
 }

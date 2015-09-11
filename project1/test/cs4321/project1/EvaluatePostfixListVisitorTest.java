@@ -146,7 +146,8 @@ public class EvaluatePostfixListVisitorTest {
 
 	
 	/** Simple Addition with unary minus. 
-	 *  -(A + (-B)), -((=A) + B))
+	 *  infix: -(A + (-B)), -((-A) + B))
+	 *  postfix: A B ~ + ~, A ~ B + ~
 	 */
 	@Test
 	public void testAdditionSimpleWithUnaryMinus() {
