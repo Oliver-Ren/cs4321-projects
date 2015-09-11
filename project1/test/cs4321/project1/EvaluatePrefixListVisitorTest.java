@@ -60,6 +60,7 @@ public class EvaluatePrefixListVisitorTest {
 
 	/**
 	 * a very simple test case for Subtraction.
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testSubtractionSimple() {
@@ -84,6 +85,7 @@ public class EvaluatePrefixListVisitorTest {
 
 	/**
 	 * a very simple test case for Multiplication.
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testMultiplicationSimple() {
@@ -108,6 +110,7 @@ public class EvaluatePrefixListVisitorTest {
 
 	/**
 	 * a very simple test case for Division.
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testDivisionSimple() {
@@ -133,6 +136,7 @@ public class EvaluatePrefixListVisitorTest {
 
 	/**
 	 * simple negative number.
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testSimpleNegNumber() {
@@ -146,6 +150,7 @@ public class EvaluatePrefixListVisitorTest {
 
 	/**
 	 * Test case which contains multiple negative signs.
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testUnaryMultipleMinusNode() {
@@ -166,6 +171,7 @@ public class EvaluatePrefixListVisitorTest {
 	/** Simple Addition with unary minus. 
 	 *  infix: -(A + (-B)), -((-A) + B))
 	 *  prefix: ~ + A ~ B, ~ + ~ A B
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testAdditionSimpleWithUnaryMinus() {
@@ -201,6 +207,7 @@ public class EvaluatePrefixListVisitorTest {
 	/** Simple Subtraction with unary minus. 
 	 *  infix: -(A - (-B)), -((-A) - B))
 	 *  prefix: ~ - A ~ B, ~ - ~ A B
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testSubtractionSimpleWithUnaryMinus() {
@@ -236,6 +243,7 @@ public class EvaluatePrefixListVisitorTest {
 	/** Simple Multiplication with unary minus. 
 	 *  infix: -(A * (-B)), -((-A) * B))
 	 *  prefix: ~ * A ~ B, ~ * ~ A B
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testMultiplicationSimpleWithUnaryMinus() {
@@ -271,6 +279,7 @@ public class EvaluatePrefixListVisitorTest {
 	/** Simple Division with unary minus. 
 	 *  infix: -(A / (-B)), -((-A) / B))
 	 *  prefix: ~ / A ~ B, ~ / ~ A B
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testDivisionSimpleWithUnaryMinus() {
@@ -307,6 +316,7 @@ public class EvaluatePrefixListVisitorTest {
 	 * A complex Prefix Test
 	 * infix: (a * b) + (c / d) 
 	 * Prefix: + * a b / c d 
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testComplexPostfix1() {
@@ -338,6 +348,7 @@ public class EvaluatePrefixListVisitorTest {
 	 * Another complex Prefix Test
 	 * infix: ((A * (B + C)) / D)
 	 * prefix: / * A + B C D
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testComplexPrefix2() {
@@ -367,6 +378,7 @@ public class EvaluatePrefixListVisitorTest {
 	 * Complex Prefix Test
 	 * infix: (a / b) * ((-(c * d)) - (-(e + a)))
 	 * Prefix: * / a b - ~ * c d ~ + e a
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testComplexPrefix3() {

@@ -69,6 +69,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 	
 	/**
 	 * Simple test case for Subtraction
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testSubtractionNode() {
@@ -104,6 +105,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 
 	/**
 	 * Simple test case for Multiplication
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testMultiplicationNode() {
@@ -139,6 +141,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 
 	/**
 	 * Simple test case for Division
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testDivisionNode() {
@@ -175,6 +178,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 	 * Test case for two level expression tree started with
 	 * a unary minus node and Addition operator at level 2.
 	 * "~, +, #, num1, num2"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testTwoLevelWithUnaryMinusRootAndAddition() {
@@ -226,6 +230,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 	 * Test case for two level expression tree started with
 	 * a unary minus node and Subtraction operator at level 2.
 	 * "~, -, #, num1, num2"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testTwoLevelWithUnaryMinusRootAndSubtraction() {
@@ -277,6 +282,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 	 * Test case for two level expression tree started with
 	 * a unary minus node and Multiplication operator at level 2.
 	 * "~, *, #, num1, num2"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testTwoLevelWithUnaryMinusRootAndMultiplication() {
@@ -328,6 +334,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 	 * Test case for two level expression tree started with
 	 * a unary minus node and Division operator at level 2.
 	 * "~, /, #, num1, num2"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testTwoLevelWithUnaryMinusRootAndDivision() {
@@ -380,6 +387,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
      * the one of the level 2 is unary minus.
      * "+, ~, num1, num2, #"
      * "+, num1, ~, #, #, num2"
+	 * @author Chengxiang Ren (cr486).
      */
 	@Test
     public void testTwoLevelWithAdditionRoot() {
@@ -434,6 +442,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
      * the one of the level 2 is unary minus.
      * "-, ~, num1, num2, #"
      * "-, num1, ~, #, #, num2"
+	 * @author Chengxiang Ren (cr486).
      */
 	@Test
     public void testTwoLevelWithSubtractionRoot() {
@@ -488,6 +497,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
      * the one of the level 2 is unary minus.
      * "*, ~, num1, num2, #"
      * "*, num1, ~, #, #, num2"
+	 * @author Chengxiang Ren (cr486).
      */
 	@Test
     public void testTwoLevelWithMultiplicationRoot() {
@@ -542,6 +552,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
      * the one of the level 2 is unary minus.
      * "-, ~, num1, num2, #"
      * "-, num1, ~, #, #, num2"
+	 * @author Chengxiang Ren (cr486).
      */
 	@Test
     public void testTwoLevelWithDivisionRoot() {
@@ -593,6 +604,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 	/**
 	 * Test with a three-level tree:
 	 * "/, *, D, A, +, #, #, #, #, B, C"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
     public void testThreeLevel1() {
@@ -645,6 +657,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 	/**
 	 * Test with a three-level tree:
 	 * "+, *, /, a, b, c, d"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
     public void testThreeLevel2() {
@@ -696,6 +709,7 @@ public class BuildPrefixExpressionTreeVisitorTest {
 	/**
 	 * Test with a three-level tree:
 	 * "*, A, +, #, #, B, /, #, #, C, D"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
     public void testThreeLevel3() {

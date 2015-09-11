@@ -60,6 +60,7 @@ public class EvaluatePostfixListVisitorTest {
 
 	/**
 	 * simple Subtraction.
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testSubtractionSimple() {
@@ -84,6 +85,7 @@ public class EvaluatePostfixListVisitorTest {
 
 	/**
 	 * simple Multiplication.
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testMultiplicationSimple() {
@@ -109,6 +111,7 @@ public class EvaluatePostfixListVisitorTest {
 
 	/**
 	 * simple Division.
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testDivisionSimple() {
@@ -133,6 +136,7 @@ public class EvaluatePostfixListVisitorTest {
 
 	/**
 	 * simple negative number.
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testSimpleNegNumber() {
@@ -148,6 +152,7 @@ public class EvaluatePostfixListVisitorTest {
 	/** Simple Addition with unary minus. 
 	 *  infix: -(A + (-B)), -((-A) + B))
 	 *  postfix: A B ~ + ~, A ~ B + ~
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testAdditionSimpleWithUnaryMinus() {
@@ -182,6 +187,7 @@ public class EvaluatePostfixListVisitorTest {
 
 	/** Simple Subtraction with unary minus. 
 	 *  -(A - (-B)), -((=A) - B))
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testSubtractionSimpleWithUnaryMinus() {
@@ -216,6 +222,7 @@ public class EvaluatePostfixListVisitorTest {
 
 	/** Simple Multiplication with unary minus. 
 	 *  -(A * (-B)), -((-A) * B))
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testMultiplicationSimpleWithUnaryMinus() {
@@ -250,6 +257,7 @@ public class EvaluatePostfixListVisitorTest {
 
 	/** Simple Division with unary minus. 
 	 *  -(A / (-B)), -((-A) / B))
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testDivisionSimpleWithUnaryMinus() {
@@ -284,6 +292,7 @@ public class EvaluatePostfixListVisitorTest {
 
 	/**
 	 * Test case which contains multiple negative signs.
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testUnaryMultipleMinusNode() {
@@ -305,6 +314,7 @@ public class EvaluatePostfixListVisitorTest {
 	 * A complex Postfix Test
 	 * infix: (a * b) + (c / d) 
 	 * postfix: a b * c d / +
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testComplexPostfix1() {
@@ -340,6 +350,7 @@ public class EvaluatePostfixListVisitorTest {
 	 * Another complex Postfix Test
 	 * infix: ((A * (B + C)) / D)
 	 * postfix: A B C + * D /
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testComplexPostfix2() {
@@ -368,7 +379,8 @@ public class EvaluatePostfixListVisitorTest {
 	/**
 	 * Complex Postfix Test
 	 * infix: (a / b) * ((-(c * d)) - (-(e + a)))
-	 * postfix: a b / c d * ~ e a + ~ - *
+	 * Postfix: a b / c d * ~ e a + ~ - *
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testComplexPostfix3() {
@@ -401,9 +413,6 @@ public class EvaluatePostfixListVisitorTest {
 		assertEquals((a / b) * ((-(c * d)) - (-(e + a))), 
 				v1.getResult(), DELTA);
 	}
-
-
-		
 
 
 }

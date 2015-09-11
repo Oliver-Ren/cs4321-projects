@@ -43,7 +43,7 @@ public class ParserTest {
 
 	}
 
-	/*
+	/**
 	 * Test the parsed result of a string against a given answer.
 	 * 
 	 * @author Guantian Zheng (gz94)
@@ -104,5 +104,31 @@ public class ParserTest {
 //			if (exp.isEmpty())
 //				break;
 //		}
+	}
+
+	/**
+	 * Test cases for single operator only
+	 * @author Chengxiang Ren (cr486).
+	 */
+	@Test
+	public void testSingleOperator() {
+		test("2.56 * 2.56", "(2.56*2.56)");
+		test("2.56 + 2.56", "(2.56+2.56)");
+		test("2.56 - 2.56", "(2.56-2.56)");
+		test("2.56 / 2.56", "(2.56/2.56)");
+	}
+
+	/**
+	 * Test cases for combination of operators
+	 * @author Chengxiang Ren (cr486).
+	 */
+	@Test
+	public void testCombination() {
+		test("1.28 + 1.28 + 1.28 + 1.28", "(((1.28+1.28)+1.28)+1.28)");
+		test("1.28 + 1.28 - 1.28 * 1.28 / 1.28", "((1.28+1.28)-((1.28*1.28)/1.28))");
+		test("- - - - - 2.0","(-(-(-(-(-2.0)))))" );
+		test("- - 2.8 - - - 2.9", "((-(-2.8))-(-(-2.9)))");
+		test("- ( 4.3 )", "(-4.3)");
+		test("- ( - ( ( ( - ( 5.9 ) ) ) ) )", "(-(-(-5.9)))");
 	}
 }
