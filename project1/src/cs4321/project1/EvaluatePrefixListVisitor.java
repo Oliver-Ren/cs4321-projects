@@ -51,8 +51,7 @@ public class EvaluatePrefixListVisitor implements ListVisitor {
 			//System.out.println(stack2.peek().num);
 			w.decreVal();  // whether value in stack also change? 
 			
-			if(w.num!=0) {
-				//stack2.push(w);
+			if(w.num!=0) {				
 				if(node.getNext()!=null) {
 					node.getNext().accept(this);
 				}
@@ -77,6 +76,9 @@ public class EvaluatePrefixListVisitor implements ListVisitor {
 		if(stack2.isEmpty()) {
 			return;
 		}
+		if(stack2.peek().num!=0) {
+			return;
+		}
 		
 		double second = stack1.pop();
 		double first =0;  
@@ -98,6 +100,7 @@ public class EvaluatePrefixListVisitor implements ListVisitor {
 			if(!stack2.isEmpty()) {
 				w =stack2.peek();
 				w.decreVal();
+				
 			}
 		} else if (w.node instanceof MultiplicationListNode) {
 			first = first*second;
