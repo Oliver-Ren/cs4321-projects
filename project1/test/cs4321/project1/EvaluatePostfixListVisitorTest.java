@@ -245,7 +245,7 @@ public class EvaluatePostfixListVisitorTest {
 		n9.setNext(n10);
 		EvaluatePostfixListVisitor v2 = new EvaluatePostfixListVisitor();
 		n6.accept(v2);
-		assertEquals(-(-num1 * num2), v2.getResult(), DELTA);
+		assertEquals(-((-num1) * num2), v2.getResult(), DELTA);
 	}
 
 	/** Simple Division with unary minus. 
@@ -279,7 +279,7 @@ public class EvaluatePostfixListVisitorTest {
 		n9.setNext(n10);
 		EvaluatePostfixListVisitor v2 = new EvaluatePostfixListVisitor();
 		n6.accept(v2);
-		assertEquals(-(-num1 / num2), v2.getResult(), DELTA);
+		assertEquals(-((-num1) / num2), v2.getResult(), DELTA);
 	}
 
 	/**
@@ -303,6 +303,8 @@ public class EvaluatePostfixListVisitorTest {
 
 	/**
 	 * A complex Postfix Test
+	 * infix: (a * b) + (c / d) 
+	 * postfix: a b * c d / +
 	 */
 	@Test
 	public void testComplexPostfix1() {
