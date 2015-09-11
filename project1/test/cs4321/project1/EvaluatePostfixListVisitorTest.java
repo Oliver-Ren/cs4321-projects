@@ -248,7 +248,7 @@ public class EvaluatePostfixListVisitorTest {
 	}
 
 	/** Simple Division with unary minus. 
-	 *  -(A / (-B)), -((=A) / B))
+	 *  -(A / (-B)), -((-A) / B))
 	 */
 	@Test
 	public void testDivisionSimpleWithUnaryMinus() {
