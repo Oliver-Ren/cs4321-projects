@@ -136,8 +136,29 @@ public class EvaluatePrefixListVisitorTest {
 		ListNode n1 = new NumberListNode(2.0);
 		ListNode n2 = new UnaryMinusListNode();
 		n2.setNext(n1);
-		EvaluatePostfixListVisitor v1 = new EvaluatePostfixListVisitor();
+		EvaluatePrefixListVisitor v1 = new EvaluatePrefixListVisitor();
 		n2.accept(v1);
 		assertEquals(-2.0, v1.getResult(), DELTA);
 	}
+
+	/**
+	 * Test case which contains multiple negative signs.
+	 */
+	@Test
+	public void testUnaryMultipleMinusNode() {
+		ListNode n1 = new NumberListNode(29431.22);
+        ListNode[] list = new ListNode[10];
+        list[9] = new UnaryMinusListNode();
+        list[9].setNext(n1);
+        for (int i = 8; i >= 0; i--) {
+            list[i] = new UnaryMinusListNode();
+            list[i].setNext(list[i + 1]);
+        }
+
+		EvaluatePrefixListVisitor v1 = new EvaluatePrefixListVisitor();
+		n1.accept(v1);
+		assertEquals(29431.22, v1.getResult(), DELTA);
+	}
+
+
 }
