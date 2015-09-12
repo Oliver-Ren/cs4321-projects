@@ -1,8 +1,5 @@
 package cs4321.project1;
 
-import org.hamcrest.core.IsInstanceOf;
-
-import cs4321.project1.list.DivisionListNode;
 import cs4321.project1.tree.*;
 
 /**
@@ -143,7 +140,8 @@ public class Parser {
 		while (!isEnd()) {
 			String tk = getCurTk();
 			if (!tk.equals("+") && !tk.equals("-")) {
-				// currentToken--;
+				if (!tk.equals(")"))
+					currentToken--;
 				return left;
 			}
 			
@@ -157,4 +155,5 @@ public class Parser {
 		
 		return left;
 	}
+	
 }
