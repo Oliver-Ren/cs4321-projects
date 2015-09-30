@@ -24,6 +24,18 @@ public class Tuple {
 		}
 	}
 	
+	@Override
+	public String toString() {
+		if (cols.length < 1) return "";
+		StringBuilder sb = new StringBuilder(String.valueOf(cols[0]));
+		int i = 1;
+		while (i < cols.length) {
+			sb.append(',');
+			sb.append(String.valueOf(cols[i++]));
+		}
+		return sb.toString();
+	}
+	
 	public Tuple(int[] cols) {
 		this.cols = cols;
 	}

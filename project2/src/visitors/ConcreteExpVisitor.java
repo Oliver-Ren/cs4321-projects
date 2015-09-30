@@ -15,7 +15,7 @@ public class ConcreteExpVisitor extends AbstractExpVisitor {
 	@Override
 	public void visit(LongValue arg0) {
 		// TODO Auto-generated method stub
-
+		arg0.getValue();
 	}
 
 	@Override
