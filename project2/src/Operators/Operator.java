@@ -5,9 +5,6 @@ import java.io.PrintStream;
 import util.Tuple;
 
 public abstract class Operator {
-
-	public final static int numChd = 0;
-	public Operator[] children = null;
 	
 	public abstract Tuple getNextTuple();
 	

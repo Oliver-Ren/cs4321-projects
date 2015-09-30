@@ -10,12 +10,14 @@ public class Tuple {
 	public void dump(PrintStream ps) {
 		try {
 			if (cols.length < 1) return;
-			String str = String.valueOf(cols[0]);
+			StringBuilder sb = new StringBuilder(String.valueOf(cols[0]));
 			int i = 1;
-			while (i < cols.length)
-				str += "," + String.valueOf(cols[i++]);
-			str += '\n';
-			ps.write(str.getBytes());
+			while (i < cols.length) {
+				sb.append(',');
+				sb.append(String.valueOf(cols[i++]));
+			}
+			sb.append('\n');
+			ps.write(sb.toString().getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

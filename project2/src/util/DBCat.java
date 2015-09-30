@@ -31,12 +31,18 @@ public class DBCat {
 	
 	public static HashMap<String, String[]> schemas = new HashMap<String, String[]>();
 	
-	public static void resetInDirs(String newInputDir) {
-		inputDir = newInputDir;
-		qryPath = inputDir + "queries.sql";
-		dbDir = inputDir + "db/";
-		dataDir = dbDir + "data/";
-		schemaPath = dbDir + "schema.txt";
+	public static void resetDirs(String input, String output) {
+		if (input != null) {
+			inputDir = input;
+			qryPath = inputDir + "queries.sql";
+			dbDir = inputDir + "db/";
+			dataDir = dbDir + "data/";
+			schemaPath = dbDir + "schema.txt";
+		}
+		
+		if (output != null) {
+			outputDir = output;
+		}
 	}
 	
 	public static String tabPath(String tabName) {
@@ -87,7 +93,7 @@ public class DBCat {
 	 */
 	public static DBCat getInstance() {
 		if (instance == null) {
-			resetInDirs(inputDir);
+			resetDirs(inputDir, null);
 			instance = new DBCat();
 		}
 		return instance;
