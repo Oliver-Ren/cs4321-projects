@@ -9,7 +9,12 @@ public class Tuple {
 	
 	public void dump(PrintStream ps) {
 		try {
-			String str = cols.toString() + '\n';
+			if (cols.length < 1) return;
+			String str = String.valueOf(cols[0]);
+			int i = 1;
+			while (i < cols.length)
+				str += "," + String.valueOf(cols[i++]);
+			str += '\n';
 			ps.write(str.getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
