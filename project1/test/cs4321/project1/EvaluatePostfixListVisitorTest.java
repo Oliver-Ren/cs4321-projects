@@ -54,4 +54,30 @@ public class EvaluatePostfixListVisitorTest {
 		assertEquals(6.0, v1.getResult(), DELTA);
 	}
 
+
+    /**
+     * simple test case for subtraction.
+     */
+    
+	@Test
+	public void testSubtractionSimple() {
+		ListNode n1 = new NumberListNode(1.0);
+		ListNode n2 = new NumberListNode(2.0);
+		ListNode n3 = new SubtractionListNode();
+		n1.setNext(n2);
+		n2.setNext(n3);
+		EvaluatePostfixListVisitor v1 = new EvaluatePostfixListVisitor();
+		n1.accept(v1);
+		assertEquals(-1.0, v1.getResult(), DELTA);
+		
+		ListNode n4 = new NumberListNode(1.0);
+		ListNode n5 = new NumberListNode(2.0);
+		ListNode n6 = new SubtractionListNode();
+		n5.setNext(n4);
+		n4.setNext(n6);
+		EvaluatePostfixListVisitor v2 = new EvaluatePostfixListVisitor();
+		n5.accept(v2);
+		assertEquals(1.0, v2.getResult(), DELTA);
+	}
+
 }

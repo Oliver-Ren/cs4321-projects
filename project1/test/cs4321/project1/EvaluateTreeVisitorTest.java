@@ -319,6 +319,81 @@ public class EvaluateTreeVisitorTest {
 		assertEquals(num1 / (-num2), v8.getResult(), DELTA);
     }
         
-      
+	/**
+	 * Test with a three-level tree:
+	 * "/, *, D, A, +, #, #, #, #, B, C"
+	 */
+	@Test
+    public void testThreeLevel1() {
+		double a = 2.35;
+		double b = 293.00;
+		double c = 13.23;
+		double d = 20.00;
+		
+		LeafTreeNode na = new LeafTreeNode(a);
+		LeafTreeNode nb = new LeafTreeNode(b);
+		LeafTreeNode nc = new LeafTreeNode(c);
+		LeafTreeNode nd = new LeafTreeNode(d);
+		
+		AdditionTreeNode oAdd = new AdditionTreeNode(nb, nc);
+		MultiplicationTreeNode oMul = new MultiplicationTreeNode(na, oAdd);
+		DivisionTreeNode oDiv = new DivisionTreeNode(oMul, nd);
+		
+		EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+		oDiv.accept(v1);
+		assertEquals(((a * (b + c) / d)), v1.getResult(), DELTA);
+    } 
 
+	/**
+	 * Test with a three-level tree:
+	 * "+, *, /, a, b, c, d"
+	 */
+	@Test
+    public void testThreeLevel2() {
+		double a = 2.35;
+		double b = 293.00;
+		double c = 13.23;
+		double d = 20.00;
+		
+		LeafTreeNode na = new LeafTreeNode(a);
+		LeafTreeNode nb = new LeafTreeNode(b);
+		LeafTreeNode nc = new LeafTreeNode(c);
+		LeafTreeNode nd = new LeafTreeNode(d);
+		
+		MultiplicationTreeNode oMul = new MultiplicationTreeNode(na, nb);
+		DivisionTreeNode oDiv = new DivisionTreeNode(nc, nd);
+		AdditionTreeNode oAdd = new AdditionTreeNode(oMul, oDiv);
+
+		EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+		oAdd.accept(v1);
+		assertEquals((a * b) + (c / d), v1.getResult(), DELTA);
+
+    }
+
+	/**
+	 * Test with a three-level tree:
+	 * "*, a, +, #, #, b, /, #, #, c, d"
+	 */
+    @Test
+    public void testThreeLevel3() {
+        double a = 29.72;
+        double b = 282.33;
+        double c = 23.23;
+        double d = 934.12;
+
+		LeafTreeNode na = new LeafTreeNode(a);
+		LeafTreeNode nb = new LeafTreeNode(b);
+		LeafTreeNode nc = new LeafTreeNode(c);
+		LeafTreeNode nd = new LeafTreeNode(d);
+		
+		DivisionTreeNode oDiv = new DivisionTreeNode(nc, nd);
+		AdditionTreeNode oAdd = new AdditionTreeNode(nb, oDiv);
+		MultiplicationTreeNode oMul = new MultiplicationTreeNode(na, oAdd);
+
+		EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+		oMul.accept(v1);
+		assertEquals((a * (b + (c / d))), v1.getResult(), DELTA);
+    }
+
+		
 }
