@@ -8,7 +8,9 @@ public class tests {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Table tab = DBCat.getTable("Sailors");
+		DBCat catalog = DBCat.getInstance();
+		String table = "Reserves";
+		Table tab = catalog.getTable(table);
 		ScanOperator sop = new ScanOperator(tab);
 		sop.dump(System.out);
 	}

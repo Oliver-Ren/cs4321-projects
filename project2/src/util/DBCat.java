@@ -22,16 +22,18 @@ public class DBCat {
 	private static DBCat instance;	// The instance of DBCat;
 	public static String inputDir = "samples/input/";
 	public static String outputDir = "";
+	private HashMap<String, String[]> schemas;
 	
 	// intentionally make the constructor private, which 
 	// avoids instances being created outside the class
 	private DBCat() {
-		
+		schemas = new HashMap<String, String[]>();
 	}
 	
 	/**
-	 * Returns the instance of instance of the class and makes
+	 * Returns the instance of the DBCat and makes
 	 * sure there are only one instance exist;
+	 * 
 	 * @return the instance of instance of the class
 	 */
 	public static DBCat getInstance() {
@@ -41,9 +43,9 @@ public class DBCat {
 		return instance;
 	}
 	
-	public static HashMap<String, String[]> schemas = new HashMap<String, String[]>();
 	
-	public static Table getTable(String tabName) {
+	
+	public Table getTable(String tabName) {
 		try {
 			return new Table(new FileReader(inputDir + "db/data/" + tabName + ".csv"));
 		} catch (FileNotFoundException e) {
