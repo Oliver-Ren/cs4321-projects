@@ -43,6 +43,16 @@ public class DBCat {
 		return dataDir + tabName + ".csv";
 	}
 	
+	public static Table getTable(String tabName) {
+		try {
+			return new Table(tabName, new FileReader(tabPath(tabName)));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	// intentionally make the constructor private, which 
 	// avoids instances being created outside the class
 	private DBCat() {
@@ -70,8 +80,9 @@ public class DBCat {
 	}
 	
 	/**
-	 * Returns the instance of instance of the class and makes
+	 * Returns the instance of the DBCat and makes
 	 * sure there are only one instance exist;
+	 * 
 	 * @return the instance of instance of the class
 	 */
 	public static DBCat getInstance() {
@@ -81,21 +92,5 @@ public class DBCat {
 		}
 		return instance;
 	}
-	
-	
-	public static Table getTable(String tabName) {
-		try {
-			return new Table(tabName, new FileReader(tabPath(tabName)));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
-	
-	
-	
-	
 	
 }

@@ -16,7 +16,7 @@ public class tests {
 	public static final PrintStream so = System.out;
 	
 	public static void main(String[] args) {
-		DBCat.getInstance();		
+		DBCat.getInstance();
 		
 		try {
 			CCJSqlParser parser = new CCJSqlParser(new FileReader(DBCat.qryPath));
