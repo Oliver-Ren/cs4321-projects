@@ -40,6 +40,10 @@ public class PrintListVisitorTest {
 		assertEquals("1.0 2.0 +", pv1.getResult());
 	}
 
+	/**
+	 * simple subtraction.
+	 * @author: Chengxiang Ren (cr486).
+	 */
     @Test
     public void testSubtractionSimplePrefix() {
 		ListNode n1 = new NumberListNode(1.0);
@@ -52,6 +56,10 @@ public class PrintListVisitorTest {
 		assertEquals("- 2.0 1.0", pv1.getResult());
     }
 
+    /**
+	 * simple subtraction.
+	 * @author: Chengxiang Ren (cr486).
+	 */
 	@Test
 	public void testSubtractionSimplePostfix() {
 		ListNode n1 = new NumberListNode(1.0);
@@ -64,6 +72,10 @@ public class PrintListVisitorTest {
 		assertEquals("1.0 2.0 -", pv1.getResult());
 	}
 
+	/**
+	 * simple multiplication.
+	 * @author: Chengxiang Ren (cr486).
+	 */
 	@Test
 	public void testMultiplicationSimplePrefix() {
 		ListNode n1 = new NumberListNode(1.0);
@@ -76,6 +88,10 @@ public class PrintListVisitorTest {
 		assertEquals("* 2.0 1.0", pv1.getResult());
 	}
 	
+	/**
+	 * simple multiplication.
+	 * @author: Chengxiang Ren (cr486).
+	 */
 	@Test
 	public void testMultiplicationSimplePostfix() {
 		ListNode n1 = new NumberListNode(1.0);
@@ -88,7 +104,10 @@ public class PrintListVisitorTest {
 		assertEquals("1.0 2.0 *", pv1.getResult());
 	}
 
-    
+	/**
+	 * simple division.
+	 * @author: Chengxiang Ren (cr486).
+	 */
 	@Test
 	public void testDivisionSimplePrefix() {
 		ListNode n1 = new NumberListNode(1.0);
@@ -101,6 +120,10 @@ public class PrintListVisitorTest {
 		assertEquals("/ 2.0 1.0", pv1.getResult());
 	}
 	
+	/**
+	 * simple division.
+	 * @author: Chengxiang Ren (cr486).
+	 */
 	@Test
 	public void testDivisionSimplePostfix() {
 		ListNode n1 = new NumberListNode(1.0);
@@ -113,6 +136,10 @@ public class PrintListVisitorTest {
 		assertEquals("1.0 2.0 /", pv1.getResult());
 	}
 
+	/**
+	 * test case with only unary minus node.
+	 * @author: Chengxiang Ren (cr486).
+	 */
 	@Test
 	public void testUnaryMinusNode() {
 		ListNode n1 = new NumberListNode(1.0);
@@ -144,6 +171,10 @@ public class PrintListVisitorTest {
 		assertEquals(s + 29431.22, pv1.getResult());
 	}
 	
+	/**
+	 * test case of complex list.
+	 * @author: Chengxiang Ren (cr486).
+	 */
 	@Test
 	public void testComplexPrefix() {
 		double a = 2.35;
@@ -176,7 +207,10 @@ public class PrintListVisitorTest {
 
 	}
 
-
+	/**
+	 * test case of complex list.
+	 * @author: Chengxiang Ren (cr486).
+	 */
 	@Test
 	public void testComplexPostfix() {
 		double a = 2.35;

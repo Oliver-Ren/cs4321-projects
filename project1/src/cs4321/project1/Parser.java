@@ -1,6 +1,5 @@
 package cs4321.project1;
 
-import cs4321.project1.list.DivisionListNode;
 import cs4321.project1.tree.*;
 
 /**
@@ -13,22 +12,38 @@ import cs4321.project1.tree.*;
  * parentheses (), a factor with a unary - before it, or a number.
  * 
  * @author Lucja Kot
- * @author Your names and netids go here
+ * @author Guantian Zheng (gz94)
  */
 public class Parser {
 
 	private String[] tokens;
 	private int currentToken; // pointer to next input token to be processed
 
+	/**
+	 * Check if we have reached the end of tokens. 
+	 * 
+	 * @author Guantian Zheng (gz94)
+	 */	
 	public boolean isEnd() {
 		return (currentToken >= tokens.length);
 	}
 	
+	/**
+	 * Check if the string is a number. In the context of our project if it starts 
+	 * with a number than it is a double.
+	 * 
+	 * @author Guantian Zheng (gz94)
+	 */	
 	public boolean isNum(String s) {
 		if (s.isEmpty()) return false;
 		return (s.charAt(0) >= '0' && s.charAt(0) <= '9');
 	}
 	
+	/**
+	 * Get the current token and increment the pointer.
+	 * 
+	 * @author Guantian Zheng (gz94)
+	 */	
 	public String getCurTk() {
 		if (isEnd()) return null;
 		return tokens[currentToken++];
@@ -68,14 +83,7 @@ public class Parser {
 		String tk = getCurTk();
 		
 		if (tk.equals("(")) {
-			TreeNode nd = expression();
-			
-			do {
-				tk = getCurTk();
-			} while (tk != null && tk.equals(")"));
-			if (tk != null) currentToken--;
-			
-			return nd;
+			return expression();
 		}
 		else if (tk.equals("-")) {
 			return new UnaryMinusTreeNode(factor());
@@ -97,21 +105,24 @@ public class Parser {
 		// TODO fill me in
 		if (isEnd()) return null;
 		
-		TreeNode left = factor();
-		if (isEnd()) return left;
+		TreeNode left = factor(), right = null;
 		
-		String tk = getCurTk();
-		if (!tk.equals("*") && !tk.equals("/")) {
-			currentToken--;
-			return left;
+		while (!isEnd()) {
+			String tk = getCurTk();
+			if (!tk.equals("*") && !tk.equals("/")) {
+				currentToken--;
+				return left;
+			}
+			
+			right = factor();
+			
+			if (tk.equals("*"))
+				left = new MultiplicationTreeNode(left, right);
+			else
+				left = new DivisionTreeNode(left, right);
 		}
 		
-		TreeNode right = factor();
-		
-		if (tk.equals("*"))
-			return new MultiplicationTreeNode(left, right);
-		else
-			return new DivisionTreeNode(left, right);
+		return left;
 	}
 
 	/**
@@ -124,20 +135,25 @@ public class Parser {
 		// TODO fill me in
 		if (isEnd()) return null;
 		
-		TreeNode left = term();
-		if (isEnd()) return left;
+		TreeNode left = term(), right = null;
 		
-		String tk = getCurTk();
-		if (!tk.equals("+") && !tk.equals("-")) {
-			currentToken--;
-			return left;
+		while (!isEnd()) {
+			String tk = getCurTk();
+			if (!tk.equals("+") && !tk.equals("-")) {
+				if (!tk.equals(")"))
+					currentToken--;
+				return left;
+			}
+			
+			right = term();
+			
+			if (tk.equals("+"))
+				left = new AdditionTreeNode(left, right);
+			else
+				left = new SubtractionTreeNode(left, right);
 		}
 		
-		TreeNode right = term();
-		
-		if (tk.equals("+"))
-			return new AdditionTreeNode(left, right);
-		else
-			return new SubtractionTreeNode(left, right);
+		return left;
 	}
+	
 }

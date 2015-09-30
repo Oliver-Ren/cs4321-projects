@@ -49,6 +49,7 @@ public class EvaluateTreeVisitorTest {
 	
 	/**
 	 * Test cases for the simple subtraction tree.
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testSubtractionNode() {
@@ -68,6 +69,7 @@ public class EvaluateTreeVisitorTest {
 	 * Test cases for the simple unary minus node followed
 	 * with a number.
 	 * "-,1.0,#"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
     public void testUnaryMinusNode() {
@@ -81,6 +83,7 @@ public class EvaluateTreeVisitorTest {
 	/**
 	 * Test cases for the simple division
 	 * "/, 1.0, 2.0" "/, 2.0, 1.0"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testDivsionNode() {
@@ -100,6 +103,7 @@ public class EvaluateTreeVisitorTest {
 	 * Test cases for two level expression tree started with
 	 * a unary minus node.
 	 * "~, {+|-|*|/}, #, num1, num2"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testTwoLevelWithUnaryMinusRoot() {
@@ -178,6 +182,7 @@ public class EvaluateTreeVisitorTest {
     /**
      * Test cases of two levels starts with an operator.
      * "{+|-|*|/}, ~, num1, num2, #"
+	 * @author Chengxiang Ren (cr486).
      */
 	@Test
     public void testTwoLevelWithOperatorRoot1() {
@@ -250,6 +255,7 @@ public class EvaluateTreeVisitorTest {
 	/**
      * Test cases of two levels starts with an operator.
      * "{+|-|*|/}, num1,  ~, num2, #"
+	 * @author Chengxiang Ren (cr486).
      */
 	@Test
     public void testTwoLevelWithOperatorRoot2() {

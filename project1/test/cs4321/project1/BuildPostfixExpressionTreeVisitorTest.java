@@ -72,6 +72,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 
 	/**
 	 * Simple test case for Subtraction
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testSubtractionNode() {
@@ -112,6 +113,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 
 	/**
 	 * Simple test case for Multiplication
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testMultiplicationNode() {
@@ -153,6 +155,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 
 	/**
 	 * Simple test case for Division
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testDivisionNode() {
@@ -195,6 +198,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	 * Test case for two level expression tree started with
 	 * a unary minus node and Addition operator at level 2.
 	 * "~, +, #, num1, num2"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testTwoLevelWithUnaryMinusRootAndAddition() {
@@ -253,6 +257,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	 * Test case for two level expression tree started with
 	 * a unary minus node and Subtraction operator at level 2.
 	 * "~, /, #, num1, num2"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testTwoLevelWithUnaryMinusRootAndSubtraction() {
@@ -311,6 +316,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	 * Test case for two level expression tree started with
 	 * a unary minus node and Multiplication operator at level 2.
 	 * "~, *, #, num1, num2"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testTwoLevelWithUnaryMinusRootAndMultiplication() {
@@ -368,6 +374,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	 * Test case for two level expression tree started with
 	 * a unary minus node and Division operator at level 2.
 	 * "~, /, #, num1, num2"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
 	public void testTwoLevelWithUnaryMinusRootAndDivision() {
@@ -427,6 +434,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
      * the one of the level 2 is unary minus.
      * "+, ~, num1, num2, #"
      * "+, num1, ~, #, #, num2"
+	 * @author Chengxiang Ren (cr486).
      */
 	@Test
     public void testTwoLevelWithAdditionRoot() {
@@ -489,6 +497,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
      * the one of the level 2 is unary minus.
      * "-, ~, num1, num2, #"
      * "-, num1, ~, #, #, num2"
+	 * @author Chengxiang Ren (cr486).
      */
 	@Test
     public void testTwoLevelWithSubtractionRoot() {
@@ -551,6 +560,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
      * the one of the level 2 is unary minus.
      * "*, ~, num1, num2, #"
      * "*, num1, ~, #, #, num2"
+	 * @author Chengxiang Ren (cr486).
      */
 	@Test
     public void testTwoLevelWithMultiplicationRoot() {
@@ -612,6 +622,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
      * the one of the level 2 is unary minus.
      * "/, ~, num1, num2, #"
      * "/, num1, ~, #, #, num2"
+	 * @author Chengxiang Ren (cr486).
      */
 	@Test
     public void testTwoLevelWithDivisionRoot() {
@@ -671,6 +682,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	/**
 	 * Test with a three-level tree:
 	 * "/, *, D, A, +, #, #, #, #, B, C"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
     public void testThreeLevel1() {
@@ -721,6 +733,7 @@ public class BuildPostfixExpressionTreeVisitorTest {
 	/**
 	 * Test with a three-level tree:
 	 * "+, *, /, a, b, c, d"
+	 * @author Chengxiang Ren (cr486).
 	 */
 	@Test
     public void testThreeLevel2() {
@@ -766,5 +779,56 @@ public class BuildPostfixExpressionTreeVisitorTest {
         result = result.getNext();
         assertTrue(result instanceof AdditionListNode);
         
+	}
+
+	/**
+	 * Test with a three-level tree:
+	 * "*, A, +, #, #, B, /, #, #, C, D"
+	 * @author Chengxiang Ren (cr486).
+	 */
+	@Test
+    public void testThreeLevel3() {
+		double a = 2.35;
+		double b = 293.00;
+		double c = 13.23;
+		double d = 20.00;
+		
+		LeafTreeNode na = new LeafTreeNode(a);
+		LeafTreeNode nb = new LeafTreeNode(b);
+		LeafTreeNode nc = new LeafTreeNode(c);
+		LeafTreeNode nd = new LeafTreeNode(d);
+		
+		DivisionTreeNode oDiv = new DivisionTreeNode(nc, nd);
+		AdditionTreeNode oAdd = new AdditionTreeNode(nb, oDiv);
+		MultiplicationTreeNode oMul = new MultiplicationTreeNode(na, oAdd);
+		
+		BuildPostfixExpressionTreeVisitor v1 = new BuildPostfixExpressionTreeVisitor();
+        oMul.accept(v1);
+        
+        ListNode result = v1.getResult();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), a, DELTA);
+        
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), b, DELTA);
+        
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), c, DELTA);
+        
+        result = result.getNext();
+        assertTrue(result instanceof NumberListNode);
+        assertEquals(((NumberListNode) result).getData(), d, DELTA);
+
+        result = result.getNext();
+        assertTrue(result instanceof DivisionListNode);
+        
+        result = result.getNext();
+        assertTrue(result instanceof AdditionListNode);
+        
+        result = result.getNext();
+        assertTrue(result instanceof MultiplicationListNode);
+
 	}
 }
