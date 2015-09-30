@@ -16,7 +16,7 @@ public abstract class Operator {
 	public void dump(PrintStream ps) {
 		Tuple tp = null;
 		while ((tp = getNextTuple()) != null) {
-			tp.print(ps);
+			tp.dump(ps);
 		}
 	}
 	
