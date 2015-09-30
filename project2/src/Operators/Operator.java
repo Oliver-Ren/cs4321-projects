@@ -1,4 +1,4 @@
-package Operators;
+package operators;
 
 import java.io.PrintStream;
 

@@ -1,4 +1,4 @@
-package Operators;
+package operators;
 
 import util.Table;
 import util.Tuple;

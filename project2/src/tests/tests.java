@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.io.PrintStream;
 import java.io.StringReader;
 
-import Operators.ScanOperator;
+import operators.ScanOperator;
 import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.statement.*;
 import net.sf.jsqlparser.statement.select.*;
