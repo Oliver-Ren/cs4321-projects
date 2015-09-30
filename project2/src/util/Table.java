@@ -3,6 +3,7 @@ package util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 
 
 public class Table {
@@ -11,12 +12,10 @@ public class Table {
 	public String alias = "";
 	public String[] schema = null;
 	
-	FileReader fr = null;
-	BufferedReader br = null;
+	private Reader reader = null;
+	private BufferedReader br = null;
 	
 	public Tuple nextTuple() {
-		if (br == null) return null;
-		
 		try {
 			String line = br.readLine();
 			if (line == null) return null;
@@ -44,13 +43,18 @@ public class Table {
 				e.printStackTrace();
 			}
 		}
-		
-		br = new BufferedReader(fr);
+		br = new BufferedReader(reader);
 	}
 	
-	public Table(FileReader fr) {
-		if (fr == null) return;
-		this.fr = fr;
-		br = new BufferedReader(fr);
+	public Table(String name, Reader reader) {
+		this.name = name;
+		this.reader = reader;
+		br = new BufferedReader(reader);
+		schema = DBCat.schemas.get(name);
+	}
+	
+	public Table(String name, String alias, Reader reader) {
+		this(name, reader);
+		this.alias = alias;
 	}
 }
