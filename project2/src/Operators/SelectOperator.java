@@ -1,4 +1,4 @@
-package Operators;
+package operators;
 
 import net.sf.jsqlparser.expression.Expression;
 import util.Table;
