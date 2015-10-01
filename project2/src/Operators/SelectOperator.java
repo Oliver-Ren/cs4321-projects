@@ -3,6 +3,7 @@ package operators;
 import net.sf.jsqlparser.expression.Expression;
 import util.Table;
 import util.Tuple;
+import visitors.ConcreteExpVisitor;
 
 public class SelectOperator extends Operator {
 
@@ -16,6 +17,14 @@ public class SelectOperator extends Operator {
 			// create a visitor with current tp (as a constructor parameter?)
 			// walk this.exp
 			// if visitor says true, return tp
+			ConcreteExpVisitor vi = new ConcreteExpVisitor(tp);
+			exp.accept(vi);
+			boolean accept = vi.getFinalCondition();
+			if (accept) {
+				
+			} else {
+				
+			}
 		}
 		return null;
 	}
