@@ -12,7 +12,6 @@ public class Table {
 	public String alias = "";
 	public String[] schema = null;
 	
-	private Reader reader = null;
 	private BufferedReader br = null;
 	
 	public Tuple nextTuple() {
@@ -43,18 +42,18 @@ public class Table {
 				e.printStackTrace();
 			}
 		}
-		br = new BufferedReader(reader);
+		
+		br = DBCat.getTabReader(name);
 	}
 	
-	public Table(String name, Reader reader) {
+	public Table(String name, BufferedReader br) {
 		this.name = name;
-		this.reader = reader;
-		br = new BufferedReader(reader);
+		this.br = br;
 		schema = DBCat.schemas.get(name);
 	}
 	
-	public Table(String name, String alias, Reader reader) {
-		this(name, reader);
+	public Table(String name, String alias, BufferedReader br) {
+		this(name, br);
 		this.alias = alias;
 	}
 }

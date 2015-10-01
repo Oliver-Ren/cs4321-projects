@@ -25,7 +25,17 @@ public class tests {
 				System.out.println("Read statement: " + statement);
 				Select select = (Select) statement;
 				System.out.println("Select body is " + select.getSelectBody());
+				
 				PlainSelect ps = (PlainSelect) select.getSelectBody();
+				
+				so.print("Select items are ");
+				for (Object obj : ps.getSelectItems()) {
+					SelectItem si = (SelectItem) obj;
+					so.print(si);
+					so.print(" ");
+				}
+				so.print('\n');
+				
 				so.println("From item is " + ps.getFromItem());
 				FromItem from = ps.getFromItem();
 				so.println("Alias is " + from.getAlias());
@@ -38,7 +48,7 @@ public class tests {
 //					print(ps.getWhere().getClass().getName());
 			}
 			
-			parser = new CCJSqlParser(new StringReader("select * from a, b, c as asdjf "
+			parser = new CCJSqlParser(new StringReader("select a.x, b.y, c.z, c.aa, * from a, b, c as asdjf "
 					+ "where a.x = b.y and a.x = c.z and b.y = c.z"));
 			PlainSelect ps = (PlainSelect) ((Select) parser.Statement()).getSelectBody();
 			so.println(ps.getFromItem());
@@ -48,6 +58,15 @@ public class tests {
 			so.println(((Join) ps.getJoins().get(1)).getOnExpression());
 			so.println(((Join) ps.getJoins().get(1)).getRightItem().getAlias());
 			so.println(((Join) ps.getJoins().get(1)).getUsingColumns());
+			
+			so.print("Select items are ");
+			for (Object obj : ps.getSelectItems()) {
+				SelectItem si = (SelectItem) obj;
+				so.print(si);
+				so.print(" ");
+			}
+			so.print('\n');
+			
 			
 		} catch (Exception e) {
 			System.err.println("Exception occurred during parsing");

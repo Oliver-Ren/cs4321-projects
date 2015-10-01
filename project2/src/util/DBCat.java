@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.HashMap;
 
 /**
@@ -49,14 +50,20 @@ public class DBCat {
 		return dataDir + tabName + ".csv";
 	}
 	
-	public static Table getTable(String tabName) {
+	public static BufferedReader getTabReader(String tabName) {
 		try {
-			return new Table(tabName, new FileReader(tabPath(tabName)));
+			return new BufferedReader(new FileReader(tabPath(tabName)));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static Table getTable(String tabName) {
+		BufferedReader br = getTabReader(tabName);
+		if (br == null) return null;
+		return new Table(tabName, br);
 	}
 	
 	// intentionally make the constructor private, which 

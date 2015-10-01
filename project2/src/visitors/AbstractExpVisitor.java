@@ -1,6 +1,5 @@
 package visitors;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import net.sf.jsqlparser.expression.AllComparisonExpression;
 import net.sf.jsqlparser.expression.AnyComparisonExpression;
 import net.sf.jsqlparser.expression.CaseExpression;
