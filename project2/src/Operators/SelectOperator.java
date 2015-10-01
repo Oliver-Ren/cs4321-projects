@@ -14,6 +14,7 @@ public class SelectOperator extends UnaryOperator {
 		// TODO Auto-generated method stub
 		Tuple tp = null;
 		while ((tp = child.getNextTuple()) != null) {
+			if (exp == null) return tp;
 			ConcreteExpVisitor vi = new ConcreteExpVisitor(tp);
 			exp.accept(vi);
 			if (vi.getFinalCondition()) return tp;
@@ -29,7 +30,6 @@ public class SelectOperator extends UnaryOperator {
 
 	public SelectOperator(ScanOperator sop, Expression exp) {
 		child = sop;
-		tbs = sop.tbs;
 		this.exp = exp;
 	}
 	

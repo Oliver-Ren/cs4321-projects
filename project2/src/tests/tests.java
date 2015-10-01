@@ -77,12 +77,9 @@ public class tests {
 			}
 			so.print('\n');
 			
-			parser = new CCJSqlParser(new StringReader("select X.a, b from X"));
+			parser = new CCJSqlParser(new StringReader("select X.*, X.a, b from X"));
 			ps = (PlainSelect) ((Select) parser.Statement()).getSelectBody();
-			SelectExpressionItem sei = (SelectExpressionItem) ps.getSelectItems().get(1);
-			Column col = (Column) sei.getExpression();
-			so.println(col.getTable());
-			so.println(col.getColumnName());
+			so.println(ps.getSelectItems().get(0).getClass().getName());
 		} catch (Exception e) {
 			System.err.println("Exception occurred during parsing");
 			e.printStackTrace();

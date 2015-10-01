@@ -10,7 +10,6 @@ import java.util.List;
 public class Table {
 	
 	public String name = "";
-	public String alias = "";
 	public List<String> schema = null;
 	
 	private BufferedReader br = null;
@@ -48,12 +47,7 @@ public class Table {
 	}
 	
 	public Table(String name, BufferedReader br) {
-		if (!DBCat.schemas.containsKey(name)) {
-			this.alias = name;
-			this.name = DBCat.aliases.get(name);
-		}
-		else
-			this.name = name;
+		this.name = name;
 		this.br = br;
 		schema = DBCat.schemas.get(name);
 	}

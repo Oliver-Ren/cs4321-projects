@@ -14,8 +14,6 @@ public abstract class Operator {
 	public abstract void reset();
 	
 	public abstract List<String> schema();
-	
-	public HashSet<String> tbs = new HashSet<String>();
 	public List<String> schema = null;
 	
 	public void dump(PrintStream ps) {

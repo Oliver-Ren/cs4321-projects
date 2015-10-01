@@ -53,9 +53,9 @@ public class DBCat {
 		return dataDir + tabName + ".csv";
 	}
 	
-	public static BufferedReader getTabReader(String tabName) {
+	public static BufferedReader getTabReader(String fileName) {
 		try {
-			return new BufferedReader(new FileReader(tabPath(tabName)));
+			return new BufferedReader(new FileReader(tabPath(fileName)));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,9 +64,18 @@ public class DBCat {
 	}
 	
 	public static Table getTable(String tabName) {
-		BufferedReader br = getTabReader(tabName);
+		String fileName = tabName;
+		if (aliases.containsKey(fileName))
+			fileName = aliases.get(fileName);
+		BufferedReader br = getTabReader(fileName);
 		if (br == null) return null;
 		return new Table(tabName, br);
+	}
+	
+	public List<String> getSchema(String tabName) {
+		if (aliases.containsKey(tabName))
+			tabName = aliases.get(tabName);
+		return schemas.get(tabName);
 	}
 	
 	// intentionally make the constructor private, which 

@@ -28,8 +28,6 @@ public class DuplicateEliminationOperator extends UnaryOperator {
 
 	public DuplicateEliminationOperator(SortOperator sop) {
 		child = sop;
-		tbs = sop.tbs;
-		schema = sop.schema;
 	}
 	
 }
