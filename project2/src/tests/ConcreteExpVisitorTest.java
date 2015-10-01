@@ -128,5 +128,10 @@ public class ConcreteExpVisitorTest {
 		assertEquals(true, testVisitor(query));
 	}
 	
+	@Test
+	public void testColumn() {
+		String query = "select * from aa where aa.abc = 1";
+		testVisitor(query);
+	}
 
 }

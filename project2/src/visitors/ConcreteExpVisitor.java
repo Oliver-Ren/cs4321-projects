@@ -57,7 +57,7 @@ public class ConcreteExpVisitor extends AbstractExpVisitor {
 
 	@Override
 	public void visit(Column arg0) {
-		// TODO Auto-generated method stub
+		System.out.print(arg0.getColumnName());
 		
 	}
 
