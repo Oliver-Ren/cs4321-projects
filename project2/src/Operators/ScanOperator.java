@@ -19,6 +19,11 @@ public class ScanOperator extends Operator {
 
 	public ScanOperator(Table tab) {
 		this.tab = tab;
+		if (!tab.alias.isEmpty())
+			tbs.add(tab.alias);
+		else
+			tbs.add(tab.name);
+		schema = tab.schema;
 	}
 	
 }

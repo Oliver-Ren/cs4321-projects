@@ -7,6 +7,14 @@ public class Tuple {
 
 	public int[] cols = null;
 	
+	public int get(int i) {
+		return cols[i];
+	}
+	
+	public int length() {
+		return cols.length;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		Tuple tp = (Tuple) obj;

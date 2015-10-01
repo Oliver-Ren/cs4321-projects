@@ -27,8 +27,11 @@ public class SelectOperator extends Operator {
 		child.reset();
 	}
 
-	public SelectOperator(Table tab, Expression exp) {
-		child = new ScanOperator(tab);
+	public SelectOperator(ScanOperator sop, Expression exp) {
+		child = sop;
+		tbs = sop.tbs;
+		schema = sop.schema;
+		
 		this.exp = exp;
 	}
 	

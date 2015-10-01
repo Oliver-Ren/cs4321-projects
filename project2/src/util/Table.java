@@ -20,7 +20,7 @@ public class Table {
 			String line = br.readLine();
 			if (line == null) return null;
 			String[] elems = line.split(",");
-			int len = (schema == null) ? elems.length : schema.size();
+			int len = schema.size();
 			int[] cols = new int[len];
 			for (int i = 0; i < len; i++) {
 				cols[i] = Integer.valueOf(elems[i]);
@@ -48,13 +48,14 @@ public class Table {
 	}
 	
 	public Table(String name, BufferedReader br) {
-		this.name = name;
+		if (!DBCat.schemas.containsKey(name)) {
+			this.alias = name;
+			this.name = DBCat.aliases.get(name);
+		}
+		else
+			this.name = name;
 		this.br = br;
 		schema = DBCat.schemas.get(name);
 	}
 	
-	public Table(String name, String alias, BufferedReader br) {
-		this(name, br);
-		this.alias = alias;
-	}
 }

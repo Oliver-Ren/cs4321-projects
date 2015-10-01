@@ -17,9 +17,8 @@ public class DuplicateEliminationOperator extends Operator {
 			Tuple tp = null;
 			while ((tp = child.getNextTuple()) != null)
 				if (!tp.equals(last)) break;
-			Tuple ret = last;
 			last = tp;
-			return ret;
+			return tp;
 		}
 	}
 
@@ -30,6 +29,8 @@ public class DuplicateEliminationOperator extends Operator {
 
 	public DuplicateEliminationOperator(SortOperator sop) {
 		child = sop;
+		tbs = sop.tbs;
+		schema = sop.schema;
 	}
 	
 }

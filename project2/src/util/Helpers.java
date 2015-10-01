@@ -1,6 +1,7 @@
 package util;
 
 import java.util.Collections;
+import java.util.List;
 
 import net.sf.jsqlparser.statement.select.FromItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
@@ -21,6 +22,10 @@ public class Helpers {
 	
 	public static long getColVal(Tuple tp, String attr, String tabName) {
 		return tp.cols[DBCat.schemas.get(tabName).indexOf(attr)];
+	}
+	
+	public static long getAttr(Tuple tp, String attr, List<String> schema) {
+		return tp.cols[schema.indexOf(attr)];
 	}
 	
 }
