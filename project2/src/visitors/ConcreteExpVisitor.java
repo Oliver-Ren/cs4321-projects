@@ -36,10 +36,23 @@ public class ConcreteExpVisitor extends AbstractExpVisitor {
 		currNumericValue = arg0.getValue();
 	}
 
+	/**
+	 * Visit the expression of type AndExpression.
+	 * After evaluating its left child, there should be a valid condition
+	 * value produced by the left child expression. And so for the right child.
+	 * The condition the visitor holds after evaluating this expression should 
+	 * be (left condition == true && right condition == true).
+	 * 
+	 * @param arg0 the expression of type AndExpression.
+	 */
 	@Override
 	public void visit(AndExpression arg0) {
-		// TODO Auto-generated method stub
-		
+		arg0.getLeftExpression().accept(this);
+		boolean leftCondition = currCondition;
+		arg0.getRightExpression().accept(this);
+		boolean rightCondition = currCondition;
+		// update the condition.
+		currCondition = leftCondition && rightCondition;
 	}
 
 	@Override
@@ -49,7 +62,7 @@ public class ConcreteExpVisitor extends AbstractExpVisitor {
 	}
 
 	/**
-	 * Visit the expression of type LongValue.
+	 * Visit the expression of type EqualsTo.
 	 * After evaluating its left child, there should be a valid numeric
 	 * value produced by the left child expression. And so for the right child.
 	 * The condition the visitor holds after evaluating this expression should 
@@ -68,36 +81,99 @@ public class ConcreteExpVisitor extends AbstractExpVisitor {
 	}
 
 	/**
+	 * Visit the expression of type NotEqualsTo.
+	 * After evaluating its left child, there should be a valid numeric
+	 * value produced by the left child expression. And so for the right child.
+	 * The condition the visitor holds after evaluating this expression should 
+	 * be (leftValue != rightValue).
 	 * 
+	 * @param arg0 the expression of type NotEqualsTo.
 	 */
 	@Override
 	public void visit(NotEqualsTo arg0) {
-		// TODO Auto-generated method stub
-		
+		arg0.getLeftExpression().accept(this);
+		long leftValue = currNumericValue;
+		arg0.getRightExpression().accept(this);
+		long rightValue = currNumericValue;
+		// update the condition.
+		currCondition = (leftValue != rightValue);	
 	}
 
+	/**
+	 * Visit the expression of type GreaterThan.
+	 * After evaluating its left child, there should be a valid numeric
+	 * value produced by the left child expression. And so for the right child.
+	 * The condition the visitor holds after evaluating this expression should 
+	 * be (leftValue > rightValue).
+	 * 
+	 * @param arg0 the expression of type GreaterThan.
+	 */
 	@Override
 	public void visit(GreaterThan arg0) {
-		// TODO Auto-generated method stub
-		
+		arg0.getLeftExpression().accept(this);
+		long leftValue = currNumericValue;
+		arg0.getRightExpression().accept(this);
+		long rightValue = currNumericValue;
+		// update the condition.
+		currCondition = (leftValue > rightValue);
 	}
 
+	/**
+	 * Visit the expression of type GreaterThanEquals.
+	 * After evaluating its left child, there should be a valid numeric
+	 * value produced by the left child expression. And so for the right child.
+	 * The condition the visitor holds after evaluating this expression should 
+	 * be (leftValue >= rightValue).
+	 * 
+	 * @param arg0 the expression of type GreaterThanEquals.
+	 */
 	@Override
 	public void visit(GreaterThanEquals arg0) {
-		// TODO Auto-generated method stub
+		arg0.getLeftExpression().accept(this);
+		long leftValue = currNumericValue;
+		arg0.getRightExpression().accept(this);
+		long rightValue = currNumericValue;
+		// update the condition.
+		currCondition = (leftValue >= rightValue);
 		
 	}
 
+	/**
+	 * Visit the expression of type MinorThan.
+	 * After evaluating its left child, there should be a valid numeric
+	 * value produced by the left child expression. And so for the right child.
+	 * The condition the visitor holds after evaluating this expression should 
+	 * be (leftValue >= rightValue).
+	 * 
+	 * @param arg0 the expression of type MinorThan.
+	 */
 	@Override
 	public void visit(MinorThan arg0) {
-		// TODO Auto-generated method stub
-		
+		arg0.getLeftExpression().accept(this);
+		long leftValue = currNumericValue;
+		arg0.getRightExpression().accept(this);
+		long rightValue = currNumericValue;
+		// update the condition.
+		currCondition = (leftValue < rightValue);
 	}
 
+	/**
+	 * Visit the expression of type MinorThanEquals.
+	 * After evaluating its left child, there should be a valid numeric
+	 * value produced by the left child expression. And so for the right child.
+	 * The condition the visitor holds after evaluating this expression should 
+	 * be (leftValue >= rightValue).
+	 * 
+	 * @param arg0 the expression of type MinorThanEquals.
+	 */
 	@Override
 	public void visit(MinorThanEquals arg0) {
-		// TODO Auto-generated method stub
-		
+		arg0.getLeftExpression().accept(this);
+		long leftValue = currNumericValue;
+		arg0.getRightExpression().accept(this);
+		long rightValue = currNumericValue;
+		// update the condition.
+		currCondition = (leftValue <= rightValue);
 	}
 
 }
