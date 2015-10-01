@@ -32,8 +32,8 @@ public class SQLInterpreter {
 				FromItem from = ps.getFromItem();
 				String tabName = from.toString().split(" ")[0];
 				
-				SelectOperator slctOp 
-					= new SelectOperator(DBCat.getTable(tabName), ps.getWhere());
+				// SelectOperator slctOp 
+					// = new SelectOperator(DBCat.getTable(tabName), ps.getWhere());
 				
 			}
 		} catch (NullPointerException e) {

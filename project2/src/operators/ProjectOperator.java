@@ -6,7 +6,7 @@ import net.sf.jsqlparser.statement.select.SelectItem;
 import util.Helpers;
 import util.Tuple;
 
-public class ProjectOperator extends Operator {
+public class ProjectOperator extends UnaryOperator {
 	
 	@Override
 	public Tuple getNextTuple() {
@@ -32,7 +32,12 @@ public class ProjectOperator extends Operator {
 		this.child = child;
 		tbs = child.tbs;
 		for (SelectItem si : sis) {
-			schema.add(Helpers.getSelCol(si));
+			String colName = Helpers.getSelCol(si);
+			if (colName.equals("*")) {
+				schema = child.schema;
+				break;
+			}
+			schema.add(colName);
 		}
 	}
 	

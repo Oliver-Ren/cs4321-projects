@@ -5,7 +5,9 @@ import java.io.PrintStream;
 import java.io.StringReader;
 
 import operators.ScanOperator;
+import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.parser.CCJSqlParser;
+import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.*;
 import net.sf.jsqlparser.statement.select.*;
 import util.DBCat;
@@ -51,7 +53,7 @@ public class tests {
 			}
 			
 			parser = new CCJSqlParser(new StringReader("select distinct a.x, b.y, c.z, c.aa, * from a, b, c as asdjf "
-					+ "where a.x = b.y and a.x = c.z and b.y = c.z"));
+					+ "where a.x = b.y and a.x = c.z and b.y = c.z and 1 < 2"));
 			PlainSelect ps = (PlainSelect) ((Select) parser.Statement()).getSelectBody();
 			so.println(ps.getDistinct());
 			so.println(ps.getSelectItems());
@@ -63,6 +65,10 @@ public class tests {
 			so.println(((Join) ps.getJoins().get(1)).getRightItem().getAlias());
 			so.println(((Join) ps.getJoins().get(1)).getUsingColumns());
 			
+			AndExpression and = (AndExpression) ps.getWhere();
+			so.println(and.getLeftExpression());
+			so.println(and.getRightExpression());
+			
 			so.print("Select items are ");
 			for (Object obj : ps.getSelectItems()) {
 				SelectItem si = (SelectItem) obj;
@@ -71,7 +77,12 @@ public class tests {
 			}
 			so.print('\n');
 			
-			
+			parser = new CCJSqlParser(new StringReader("select X.a, b from X"));
+			ps = (PlainSelect) ((Select) parser.Statement()).getSelectBody();
+			SelectExpressionItem sei = (SelectExpressionItem) ps.getSelectItems().get(1);
+			Column col = (Column) sei.getExpression();
+			so.println(col.getTable());
+			so.println(col.getColumnName());
 		} catch (Exception e) {
 			System.err.println("Exception occurred during parsing");
 			e.printStackTrace();

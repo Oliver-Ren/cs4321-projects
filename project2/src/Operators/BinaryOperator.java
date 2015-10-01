@@ -10,4 +10,9 @@ package operators;
  */
 public abstract class BinaryOperator extends Operator {
 	public Operator left, right; // the binary operator has left and right child.
+	
+	public BinaryOperator(Operator left, Operator right) {
+		
+		// schema = left.schema.addAll(right.schema());
+	}
 }

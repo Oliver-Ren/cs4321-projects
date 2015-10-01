@@ -5,7 +5,7 @@ import util.Table;
 import util.Tuple;
 import visitors.ConcreteExpVisitor;
 
-public class SelectOperator extends Operator {
+public class SelectOperator extends UnaryOperator {
 
 	Expression exp = null;
 	
@@ -14,17 +14,9 @@ public class SelectOperator extends Operator {
 		// TODO Auto-generated method stub
 		Tuple tp = null;
 		while ((tp = child.getNextTuple()) != null) {
-			// create a visitor with current tp (as a constructor parameter?)
-			// walk this.exp
-			// if visitor says true, return tp
 			ConcreteExpVisitor vi = new ConcreteExpVisitor(tp);
 			exp.accept(vi);
-			boolean accept = vi.getFinalCondition();
-			if (accept) {
-				
-			} else {
-				
-			}
+			if (vi.getFinalCondition()) return tp;
 		}
 		return null;
 	}
@@ -38,8 +30,6 @@ public class SelectOperator extends Operator {
 	public SelectOperator(ScanOperator sop, Expression exp) {
 		child = sop;
 		tbs = sop.tbs;
-		schema = sop.schema;
-		
 		this.exp = exp;
 	}
 	

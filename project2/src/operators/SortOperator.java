@@ -10,7 +10,7 @@ import java.util.Queue;
 import net.sf.jsqlparser.statement.select.OrderByElement;
 import util.Tuple;
 
-public class SortOperator extends Operator {
+public class SortOperator extends UnaryOperator {
 	
 	List<Integer> orders = new ArrayList<Integer>();
 	public List<Tuple> tps = new ArrayList<Tuple>();
@@ -30,13 +30,15 @@ public class SortOperator extends Operator {
 	}
 
 	public void SortOpeartor(Operator child, List<OrderByElement> orders) {
+		this.child = child;
+		tbs = child.tbs;
+		schema = child.schema;
+		
 		Tuple tp = null;
 		while ((tp = child.getNextTuple()) != null) {
 			tps.add(tp);
 		}
 		
-		tbs = child.tbs;
-		schema = child.schema;
 		for (OrderByElement obe : orders)
 			this.orders.add(schema.indexOf(obe.toString()));
 		
@@ -52,13 +54,16 @@ public class SortOperator extends Operator {
 			for (int idx : orders) {
 				int val1 = tp1.cols[idx];
 				int val2 = tp2.cols[idx];
-				if (val1 != val2) return Integer.compare(val1, val2);
+				int cmp = Integer.compare(val1, val2);
+				if (cmp != 0) return cmp;
 			}
 			
-			for (int i = 0; i < tp1.cols.length && !set.contains(i); i++) {
+			for (int i = 0; i < tp1.cols.length; i++) {
+				if (set.contains(i)) continue;
 				int val1 = tp1.cols[i];
 				int val2 = tp2.cols[i];
-				if (val1 != val2) return Integer.compare(val1, val2);
+				int cmp = Integer.compare(val1, val2);
+				if (cmp != 0) return cmp;
 			}
 			
 			return 0;

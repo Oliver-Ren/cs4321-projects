@@ -1,5 +1,7 @@
 package operators;
 
+import java.util.List;
+
 import util.Table;
 import util.Tuple;
 
@@ -17,6 +19,11 @@ public class ScanOperator extends Operator {
 		tab.reset();
 	}
 
+	@Override
+	public List<String> schema() {
+		return this.tab.schema;
+	}
+	
 	public ScanOperator(Table tab) {
 		this.tab = tab;
 		if (!tab.alias.isEmpty())

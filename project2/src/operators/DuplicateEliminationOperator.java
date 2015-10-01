@@ -2,9 +2,8 @@ package operators;
 
 import util.Tuple;
 
-public class DuplicateEliminationOperator extends Operator {
+public class DuplicateEliminationOperator extends UnaryOperator {
 
-	SortOperator child = null;
 	Tuple last = null;
 	
 	@Override
