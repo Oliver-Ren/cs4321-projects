@@ -32,6 +32,8 @@ public class SelState {
 		DBCat.aliases.clear();
 		if (from.getAlias() != null)
 			DBCat.aliases.put(from.getAlias(), Helpers.getTabName(from));
+		
+		if (joins == null) return;
 		for (Join join : joins) {
 			FromItem ri = join.getRightItem();
 			DBCat.aliases.put(ri.getAlias(), Helpers.getTabName(ri));
