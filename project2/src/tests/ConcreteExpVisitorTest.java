@@ -1,21 +1,36 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.StringReader;
 
-import net.sf.jsqlparser.expression.ExpressionVisitor;
 import net.sf.jsqlparser.parser.CCJSqlParser;
 
 import org.junit.Test;
 
+import util.DBCat;
 import util.SelState;
+import util.Tuple;
 import visitors.ConcreteExpVisitor;
 
 public class ConcreteExpVisitorTest {
 
 	private boolean testVisitor(String query) {
 		ConcreteExpVisitor vi = new ConcreteExpVisitor();
+		try {
+			CCJSqlParser parser = new CCJSqlParser(new StringReader(query));
+			SelState ss = new SelState(parser.Statement());
+			ss.where.accept(vi);	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return vi.getFinalCondition();
+	}
+	
+	private boolean testVisitorWithTuple(String query, int[] cols) {
+		DBCat.getInstance();
+		Tuple tuple = new Tuple(cols);
+		ConcreteExpVisitor vi = new ConcreteExpVisitor(tuple);
 		try {
 			CCJSqlParser parser = new CCJSqlParser(new StringReader(query));
 			SelState ss = new SelState(parser.Statement());
@@ -130,8 +145,24 @@ public class ConcreteExpVisitorTest {
 	
 	@Test
 	public void testColumn() {
-		String query = "select * from aa where aa.abc = 1";
-		testVisitor(query);
+		String query = "select * from Sailors where Sailors.A = 1";
+		int[] cols = {1, 200, 50};
+		assertEquals(true, testVisitorWithTuple(query, cols));
+		
+		int[] cols2 = {2, 200, 50};
+		assertEquals(false, testVisitorWithTuple(query, cols2));
+		
+		query = "select * from Sailors where Sailors.A = 1 and 1 > -9999";
+		assertEquals(true, testVisitorWithTuple(query, cols));
+		assertEquals(false, testVisitorWithTuple(query, cols2));
+		
+		query = "select * from Sailors where Sailors.A = 1 and 1 <= -9999";
+		assertEquals(false, testVisitorWithTuple(query, cols));
+		assertEquals(false, testVisitorWithTuple(query, cols2));
+		
+		query = "select * from Sailors where Sailors.A = 2 and Sailors.B < 300";
+		assertEquals(false, testVisitorWithTuple(query, cols));
+		assertEquals(true, testVisitorWithTuple(query, cols2));
 	}
 
 }

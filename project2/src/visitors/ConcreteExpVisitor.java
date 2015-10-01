@@ -9,12 +9,24 @@ import net.sf.jsqlparser.expression.operators.relational.MinorThan;
 import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
 import net.sf.jsqlparser.expression.operators.relational.NotEqualsTo;
 import net.sf.jsqlparser.schema.Column;
+import util.Helpers;
+import util.Tuple;
 
 public class ConcreteExpVisitor extends AbstractExpVisitor {
 	// the current numeric value holding in the visitor.
 	private long currNumericValue = 0;
 	// the current condition holding in the visitor.
 	private boolean currCondition = false;
+	// the current tuple the visitor holds.
+	private Tuple tuple = null;
+	
+	public ConcreteExpVisitor() {
+		
+	}
+	
+	public ConcreteExpVisitor(Tuple tuple) {
+		this.tuple = tuple;
+	}
 	
 	/**
 	 * Returns the final condition of the visitor.
@@ -57,8 +69,9 @@ public class ConcreteExpVisitor extends AbstractExpVisitor {
 
 	@Override
 	public void visit(Column arg0) {
-		System.out.print(arg0.getColumnName());
-		
+		String tableName = arg0.getTable().getName();
+		String colName =arg0.getColumnName();
+		currNumericValue = Helpers.getColVal(tuple, colName, tableName);
 	}
 
 	/**
