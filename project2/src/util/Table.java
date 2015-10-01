@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.List;
 
 
 public class Table {
 	
 	public String name = "";
 	public String alias = "";
-	public String[] schema = null;
+	public List<String> schema = null;
 	
 	private BufferedReader br = null;
 	
@@ -19,7 +20,7 @@ public class Table {
 			String line = br.readLine();
 			if (line == null) return null;
 			String[] elems = line.split(",");
-			int len = (schema == null) ? elems.length : schema.length;
+			int len = (schema == null) ? elems.length : schema.size();
 			int[] cols = new int[len];
 			for (int i = 0; i < len; i++) {
 				cols[i] = Integer.valueOf(elems[i]);

@@ -5,7 +5,7 @@ import java.io.PrintStream;
 
 public class Tuple {
 
-	int[] cols = null;
+	public int[] cols = null;
 	
 	@Override
 	public boolean equals(Object obj) {

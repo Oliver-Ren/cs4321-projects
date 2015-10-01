@@ -5,7 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * The <tt>DBCat</tt> class represents a database catalog which keeps track
@@ -24,13 +26,13 @@ public class DBCat {
 	private static DBCat instance;	// The instance of DBCat;
 	
 	public static String inputDir = "samples/input/";
-	public static String outputDir = "";
+	public static String outputDir = "output/";
 	public static String qryPath = ""; // inputDir + "queries.sql";
 	public static String dbDir = ""; // inputDir + "db/";
 	public static String dataDir = ""; // dbDir + "data/";
 	public static String schemaPath = ""; // dbDir + "schema.txt";
 	
-	public static HashMap<String, String[]> schemas = new HashMap<String, String[]>();
+	public static HashMap<String, List<String>> schemas = new HashMap<String, List<String>>();
 	public static HashMap<String, String> aliases = new HashMap<String, String>();
 	
 	public static void resetDirs(String input, String output) {
@@ -79,9 +81,9 @@ public class DBCat {
 				if (scm.length < 2) continue;
 				
 				String key = scm[0];
-				String[] val = new String[scm.length - 1];
-				for (int i = 0; i < val.length; i++)
-					val[i] = scm[i + 1];
+				List<String> val = new ArrayList<String>();
+				for (int i = 0; i < scm.length - 1; i++)
+					val.add(scm[i + 1]);
 				
 				schemas.put(key, val);
 			}
