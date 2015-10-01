@@ -31,6 +31,7 @@ public class DBCat {
 	public static String schemaPath = ""; // dbDir + "schema.txt";
 	
 	public static HashMap<String, String[]> schemas = new HashMap<String, String[]>();
+	public static HashMap<String, String> aliases = new HashMap<String, String>();
 	
 	public static void resetDirs(String input, String output) {
 		if (input != null) {

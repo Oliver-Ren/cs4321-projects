@@ -28,6 +28,8 @@ public class tests {
 				
 				PlainSelect ps = (PlainSelect) select.getSelectBody();
 				
+				so.println(ps.getDistinct());
+				
 				so.print("Select items are ");
 				for (Object obj : ps.getSelectItems()) {
 					SelectItem si = (SelectItem) obj;
@@ -48,9 +50,11 @@ public class tests {
 //					print(ps.getWhere().getClass().getName());
 			}
 			
-			parser = new CCJSqlParser(new StringReader("select a.x, b.y, c.z, c.aa, * from a, b, c as asdjf "
+			parser = new CCJSqlParser(new StringReader("select distinct a.x, b.y, c.z, c.aa, * from a, b, c as asdjf "
 					+ "where a.x = b.y and a.x = c.z and b.y = c.z"));
 			PlainSelect ps = (PlainSelect) ((Select) parser.Statement()).getSelectBody();
+			so.println(ps.getDistinct());
+			so.println(ps.getSelectItems());
 			so.println(ps.getFromItem());
 			so.println(ps.getFromItem().getAlias());
 			so.println(ps.getJoins().get(0));
