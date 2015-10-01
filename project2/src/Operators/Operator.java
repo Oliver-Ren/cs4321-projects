@@ -13,6 +13,8 @@ public abstract class Operator {
 	
 	public abstract void reset();
 	
+	public Operator child, left, right;
+	
 	public HashSet<String> tbs = new HashSet<String>();
 	public List<String> schema = new ArrayList<String>();
 	

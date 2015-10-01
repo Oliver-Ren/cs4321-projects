@@ -7,8 +7,6 @@ import util.Helpers;
 import util.Tuple;
 
 public class ProjectOperator extends Operator {
-
-	Operator child = null;
 	
 	@Override
 	public Tuple getNextTuple() {

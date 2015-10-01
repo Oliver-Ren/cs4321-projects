@@ -6,7 +6,6 @@ import util.Tuple;
 
 public class SelectOperator extends Operator {
 
-	ScanOperator child = null;
 	Expression exp = null;
 	
 	@Override
