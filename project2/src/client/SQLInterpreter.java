@@ -1,13 +1,16 @@
 package client;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.PrintStream;
 
-import operators.SelectOperator;
 import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.select.FromItem;
-import net.sf.jsqlparser.statement.select.PlainSelect;
-import net.sf.jsqlparser.statement.select.Select;
+import operators.Operator;
 import util.DBCat;
+import util.Helpers;
+import util.SelState;
 
 /**
  * The <tt>SqlInterpreter</tt> class provides a client for accepting
@@ -19,25 +22,27 @@ import util.DBCat;
  *
  */
 public class SQLInterpreter {
-	public void executeSelect(String inPath, String outPath) {
+	public void execute(String inPath, String outPath) {
 		DBCat.getInstance();
 		DBCat.resetDirs(inPath, outPath);
 		try {
 			CCJSqlParser parser 
 				= new CCJSqlParser(new FileReader(DBCat.qryPath));
 			Statement statement;
+			int counter = 1;
 			while ((statement = parser.Statement()) != null) {
-				Select select = (Select) statement;
-				PlainSelect ps = (PlainSelect) select.getSelectBody();
-				FromItem from = ps.getFromItem();
-				String tabName = from.toString().split(" ")[0];
-				
+				File file = new File(DBCat.outputDir 
+						+ File.separator + "query" + counter);
+				PrintStream ps = new PrintStream(new BufferedOutputStream(
+					new FileOutputStream(file)));
+				SelState selState = new SelState(statement);
+				Operator root = Helpers.generatePlan(selState);
+				root.dump(ps);
+				ps.close();
+				counter++;
 				// SelectOperator slctOp 
-					// = new SelectOperator(DBCat.getTable(tabName), ps.getWhere());
-				
+					// = new SelectOperator(DBCat.getTable(tabName), ps.getWhere());	
 			}
-		} catch (NullPointerException e) {
-			System.err.println("null pointer");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import operators.Operator;
+import operators.ScanOperator;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
@@ -87,6 +89,15 @@ public class Helpers {
 		}
 		
 		return ret;
+	}
+	
+	/**
+	 * This is only an experimental method.
+	 * @param selState
+	 * @return
+	 */
+	public static Operator generatePlan(SelState selState) {
+		return new ScanOperator(DBCat.getTable(getTabName(selState.from)));
 	}
 	
 }

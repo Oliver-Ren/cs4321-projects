@@ -1,6 +1,7 @@
 package util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -38,10 +39,10 @@ public class DBCat {
 	public static void resetDirs(String input, String output) {
 		if (input != null) {
 			inputDir = input;
-			qryPath = inputDir + "queries.sql";
-			dbDir = inputDir + "db/";
-			dataDir = dbDir + "data/";
-			schemaPath = dbDir + "schema.txt";
+			qryPath = inputDir + File.separator + "queries.sql";
+			dbDir = inputDir + File.separator + "db/";
+			dataDir = dbDir + File.separator + "data/";
+			schemaPath = dbDir + File.separator + "schema.txt";
 		}
 		
 		if (output != null) {
