@@ -3,6 +3,7 @@ package util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import net.sf.jsqlparser.expression.Expression;
@@ -25,55 +26,12 @@ public class SelState {
 	
 	public List<String> froms = new ArrayList<String>();
 	public List<Expression> ands = null;
-	public Expression[][] whereConds = null;
+	public HashMap<String, List<Expression>> selConds = null, joinConds = null;
+	public HashMap<String, Expression> fnSelCond = null, fnJoinCond = null;
 	
 	public Operator root = null;
 	
-	public SelState(Statement st) {
-		sel = (Select) st;
-		ps = (PlainSelect) sel.getSelectBody();
-		
-		dist = ps.getDistinct();
-		sels = ps.getSelectItems();
-		from = ps.getFromItem();
-		joins = ps.getJoins();
-		where = ps.getWhere();
-		orders = ps.getOrderByElements();
-		
-		DBCat.aliases.clear();
-		if (from.getAlias() != null) {
-			DBCat.aliases.put(from.getAlias(), Helpers.getTabName(from));
-			froms.add(from.getAlias());
-		}
-		else
-			froms.add(from.toString());
-		
-		if (joins == null) return;
-		for (Join join : joins) {
-			FromItem ri = join.getRightItem();
-			if (ri.getAlias() != null) {
-				DBCat.aliases.put(ri.getAlias(), Helpers.getTabName(ri));
-				froms.add(ri.getAlias());
-			}
-			else
-				froms.add(ri.toString());
-		}
-		
-		if (froms.size() == 1) {
-			whereConds = new Expression[1][1];
-			whereConds[0][0] = where;
-		}
-		else {
-			ands = Helpers.decompAnds(where);
-			Collections.sort(ands, new expComp());
-			whereConds = new Expression[froms.size()][2];
-			genWhereConds();
-		}
-
-		buildOpTree();
-	}
-	
-	public Table getTab(int idx) {
+	private Table getTable(int idx) {
 		return DBCat.getTable(froms.get(idx));
 	}
 	
@@ -86,6 +44,7 @@ public class SelState {
 		return idx;
 	}
 	
+<<<<<<< HEAD
 	private void genWhereConds() {
 		if (ands.isEmpty()) return;
 		
@@ -126,19 +85,26 @@ public class SelState {
 			whereConds[curIdx][curSize - 1] = Helpers.genAnds(ands, i, j);
 			i = j;
 		}
+=======
+	private Expression getSelCond(int idx) {
+		return fnSelCond.get(froms.get(idx));
+>>>>>>> 41f3c694d49e9c2798b7113d9ea5c299cd0e86d0
 	}
 	
-	public void buildOpTree() {
-		Operator curRoot = new ScanOperator(getTab(0));
-		if (whereConds[0][0] != null)
-			curRoot = new SelectOperator((ScanOperator) curRoot, whereConds[0][0]);
+	private Expression getJoinCond(int idx) {
+		return fnJoinCond.get(froms.get(idx));
+	}
+	
+	private void buildOpTree() {
+		Operator curRoot = new ScanOperator(getTable(0));
+		if (getSelCond(0) != null)
+			curRoot = new SelectOperator((ScanOperator) curRoot, getSelCond(0));
 		
-		int i = 1;
-		while (i < froms.size()) {
-			Operator newOp = new ScanOperator(getTab(i));
-			if (whereConds[i][0] != null)
-				newOp = new SelectOperator((ScanOperator) newOp, whereConds[i][0]);
-			curRoot = new JoinOperator(curRoot, newOp, whereConds[i][1]);
+		for (int i = 1; i < froms.size(); i++) {
+			Operator newOp = new ScanOperator(getTable(i));
+			if (getSelCond(i) != null)
+				newOp = new SelectOperator((ScanOperator) newOp, getSelCond(i));
+			curRoot = new JoinOperator(curRoot, newOp, getJoinCond(i));
 		}
 		
 		if (orders != null)
@@ -153,22 +119,67 @@ public class SelState {
 		root = curRoot;
 	}
 	
-	public class expComp implements Comparator<Expression> {
-		@Override
-		public int compare(Expression exp1, Expression exp2) {
-			List<String> tabs1 = Helpers.getTabs(exp1);
-			List<String> tabs2 = Helpers.getTabs(exp2);
-			
-			if (tabs1 == null) return 1;
-			if (tabs2 == null) return -1;
-			
-			int idx1 = lastIdx(tabs1);
-			int idx2 = lastIdx(tabs2);
-			
-			int cmp = Integer.compare(idx1, idx2);
-			if (cmp != 0) return cmp;
-			return Integer.compare(tabs1.size(), tabs2.size());
+	public SelState(Statement st) {
+		sel = (Select) st;
+		ps = (PlainSelect) sel.getSelectBody();
+		
+		dist = ps.getDistinct();
+		sels = ps.getSelectItems();
+		from = ps.getFromItem();
+		joins = ps.getJoins();
+		where = ps.getWhere();
+		orders = ps.getOrderByElements();
+		
+		DBCat.aliases.clear();
+		if (from.getAlias() != null) {
+			DBCat.aliases.put(from.getAlias(), Helpers.getFromTab(from));
+			froms.add(from.getAlias());
 		}
+		else
+			froms.add(from.toString());
+		
+		if (joins != null) {
+			for (Join join : joins) {
+				FromItem ri = join.getRightItem();
+				if (ri.getAlias() != null) {
+					DBCat.aliases.put(ri.getAlias(), Helpers.getFromTab(ri));
+					froms.add(ri.getAlias());
+				}
+				else
+					froms.add(ri.toString());
+			}
+		}
+		
+		selConds = new HashMap<String, List<Expression>>();
+		joinConds = new HashMap<String, List<Expression>>();
+		for (String tab : froms) {
+			selConds.put(tab, new ArrayList<Expression>());
+			joinConds.put(tab, new ArrayList<Expression>());
+		}
+		
+		ands = Helpers.decompAnds(where);
+		for (Expression exp : ands) {
+			List<String> tabs = Helpers.getExpTabs(exp);
+			int idx = lastIdx(tabs);
+			if (tabs == null)
+				joinConds.get(froms.get(froms.size() - 1)).add(exp);
+			else if (tabs.size() <= 1)
+				selConds.get(froms.get(idx)).add(exp);
+			else
+				joinConds.get(froms.get(idx)).add(exp);
+		}
+
+		fnSelCond = new HashMap<String, Expression>();
+		fnJoinCond = new HashMap<String, Expression>();
+		for (String tab : froms) {
+			fnSelCond.put(tab, Helpers.genAnds(selConds.get(tab)));
+			fnJoinCond.put(tab, Helpers.genAnds(joinConds.get(tab)));
+		}
+		
+		buildOpTree();
+		
+		selConds.clear(); joinConds.clear();
+		fnSelCond.clear(); fnJoinCond.clear();
 	}
 	
 }

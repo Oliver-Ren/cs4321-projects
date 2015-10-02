@@ -36,7 +36,9 @@ public class SQLInterpreter {
 				PrintStream ps = new PrintStream(new BufferedOutputStream(
 					new FileOutputStream(file)));
 				SelState selState = new SelState(statement);
-				Operator root = Helpers.generatePlan(selState);
+				//Operator root = Helpers.generatePlan(selState);
+				//selState.buildOpTree();
+				Operator root = selState.root;
 				root.dump(ps);
 				ps.close();
 				counter++;

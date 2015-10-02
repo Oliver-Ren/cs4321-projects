@@ -50,7 +50,7 @@ public class EndToEndTest {
 	 * "and" expression is allowed.
 	 * e.g. "select * from Sailors where 1 = 1 and 0 <> 2;"
 	 */
-	@Test
+	//@Test
 	public void testConstSelect() {
 		Harness harness = new Harness("constselect");
 		harness.testFunction();
@@ -61,7 +61,7 @@ public class EndToEndTest {
 	 * "and" expression is allowed, no joins or alias allowed.
 	 * e.g. "SELECT * FROM Sailors WHERE Sailors.A > 1;"
 	 */
-	@Test
+	//@Test
 	public void testSimplePureSelect() {
 		Harness harness = new Harness("simple-pure-select");
 		harness.testFunction();
