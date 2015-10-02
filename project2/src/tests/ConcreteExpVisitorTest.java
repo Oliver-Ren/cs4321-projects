@@ -30,7 +30,7 @@ public class ConcreteExpVisitorTest {
 	private boolean testVisitorWithTuple(String query, int[] cols) {
 		DBCat.getInstance();
 		Tuple tuple = new Tuple(cols);
-		ConcreteExpVisitor vi = new ConcreteExpVisitor(tuple);
+		ConcreteExpVisitor vi = new ConcreteExpVisitor(tuple, DBCat.getSchema("Sailors"));
 		try {
 			CCJSqlParser parser = new CCJSqlParser(new StringReader(query));
 			SelState ss = new SelState(parser.Statement());
