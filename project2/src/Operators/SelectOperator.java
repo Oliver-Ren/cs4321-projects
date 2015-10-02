@@ -15,7 +15,7 @@ public class SelectOperator extends UnaryOperator {
 		Tuple tp = null;
 		while ((tp = child.getNextTuple()) != null) {
 			if (exp == null) return tp;
-			ConcreteExpVisitor vi = new ConcreteExpVisitor(tp);
+			ConcreteExpVisitor vi = new ConcreteExpVisitor(tp, schema);
 			exp.accept(vi);
 			if (vi.getFinalCondition()) return tp;
 		}

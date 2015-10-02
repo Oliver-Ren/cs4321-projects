@@ -52,7 +52,7 @@ public class tests {
 //					print(ps.getWhere().getClass().getName());
 			}
 			
-			parser = new CCJSqlParser(new StringReader("select distinct a.x, b.y, c.z, c.aa, * from a, b, c as asdjf "
+			parser = new CCJSqlParser(new StringReader("select distinct a.x, b.y, c.z, aa, * from a, b, c as asdjf "
 					+ "where a.x = b.y and a.x = c.z and b.y = c.z and 1 < 2"));
 			PlainSelect ps = (PlainSelect) ((Select) parser.Statement()).getSelectBody();
 			so.println(ps.getDistinct());
@@ -63,7 +63,7 @@ public class tests {
 			so.println(ps.getJoins().get(1));
 			so.println(((Join) ps.getJoins().get(1)).getOnExpression());
 			so.println(((Join) ps.getJoins().get(1)).getRightItem().getAlias());
-			so.println(((Join) ps.getJoins().get(1)).getUsingColumns());
+			so.println(((Join) ps.getJoins().get(1)).getUsingColumns());			
 			
 			AndExpression and = (AndExpression) ps.getWhere();
 			so.println(and.getLeftExpression());

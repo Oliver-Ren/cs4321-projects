@@ -1,5 +1,7 @@
 package visitors;
 
+import java.util.List;
+
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
@@ -9,6 +11,7 @@ import net.sf.jsqlparser.expression.operators.relational.MinorThan;
 import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
 import net.sf.jsqlparser.expression.operators.relational.NotEqualsTo;
 import net.sf.jsqlparser.schema.Column;
+import util.DBCat;
 import util.Helpers;
 import util.Tuple;
 
@@ -20,12 +23,15 @@ public class ConcreteExpVisitor extends AbstractExpVisitor {
 	// the current tuple the visitor holds.
 	private Tuple tuple = null;
 	
+	private List<String> schema = null;
+	
 	public ConcreteExpVisitor() {
 		
 	}
 	
-	public ConcreteExpVisitor(Tuple tuple) {
+	public ConcreteExpVisitor(Tuple tuple, List<String> schema) {
 		this.tuple = tuple;
+		this.schema = schema;
 	}
 	
 	/**
@@ -70,8 +76,8 @@ public class ConcreteExpVisitor extends AbstractExpVisitor {
 	@Override
 	public void visit(Column arg0) {
 		String tableName = arg0.getTable().getName();
-		String colName =arg0.getColumnName();
-		currNumericValue = Helpers.getColVal(tuple, colName, tableName);
+		String colName = arg0.getColumnName();
+		currNumericValue = Helpers.getAttr(tuple, colName, schema);
 	}
 
 	/**

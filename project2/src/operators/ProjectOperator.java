@@ -22,8 +22,10 @@ public class ProjectOperator extends UnaryOperator {
 		
 		int[] cols = new int[schema.size()];
 		int i = 0;
-		for (String attr : schema)
-			cols[i++] = (int) Helpers.getAttr(tp, attr, child.schema);
+		for (String attr : schema) {
+			Long val = Helpers.getAttr(tp, attr, child.schema);
+			cols[i++] = val.intValue();
+		}
 		
 		return new Tuple(cols);
 	}
@@ -43,25 +45,26 @@ public class ProjectOperator extends UnaryOperator {
 		
 		for (SelectItem si : sis) {
 			if (si instanceof AllColumns) {
-				tmpScm = chdScm;
-				break;
+				schema = chdScm;
+				return;
 			}
 			
 			if (si instanceof AllTableColumns)
 				allTabCols.add(si.toString().split(".")[0]);
 			else {
 				Column col = (Column) ((SelectExpressionItem) si).getExpression();
-				String tab = col.getTable().toString();
-				if (tab != null && !allTabCols.contains(tab)) {
+				if (col.getTable() != null) {
+					String tab = col.getTable().toString();
+					if (allTabCols.contains(tab)) continue;
 					tmpScm.add(si.toString());
-					continue;
 				}
-				
-				String colName = col.getColumnName();
-				for (String tabCol : chdScm) {
-					if (tabCol.split(".")[2].equals(colName)) {
-						tmpScm.add(tabCol);
-						continue;
+				else {
+					String colName = col.getColumnName();
+					for (String tabCol : chdScm) {
+						if (tabCol.split(".")[2].equals(colName)) {
+							tmpScm.add(tabCol);
+							continue;
+						}
 					}
 				}
 			}

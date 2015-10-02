@@ -17,46 +17,33 @@ public class Helpers {
 		return from.toString().split(" ")[0];
 	}
 	
-	public static String getSelCol(SelectItem sel) {
-		String[] strs = sel.toString().split(".");
-		if (strs.length < 2)
-			return strs[0];
-		else
-			return strs[1];
+	public static String getColName(String tabCol) {
+		return tabCol.split(".")[2];
 	}
 	
-	public static long getColVal(Tuple tp, String attr, String tabName) {
-		return tp.cols[DBCat.schemas.get(tabName).indexOf(attr)];
-	}
-	
-	public static long getAttr(Tuple tp, String attr, List<String> schema) {
-		return tp.cols[schema.indexOf(attr)];
-	}
-	
-	public static int getNumTabs(Expression exp) {
-		if (!(exp instanceof BinaryExpression))
-			return 0;
+	public static Long getAttr(Tuple tp, String attr, List<String> schema) {
+		int idx = schema.indexOf(attr);
+		if (idx != -1) return (long) tp.get(idx);
 		
-		BinaryExpression be = (BinaryExpression) exp;
-		Expression left = be.getLeftExpression();
-		Expression right = be.getRightExpression();
-		
-		int cnt = 0;
-		String tab1 = null, tab2 = null;
-		if (left instanceof Column) {
-			cnt++;
-			Column col = (Column) left;
-			tab1 = col.getTable().toString();
-			if (tab1 == null) return cnt;
-		}
-		if (right instanceof Column) {
-			Column col = (Column) right;
-			tab2 = col.getTable().toString();
-			if (!tab1.equals(tab2))
-				cnt++;
+		for(int i = 0; i < schema.size(); i++) {
+			String colName = getColName(schema.get(i));
+			if (colName.equals(attr))
+				return (long) tp.get(i);
 		}
 		
-		return cnt;
+		return null;
+	}
+	
+	public static Long getAttr(Tuple tp, String attr, List<String> schema1, List<String> schema2) {
+		Long val;
+		val = getAttr(tp, attr, schema1);
+		if (val != null) return val;
+		val = getAttr(tp, attr, schema2);
+		return val;
+	}
+	
+	public static long getColVal(Tuple tp, String attr, String tabNames) {
+		return -1;
 	}
 	
 	public static List<String> getTabs(Expression exp) {
@@ -68,10 +55,20 @@ public class Helpers {
 		Expression left = be.getLeftExpression();
 		Expression right = be.getRightExpression();
 		
-		if (left instanceof Column)
-			ret.add(((Column) left).getTable().toString());
-		if (right instanceof Column)
-			ret.add(((Column) right).getTable().toString());
+		Column col;
+		if (left instanceof Column) {
+			col = (Column) left;
+			if (col.getTable() == null) return null;
+			ret.add(col.getTable().toString());
+		}
+		if (right instanceof Column) {
+			col = (Column) right;
+			if (col.getTable() == null) return null;
+			ret.add(col.getTable().toString());
+		}
+		
+		if (ret.size() == 2 && ret.get(0).equals(ret.get(1)))
+			ret.remove(1);
 		
 		return ret;
 	}
@@ -86,6 +83,16 @@ public class Helpers {
 		ret.add(exp);
 		
 		Collections.reverse(ret);
+		return ret;
+	}
+	
+	public static Expression genAnds(List<Expression> exp, int start, int end) {
+		if (start >= end) return null;
+		Expression ret = exp.get(start);
+		while (++start < end) {
+			ret = new AndExpression(ret, exp.get(start));
+		}
+		
 		return ret;
 	}
 	

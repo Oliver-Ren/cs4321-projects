@@ -72,7 +72,7 @@ public class DBCat {
 		return new Table(tabName, br);
 	}
 	
-	public List<String> getSchema(String tabName) {
+	public static List<String> getSchema(String tabName) {
 		if (aliases.containsKey(tabName))
 			tabName = aliases.get(tabName);
 		return schemas.get(tabName);
@@ -91,8 +91,9 @@ public class DBCat {
 				
 				String key = scm[0];
 				List<String> val = new ArrayList<String>();
-				for (int i = 0; i < scm.length - 1; i++)
-					val.add(scm[i + 1]);
+				for (int i = 1; i < scm.length; i++) {
+					val.add(scm[i]);
+				}
 				
 				schemas.put(key, val);
 			}
