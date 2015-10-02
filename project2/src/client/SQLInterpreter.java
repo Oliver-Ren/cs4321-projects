@@ -22,7 +22,7 @@ import util.SelState;
  *
  */
 public class SQLInterpreter {
-	public void execute(String inPath, String outPath) {
+	public void execute(String inPath, String outPath, boolean isMute) {
 		DBCat.getInstance();
 		DBCat.resetDirs(inPath, outPath);
 		try {
@@ -36,6 +36,9 @@ public class SQLInterpreter {
 				PrintStream ps = new PrintStream(new BufferedOutputStream(
 					new FileOutputStream(file)));
 				SelState selState = new SelState(statement);
+				if (!isMute) {
+					System.out.println(statement);
+				}
 				//Operator root = Helpers.generatePlan(selState);
 				//selState.buildOpTree();
 				Operator root = selState.root;

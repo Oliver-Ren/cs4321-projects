@@ -54,7 +54,7 @@ public class Diff {
 	 * @param path2
 	 * @return
 	 */
-	private static boolean areSame(String path1, String path2) {
+	public static boolean areSame(String path1, String path2) {
 		
 		Boolean areSame = true;
 		
@@ -63,18 +63,17 @@ public class Diff {
 			BufferedReader in2 = new BufferedReader(new FileReader(path2));
 			String s1 = null;
 			String s2 = null;
-			while ((s1 = in1.readLine()) != null 
-					&& (s2 = in2.readLine()) != null) {
-				System.out.println("s1 =" + s1 +"; s2 =" + s2);
-				if (!s1.equals(s2)) {
-					System.out.println("not same" + s1 + ", " + s2);
-					areSame = false;
-					break;
-				}
+			while (true) {
+				s1 = in1.readLine();
+				s2 = in2.readLine();
+				if (s1 == null || s2 == null) break;
+				
+				System.out.print("s1 =" + s1 +"; s2 =" + s2);
+				if (!s1.equals(s2)) System.out.print(" FAILED");
+				else System.out.print('\n');
 			}
 			
 			if (!(s1 == null && s2 == null)) {
-				System.out.println("haha" + s1 + " ," + s2);
 				areSame = false;
 			}
 			

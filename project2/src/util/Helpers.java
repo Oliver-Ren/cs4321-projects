@@ -23,7 +23,7 @@ public class Helpers {
 	}
 	
 	public static String getColName(String tabCol) {
-		return tabCol.split(".")[1];
+		return tabCol.split("\\.")[1];
 	}
 	
 	public static Long getAttr(Tuple tp, String attr, List<String> schema) {
@@ -94,17 +94,13 @@ public class Helpers {
 	 * @return
 	 */
 	public static Operator generatePlan(SelState selState) {
-<<<<<<< HEAD
 		Operator curr = null;
-		Operator leaf = new ScanOperator(DBCat.getTable(getTabName(selState.from)));
+		Operator leaf = new ScanOperator(DBCat.getTable(getFromTab(selState.from)));
 		curr = leaf;
 		if (selState.where != null) {
 			curr = new SelectOperator((ScanOperator)leaf, selState.where);
 		}
 		return curr;
-=======
-		return new ScanOperator(DBCat.getTable(getFromTab(selState.from)));
->>>>>>> 41f3c694d49e9c2798b7113d9ea5c299cd0e86d0
 	}
 	
 }

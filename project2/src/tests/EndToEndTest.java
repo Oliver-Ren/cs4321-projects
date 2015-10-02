@@ -25,10 +25,10 @@ public class EndToEndTest {
 		
 		private void testFunction() {
 			SQLInterpreter itpr = new SQLInterpreter();
-			itpr.execute(inPath, outPath);
+			itpr.execute(inPath, outPath, false);
 			String[] results = Diff.dirList(outPath);
 			for (String s : results) {
-				if (!Diff.areTotallySame(outPath + File.separator + s, 
+				if (!Diff.areSame(outPath + File.separator + s, 
 					expectedPath + File.separator + s)) {
 					fail( "The " + s + " is not same as expected." );
 				}
@@ -50,7 +50,7 @@ public class EndToEndTest {
 	 * "and" expression is allowed.
 	 * e.g. "select * from Sailors where 1 = 1 and 0 <> 2;"
 	 */
-	//@Test
+	@Test
 	public void testConstSelect() {
 		Harness harness = new Harness("constselect");
 		harness.testFunction();
@@ -61,10 +61,31 @@ public class EndToEndTest {
 	 * "and" expression is allowed, no joins or alias allowed.
 	 * e.g. "SELECT * FROM Sailors WHERE Sailors.A > 1;"
 	 */
-	//@Test
+	@Test
 	public void testSimplePureSelect() {
 		Harness harness = new Harness("simple-pure-select");
 		harness.testFunction();
 	}
+	
+	/**
+	 * Test case for queries of cross-product.
+	 */
+	//@Test
+	public void testCrossProduct() {
+		Harness harness = new Harness("crossproduct");
+		harness.testFunction();
+	}
+	
+	
+	/**
+	 * Test case for sample queries.
+	 */
+	@Test
+	public void testSamples() {
+		Harness harness = new Harness("samples");
+		harness.testFunction();
+	}
+	
+	
 
 }

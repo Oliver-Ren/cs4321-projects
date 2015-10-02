@@ -44,51 +44,9 @@ public class SelState {
 		return idx;
 	}
 	
-<<<<<<< HEAD
-	private void genWhereConds() {
-		if (ands.isEmpty()) return;
-		
-		int i = 0, j = 0;
-		while (j < ands.size()) {
-			List<String> tabs = Helpers.getTabs(ands.get(j));
-			if (lastIdx(tabs) != 0 || tabs.size() > 1)	//QUESTION
-				break;
-			j++;
-		}
-		
-		whereConds[0][0] = Helpers.genAnds(ands, i, j);
-		i = j;
-		
-		while (i < ands.size()) {
-			List<String> tabs = Helpers.getTabs(ands.get(i));
-			if (tabs == null) {
-				whereConds[froms.size() - 1][1] = Helpers.genAnds(ands, i, ands.size());
-				return;
-			}
-			
-			int curSize = tabs.size();
-			int curIdx = lastIdx(tabs);
-			
-			j = i + 1;
-			while (j < ands.size()) {
-				List<String> tmpTabs = Helpers.getTabs(ands.get(j));
-				if (tmpTabs == null && curIdx == froms.size() - 1) {
-					whereConds[froms.size() - 1][1] = Helpers.genAnds(ands, i, ands.size());
-					return;
-				}
-				
-				if (tmpTabs == null || tmpTabs.size() != curSize || lastIdx(tmpTabs) != curIdx)
-					break;
-				j++;
-			}
-			
-			whereConds[curIdx][curSize - 1] = Helpers.genAnds(ands, i, j);
-			i = j;
-		}
-=======
+
 	private Expression getSelCond(int idx) {
 		return fnSelCond.get(froms.get(idx));
->>>>>>> 41f3c694d49e9c2798b7113d9ea5c299cd0e86d0
 	}
 	
 	private Expression getJoinCond(int idx) {

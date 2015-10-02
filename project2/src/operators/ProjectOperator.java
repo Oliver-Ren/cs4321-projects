@@ -23,7 +23,7 @@ public class ProjectOperator extends UnaryOperator {
 		int[] cols = new int[schema.size()];
 		int i = 0;
 		for (String attr : schema) {
-			Long val = Helpers.getAttr(tp, attr, child.schema);
+			Long val = Helpers.getAttr(tp, attr, child.schema());
 			cols[i++] = val.intValue();
 		}
 		
