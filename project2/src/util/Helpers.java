@@ -7,6 +7,7 @@ import java.util.List;
 
 import operators.Operator;
 import operators.ScanOperator;
+import operators.SelectOperator;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
@@ -53,7 +54,7 @@ public class Helpers {
 		Column col;
 		if (left instanceof Column) {
 			col = (Column) left;
-			if (col.getTable() == null) return null;
+			if (col.getTable() == null) return null;  //QUESTION: is invalid condition?
 			ret.add(col.getTable().toString());
 		}
 		if (right instanceof Column) {
@@ -93,11 +94,18 @@ public class Helpers {
 	
 	/**
 	 * This is only an experimental method.
+	 * Now it supports the scan.
 	 * @param selState
 	 * @return
 	 */
 	public static Operator generatePlan(SelState selState) {
-		return new ScanOperator(DBCat.getTable(getTabName(selState.from)));
+		Operator curr = null;
+		Operator leaf = new ScanOperator(DBCat.getTable(getTabName(selState.from)));
+		curr = leaf;
+		if (selState.where != null) {
+			curr = new SelectOperator((ScanOperator)leaf, selState.where);
+		}
+		return curr;
 	}
 	
 }

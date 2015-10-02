@@ -1,3 +1,1 @@
-SELECT * FROM Boats;
-SELECT * FROM Sailors;
-SELECT * FROM Reserves;
+SELECT * FROM Reserves WHERE Reserves.G > 1;

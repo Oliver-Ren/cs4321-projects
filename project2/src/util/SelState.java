@@ -83,7 +83,7 @@ public class SelState {
 		int i = 0, j = 0;
 		while (j < ands.size()) {
 			List<String> tabs = Helpers.getTabs(ands.get(j));
-			if (lastIdx(tabs) != 0 || tabs.size() > 1)
+			if (lastIdx(tabs) != 0 || tabs.size() > 1)	//QUESTION
 				break;
 			j++;
 		}

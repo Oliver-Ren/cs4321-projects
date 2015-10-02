@@ -9,6 +9,7 @@ import org.junit.Test;
 import client.SQLInterpreter;
 
 public class EndToEndTest {
+	// The test harness for efficient tests.
 	private static class Harness {
 		private String testPart;
 		private String inPath;
@@ -21,36 +22,49 @@ public class EndToEndTest {
 			outPath = testPart + File.separator + "output";
 			expectedPath = testPart + File.separator + "expected_output";
 		}
+		
+		private void testFunction() {
+			SQLInterpreter itpr = new SQLInterpreter();
+			itpr.execute(inPath, outPath);
+			String[] results = Diff.dirList(outPath);
+			for (String s : results) {
+				if (!Diff.areTotallySame(outPath + File.separator + s, 
+					expectedPath + File.separator + s)) {
+					fail( "The " + s + " is not same as expected." );
+				}
+				
+			}
+		}
+		
+		
 	}
 	
 	@Test
 	public void testSimpleScan() {
-		SQLInterpreter itpr = new SQLInterpreter();
 		Harness harness = new Harness("scan");
-		itpr.execute(harness.inPath, harness.outPath);
-		String[] results = Diff.dirList(harness.outPath);
-		for (String s : results) {
-			if (!Diff.areTotallySame(harness.outPath + File.separator + s, 
-				harness.expectedPath + File.separator + s)) {
-				fail( "The " + s + " is not same as expected." );
-			}
-			
-		}
+		harness.testFunction();		
+	}
+	
+	/**
+	 * Test case for queries of constant selection. 
+	 * "and" expression is allowed.
+	 * e.g. "select * from Sailors where 1 = 1 and 0 <> 2;"
+	 */
+	@Test
+	public void testConstSelect() {
+		Harness harness = new Harness("constselect");
+		harness.testFunction();
 	}
 
-	//@Test
-	public void testPlainSelect() {
-		SQLInterpreter itpr = new SQLInterpreter();
-		Harness harness = new Harness("plainselect");
-		itpr.execute(harness.inPath, harness.outPath);
-		String[] results = Diff.dirList(harness.outPath);
-		for (String s : results) {
-			if (!Diff.areTotallySame(harness.outPath + File.separator + s, 
-				harness.expectedPath + File.separator + s)) {
-				fail( "The " + s + " is not same as expected." );
-			}
-			
-		}
+	/**
+	 * Test case for queries of simple pure selection.
+	 * "and" expression is allowed, no joins or alias allowed.
+	 * e.g. "SELECT * FROM Sailors WHERE Sailors.A > 1;"
+	 */
+	@Test
+	public void testSimplePureSelect() {
+		Harness harness = new Harness("simple-pure-select");
+		harness.testFunction();
 	}
 
 }

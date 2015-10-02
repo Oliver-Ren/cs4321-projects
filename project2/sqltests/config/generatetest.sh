@@ -8,11 +8,13 @@ user="root"
 database="cs4321"
 inputdir="$testdir/input"
 expected="$testdir/expected_output"
+outputdir="$testdir/output"
 
 rm -rf "$testname"
 mkdir "$testname"
 mkdir "$expected"
 mkdir "$inputdir"
+mkdir "$outputdir"
 cp -r db "$inputdir"
 cp "$input" "$inputdir"
 
@@ -25,5 +27,6 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
         echo "Text read from file: $expected"
         COUNTER=$((COUNTER+1))
     done < "$input"
+rm -rf "../$testname"
 mv "$testname" ../
 #mysql --user="$user" --password="$password" --database="$database" --execute="DROP DATABASE $user; CREATE DATABASE $database;"
