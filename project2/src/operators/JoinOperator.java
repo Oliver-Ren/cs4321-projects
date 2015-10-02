@@ -4,11 +4,13 @@ import java.util.List;
 
 import net.sf.jsqlparser.expression.Expression;
 import util.Tuple;
+import visitors.JoinExpVisitor;
 
 public class JoinOperator extends BinaryOperator {
 
 	Expression joinCond = null;
 	Tuple curLeft = null, curRight = null;
+	JoinExpVisitor visitor = null;
 	
 	private Tuple joinTp(Tuple tp1, Tuple tp2) {
 		int[] cols = new int[tp1.length() + tp2.length()];
@@ -24,12 +26,20 @@ public class JoinOperator extends BinaryOperator {
 	@Override
 	public Tuple getNextTuple() {
 		while (curLeft != null && curRight != null) {
-			if (joinCond == null)
-				return joinTp(curLeft, curRight);
+			if (joinCond == null) {
+				Tuple ret = joinTp(curLeft, curRight);
+				next();
+				return ret;
+			}
 			
-			// visit the expression with curLeft, curRight,
-			// left.schema(), right.schema() as parameters?
-			// if true return curLeft joining curRight
+			visitor.setTuple(curLeft, curRight);
+			joinCond.accept(visitor);
+			if (visitor.getFinalCondition()) {
+				Tuple ret = joinTp(curLeft, curRight);
+				next();
+				return ret;
+			}
+			
 			next();
 		}
 		
@@ -59,6 +69,7 @@ public class JoinOperator extends BinaryOperator {
 		this.joinCond = joinCond;
 		curLeft = left.getNextTuple();
 		curRight = right.getNextTuple();
+		visitor = new JoinExpVisitor(null, left.schema(), null, right.schema());
 	}
 	
 }

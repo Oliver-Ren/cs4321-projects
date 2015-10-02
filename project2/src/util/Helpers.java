@@ -34,14 +34,6 @@ public class Helpers {
 		return null;
 	}
 	
-	public static Long getAttr(Tuple tp, String attr, List<String> schema1, List<String> schema2) {
-		Long val;
-		val = getAttr(tp, attr, schema1);
-		if (val != null) return val;
-		val = getAttr(tp, attr, schema2);
-		return val;
-	}
-	
 	public static long getColVal(Tuple tp, String attr, String tabNames) {
 		return -1;
 	}

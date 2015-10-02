@@ -17,12 +17,11 @@ import util.Tuple;
 
 public class ConcreteExpVisitor extends AbstractExpVisitor {
 	// the current numeric value holding in the visitor.
-	private long currNumericValue = 0;
+	protected long currNumericValue = 0;
 	// the current condition holding in the visitor.
-	private boolean currCondition = false;
+	protected boolean currCondition = false;
 	// the current tuple the visitor holds.
 	private Tuple tuple = null;
-	
 	private List<String> schema = null;
 	
 	public ConcreteExpVisitor() {
@@ -32,6 +31,10 @@ public class ConcreteExpVisitor extends AbstractExpVisitor {
 	public ConcreteExpVisitor(Tuple tuple, List<String> schema) {
 		this.tuple = tuple;
 		this.schema = schema;
+	}
+	
+	public void setTuple(Tuple tuple) {
+		this.tuple = tuple;
 	}
 	
 	/**
