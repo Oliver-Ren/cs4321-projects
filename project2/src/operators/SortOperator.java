@@ -29,7 +29,7 @@ public class SortOperator extends UnaryOperator {
 		curIdx = 0;
 	}
 
-	public void SortOpeartor(Operator child, List<OrderByElement> orders) {
+	public SortOperator(Operator child, List<OrderByElement> orders) {
 		this.child = child;
 		
 		Tuple tp = null;

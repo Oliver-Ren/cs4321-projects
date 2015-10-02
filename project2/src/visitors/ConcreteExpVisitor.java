@@ -34,7 +34,7 @@ public class ConcreteExpVisitor extends AbstractExpVisitor {
 		this.schema = schema;
 	}
 	
-	public void setTuple(Tuple tuple) {
+	public final void setTuple(Tuple tuple) {
 		this.tuple = tuple;
 	}
 	
