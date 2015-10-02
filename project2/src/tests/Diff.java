@@ -9,8 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 /**
  * This is a class for comparing two files line by line. Test harness
  * for the end-to-end test.
