@@ -17,12 +17,12 @@ import operators.*;
 
 public class Helpers {
 
-	public static String getTabName(FromItem from) {
+	public static String getFromTab(FromItem from) {
 		return from.toString().split(" ")[0];
 	}
 	
 	public static String getColName(String tabCol) {
-		return tabCol.split(".")[2];
+		return tabCol.split(".")[1];
 	}
 	
 	public static Long getAttr(Tuple tp, String attr, List<String> schema) {
@@ -38,11 +38,7 @@ public class Helpers {
 		return null;
 	}
 	
-	public static long getColVal(Tuple tp, String attr, String tabNames) {
-		return -1;
-	}
-	
-	public static List<String> getTabs(Expression exp) {
+	public static List<String> getExpTabs(Expression exp) {
 		List<String> ret = new ArrayList<String>();
 		if (!(exp instanceof BinaryExpression))
 			return ret;
@@ -82,13 +78,11 @@ public class Helpers {
 		return ret;
 	}
 	
-	public static Expression genAnds(List<Expression> exp, int start, int end) {
-		if (start >= end) return null;
-		Expression ret = exp.get(start);
-		while (++start < end) {
-			ret = new AndExpression(ret, exp.get(start));
-		}
-		
+	public static Expression genAnds(List<Expression> exps) {
+		if (exps.isEmpty()) return null;
+		Expression ret = exps.get(0);
+		for (int i = 1; i < exps.size(); i++)
+			ret = new AndExpression(ret, exps.get(i));
 		return ret;
 	}
 	
@@ -98,7 +92,7 @@ public class Helpers {
 	 * @return
 	 */
 	public static Operator generatePlan(SelState selState) {
-		return new ScanOperator(DBCat.getTable(getTabName(selState.from)));
+		return new ScanOperator(DBCat.getTable(getFromTab(selState.from)));
 	}
 	
 }
