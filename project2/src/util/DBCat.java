@@ -26,7 +26,7 @@ public class DBCat {
 	private static DBCat instance;	// The instance of DBCat;
 	
 	public static String inputDir = "samples/input/";
-	public static String outputDir = "output/";
+	public static String outputDir = "samples/output/";
 	public static String qryPath = ""; // inputDir + "queries.sql";
 	public static String dbDir = ""; // inputDir + "db/";
 	public static String dataDir = ""; // dbDir + "data/";

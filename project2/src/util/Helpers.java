@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import operators.Operator;
+import operators.ScanOperator;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.statement.select.AllColumns;
 import net.sf.jsqlparser.statement.select.FromItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
 
@@ -87,6 +90,18 @@ public class Helpers {
 		
 		Collections.reverse(ret);
 		return ret;
+	}
+	
+	/**
+	 * Generate a query plan (a tree of operators) and return the root of
+	 * the plan.
+	 * 
+	 * @param selState input select state.
+	 * @return 
+	 */
+	public static Operator generatePlan(SelState selState) {
+		String fromTable = getTabName(selState.from);
+		return new ScanOperator(DBCat.getTable(fromTable));
 	}
 	
 }

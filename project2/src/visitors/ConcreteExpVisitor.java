@@ -69,6 +69,7 @@ public class ConcreteExpVisitor extends AbstractExpVisitor {
 
 	@Override
 	public void visit(Column arg0) {
+		// Helpers.getAttr(tuple, arg0.toString(), schema);
 		String tableName = arg0.getTable().getName();
 		String colName =arg0.getColumnName();
 		currNumericValue = Helpers.getColVal(tuple, colName, tableName);
