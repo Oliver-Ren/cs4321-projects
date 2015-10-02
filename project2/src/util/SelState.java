@@ -10,6 +10,8 @@ import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
 
+import operators.*;
+
 public class SelState {
 
 	public Select sel;
@@ -24,6 +26,8 @@ public class SelState {
 	public List<String> froms = new ArrayList<String>();
 	public List<Expression> ands = null;
 	public Expression[][] whereConds = null;
+	
+	public Operator root = null;
 	
 	public SelState(Statement st) {
 		sel = (Select) st;
@@ -58,14 +62,19 @@ public class SelState {
 		if (froms.size() == 1) {
 			whereConds = new Expression[1][1];
 			whereConds[0][0] = where;
-			return;
 		}
-		
-		ands = Helpers.decompAnds(where);
-		Collections.sort(ands, new expComp());
-		
-		whereConds = new Expression[froms.size()][2];
-		genWhereConds();
+		else {
+			ands = Helpers.decompAnds(where);
+			Collections.sort(ands, new expComp());
+			whereConds = new Expression[froms.size()][2];
+			genWhereConds();
+		}
+
+		buildOpTree();
+	}
+	
+	public Table getTab(int idx) {
+		return DBCat.getTable(froms.get(idx));
 	}
 	
 	private int lastIdx(List<String> tabs) {
@@ -117,6 +126,31 @@ public class SelState {
 			whereConds[curIdx][curSize - 1] = Helpers.genAnds(ands, i, j);
 			i = j;
 		}
+	}
+	
+	public void buildOpTree() {
+		Operator curRoot = new ScanOperator(getTab(0));
+		if (whereConds[0][0] != null)
+			curRoot = new SelectOperator((ScanOperator) curRoot, whereConds[0][0]);
+		
+		int i = 1;
+		while (i < froms.size()) {
+			Operator newOp = new ScanOperator(getTab(i));
+			if (whereConds[i][0] != null)
+				newOp = new SelectOperator((ScanOperator) newOp, whereConds[i][0]);
+			curRoot = new JoinOperator(curRoot, newOp, whereConds[i][1]);
+		}
+		
+		if (orders != null)
+			curRoot = new SortOperator(curRoot, orders);
+		if (sels != null)
+			curRoot = new ProjectOperator(curRoot, sels);
+		if (dist != null) {
+			curRoot = new SortOperator(curRoot, new ArrayList<OrderByElement>());
+			curRoot = new DuplicateEliminationOperator((SortOperator) curRoot);
+		}
+		
+		root = curRoot;
 	}
 	
 	public class expComp implements Comparator<Expression> {
