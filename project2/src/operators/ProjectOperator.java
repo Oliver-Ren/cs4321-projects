@@ -61,7 +61,7 @@ public class ProjectOperator extends UnaryOperator {
 				else {
 					String colName = col.getColumnName();
 					for (String tabCol : chdScm) {
-						if (tabCol.split(".")[2].equals(colName)) {
+						if (tabCol.split(".")[1].equals(colName)) {
 							tmpScm.add(tabCol);
 							continue;
 						}
@@ -82,3 +82,4 @@ public class ProjectOperator extends UnaryOperator {
 	}
 	
 }
+
