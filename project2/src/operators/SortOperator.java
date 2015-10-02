@@ -12,8 +12,8 @@ import util.Tuple;
 
 public class SortOperator extends UnaryOperator {
 	
+	List<Tuple> tps = new ArrayList<Tuple>();
 	List<Integer> orders = new ArrayList<Integer>();
-	public List<Tuple> tps = new ArrayList<Tuple>();
 	private int curIdx = 0;
 	
 	@Override
@@ -31,8 +31,6 @@ public class SortOperator extends UnaryOperator {
 
 	public void SortOpeartor(Operator child, List<OrderByElement> orders) {
 		this.child = child;
-		tbs = child.tbs;
-		schema = child.schema;
 		
 		Tuple tp = null;
 		while ((tp = child.getNextTuple()) != null) {
@@ -51,6 +49,15 @@ public class SortOperator extends UnaryOperator {
 		
 		@Override
 		public int compare(Tuple tp1, Tuple tp2) {
+			if (tp1.length() != tp2.length())
+				try {
+					throw new Exception("Comparing tuples of different lengths");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return 0;
+				}
+			
 			for (int idx : orders) {
 				int val1 = tp1.cols[idx];
 				int val2 = tp2.cols[idx];
@@ -76,3 +83,4 @@ public class SortOperator extends UnaryOperator {
 	}
 	
 }
+

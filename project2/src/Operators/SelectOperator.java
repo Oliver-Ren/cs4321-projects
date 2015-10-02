@@ -8,13 +8,15 @@ import visitors.ConcreteExpVisitor;
 public class SelectOperator extends UnaryOperator {
 
 	Expression exp = null;
+	ConcreteExpVisitor vi = null;
 	
 	@Override
 	public Tuple getNextTuple() {
 		// TODO Auto-generated method stub
 		Tuple tp = null;
 		while ((tp = child.getNextTuple()) != null) {
-			ConcreteExpVisitor vi = new ConcreteExpVisitor(tp);
+			if (exp == null) return tp;
+			vi.setTuple(tp);
 			exp.accept(vi);
 			if (vi.getFinalCondition()) return tp;
 		}
@@ -29,8 +31,9 @@ public class SelectOperator extends UnaryOperator {
 
 	public SelectOperator(ScanOperator sop, Expression exp) {
 		child = sop;
-		tbs = sop.tbs;
 		this.exp = exp;
+		vi = new ConcreteExpVisitor(null, child.schema());
 	}
 	
 }
+

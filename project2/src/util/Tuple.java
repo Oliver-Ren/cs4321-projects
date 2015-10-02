@@ -36,13 +36,13 @@ public class Tuple {
 			sb.append(',');
 			sb.append(String.valueOf(cols[i++]));
 		}
-		sb.append('\n');
 		return sb.toString();
 	}
 	
 	public void dump(PrintStream ps) {
 		try {
-			ps.write(toString().getBytes());
+			String str = toString() + '\n';
+			ps.write(str.getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

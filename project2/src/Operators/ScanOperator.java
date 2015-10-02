@@ -1,5 +1,6 @@
 package operators;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import util.Table;
@@ -21,16 +22,15 @@ public class ScanOperator extends Operator {
 
 	@Override
 	public List<String> schema() {
-		return this.tab.schema;
+		return schema;
 	}
 	
 	public ScanOperator(Table tab) {
 		this.tab = tab;
-		if (!tab.alias.isEmpty())
-			tbs.add(tab.alias);
-		else
-			tbs.add(tab.name);
-		schema = tab.schema;
+		schema = new ArrayList<String>();
+		for (String col : tab.schema) {
+			schema.add(tab.name + '.' + col);
+		}
 	}
 	
 }
