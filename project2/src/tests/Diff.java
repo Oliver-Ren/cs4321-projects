@@ -7,7 +7,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This is a class for comparing two files line by line. Test harness
@@ -30,7 +34,64 @@ public class Diff {
 	}
 	
 	/**
-	 * Returns true if two files have exactly the same content.
+	 * Returns true if two files have the same collection of tuples.
+	 * The orders of the tuples are not considered.
+	 * 
+	 * @param path1 String path of file 1
+	 * @param path2 String path of file 2
+	 * @return <tt>true</tt> only if two files contains same collection
+	 * 						 of lines of same or different order.
+	 * @throws IOException if the file can not be found.
+	 */
+	public static boolean containSameTuples(String path1, String path2) throws IOException {
+		List<String> bag1 = new ArrayList<String>();
+		List<String> bag2 = new ArrayList<String>();
+		boolean areSame = true;
+	
+		try {
+			BufferedReader in1 = new BufferedReader(new FileReader(path1));
+			BufferedReader in2 = new BufferedReader(new FileReader(path2));
+			
+			String s1 = null;
+			String s2 = null;
+			while (true) {
+				s1 = in1.readLine();
+				s2 = in2.readLine();
+				if (s1 == null || s2 == null) break;
+				
+				bag1.add(s1);
+				bag2.add(s2);
+			}
+			
+			if (!(s1 == null && s2 == null)) {
+				areSame = false;
+			}
+			
+			in1.close();
+			in2.close();	
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		// If the length of the two files are the same,
+		// then compare the contents in the two collections.
+		if (areSame) {
+			Collections.sort(bag1);
+			Collections.sort(bag2);
+			for (int i = 0; i < bag1.size(); i++) {
+				if (!bag1.get(i).equals(bag2.get(i))) {
+					areSame = false;
+				}
+			}
+			
+		}	
+		return areSame;
+	}
+	
+	/**
+	 * Returns true if two files have exactly the same content arranged by
+	 * exactly the same order.
+	 * 
 	 * @param path1 String path of file1
 	 * @param path2 String path of file2
 	 * @return true if two files have exactly the same content.

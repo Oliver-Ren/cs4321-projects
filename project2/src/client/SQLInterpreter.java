@@ -53,4 +53,14 @@ public class SQLInterpreter {
 		}
 		
 	}
+	
+	public static void main(String[] args) {
+		if (args.length != 2) {
+			throw new IllegalArgumentException("Number of arguments not right");
+		}
+		String inPath = args[0];
+		String outPath = args[1];
+		SQLInterpreter itpr = new SQLInterpreter();
+		itpr.execute(inPath, outPath, true);
+	}
 }
