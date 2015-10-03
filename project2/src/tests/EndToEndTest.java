@@ -135,6 +135,15 @@ public class EndToEndTest {
 	}
 	
 	/**
+	 * Test case for queries of distinct with order by.
+	 */
+	@Test
+	public void testDistinctOrdered() {
+		Harness harness = new Harness("distinct-ordered");
+		harness.testFunction();
+	}
+	
+	/**
 	 * Test case for sample queries.
 	 */
 	@Test
