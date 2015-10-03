@@ -7,7 +7,6 @@ import java.io.PrintStream;
 
 import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.statement.Statement;
-import operators.Operator;
 import util.DBCat;
 import util.SelState;
 
@@ -29,8 +28,9 @@ public class SQLInterpreter {
 	 * @param isMute whether to print debugging info
 	 */
 	public void execute(String inPath, String outPath, boolean isMute) {
-		DBCat.getInstance();
 		DBCat.resetDirs(inPath, outPath);
+		DBCat.getInstance();
+		
 		try {
 			CCJSqlParser parser 
 				= new CCJSqlParser(new FileReader(DBCat.qryPath));
@@ -58,7 +58,6 @@ public class SQLInterpreter {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	/**
@@ -69,9 +68,8 @@ public class SQLInterpreter {
 		if (args.length != 2) {
 			throw new IllegalArgumentException("Number of arguments not right");
 		}
-		String inPath = args[0];
-		String outPath = args[1];
+		
 		SQLInterpreter itpr = new SQLInterpreter();
-		itpr.execute(inPath, outPath, true);
+		itpr.execute(args[0], args[1], true);
 	}
 }
