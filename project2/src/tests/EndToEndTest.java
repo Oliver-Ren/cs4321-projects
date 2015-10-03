@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.junit.Test;
 
@@ -25,10 +26,23 @@ public class EndToEndTest {
 		
 		private void testFunction() {
 			SQLInterpreter itpr = new SQLInterpreter();
-			itpr.execute(inPath, outPath, false);
+			itpr.execute(inPath, outPath, true);
 			String[] results = Diff.dirList(outPath);
 			for (String s : results) {
 				if (!Diff.areSame(outPath + File.separator + s, 
+					expectedPath + File.separator + s)) {
+					fail( "The " + s + " is not same as expected." );
+				}
+				
+			}
+		}
+		
+		private void testFunctionNoOrder() {
+			SQLInterpreter itpr = new SQLInterpreter();
+			itpr.execute(inPath, outPath, true);
+			String[] results = Diff.dirList(outPath);
+			for (String s : results) {
+				if (!Diff.containSameTuples(outPath + File.separator + s, 
 					expectedPath + File.separator + s)) {
 					fail( "The " + s + " is not same as expected." );
 				}
@@ -70,9 +84,36 @@ public class EndToEndTest {
 	/**
 	 * Test case for queries of cross-product.
 	 */
-	//@Test
+	@Test
 	public void testCrossProduct() {
-		Harness harness = new Harness("crossproduct");
+		Harness harness = new Harness("cross-product");
+		harness.testFunctionNoOrder();
+	}
+	
+	/**
+	 * Test case for queries of join.
+	 */
+	@Test
+	public void testJoin() {
+		Harness harness = new Harness("join");
+		harness.testFunctionNoOrder();
+	}
+	
+	/**
+	 * Test case for queries of projection.
+	 */
+	@Test
+	public void testProjection() {
+		Harness harness = new Harness("projection");
+		harness.testFunctionNoOrder();
+	}
+	
+	/**
+	 * Test case for queries of order-by.
+	 */
+	@Test
+	public void testOrderBy() {
+		Harness harness = new Harness("order-by");
 		harness.testFunction();
 	}
 	

@@ -43,7 +43,7 @@ public class Diff {
 	 * 						 of lines of same or different order.
 	 * @throws IOException if the file can not be found.
 	 */
-	public static boolean containSameTuples(String path1, String path2) throws IOException {
+	public static boolean containSameTuples(String path1, String path2) {
 		List<String> bag1 = new ArrayList<String>();
 		List<String> bag2 = new ArrayList<String>();
 		boolean areSame = true;
@@ -71,6 +71,9 @@ public class Diff {
 			in2.close();	
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		// If the length of the two files are the same,
@@ -80,6 +83,7 @@ public class Diff {
 			Collections.sort(bag2);
 			for (int i = 0; i < bag1.size(); i++) {
 				if (!bag1.get(i).equals(bag2.get(i))) {
+					System.out.printf("%s VS %s: FAILED\n", bag1.get(i), bag2.get(i));
 					areSame = false;
 				}
 			}
@@ -130,7 +134,8 @@ public class Diff {
 				if (s1 == null || s2 == null) break;
 				
 				if (!s1.equals(s2)) {
-					System.out.printf("%s VS %s: FAILED\n");
+					areSame = false;
+					System.out.printf("%s VS %s: FAILED\n", s1, s2);
 				}
 			}
 			

@@ -31,19 +31,24 @@ public class SQLInterpreter {
 			Statement statement;
 			int counter = 1;
 			while ((statement = parser.Statement()) != null) {
-				File file = new File(DBCat.outputDir 
-						+ File.separator + "query" + counter);
-				PrintStream ps = new PrintStream(new BufferedOutputStream(
-					new FileOutputStream(file)));
-				SelState selState = new SelState(statement);
-				if (!isMute) {
-					System.out.println("Parsing: " + statement);
+				try {
+					File file = new File(DBCat.outputDir 
+							+ File.separator + "query" + counter);
+					PrintStream ps = new PrintStream(new BufferedOutputStream(
+						new FileOutputStream(file)));
+					SelState selState = new SelState(statement);
+					if (!isMute) {
+						System.out.println("Parsing: " + statement);
+					}
+					Operator root = selState.root;
+					root.dump(ps);
+					// root.dump(System.out.);
+					ps.close();
+					counter++;
+				} catch (Exception e) {
+					System.out.println("Exception when parsing query" + counter);
+					continue;
 				}
-				Operator root = selState.root;
-				root.dump(ps);
-				// root.dump(System.out.);
-				ps.close();
-				counter++;
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
