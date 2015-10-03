@@ -29,8 +29,8 @@ public class SQLInterpreter {
 	 * @param isMute whether to print debugging info
 	 */
 	public void execute(String inPath, String outPath, boolean isMute) {
-		DBCat.getInstance();
 		DBCat.resetDirs(inPath, outPath);
+		DBCat.getInstance();
 		try {
 			CCJSqlParser parser 
 				= new CCJSqlParser(new FileReader(DBCat.qryPath));
