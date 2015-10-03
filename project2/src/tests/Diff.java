@@ -129,9 +129,9 @@ public class Diff {
 				s2 = in2.readLine();
 				if (s1 == null || s2 == null) break;
 				
-				System.out.print("s1 =" + s1 +"; s2 =" + s2);
-				if (!s1.equals(s2)) System.out.print(" FAILED");
-				else System.out.print('\n');
+				if (!s1.equals(s2)) {
+					System.out.printf("%s VS %s: FAILED\n");
+				}
 			}
 			
 			if (!(s1 == null && s2 == null)) {

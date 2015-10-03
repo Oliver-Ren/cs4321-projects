@@ -54,7 +54,14 @@ public class DBCat {
 		return dataDir + tabName + ".csv";
 	}
 	
+	private static String origName(String tabName) {
+		if (aliases.containsKey(tabName))
+			return aliases.get(tabName);
+		return tabName;
+	}
+	
 	public static BufferedReader getTabReader(String fileName) {
+		fileName = origName(fileName);
 		try {
 			return new BufferedReader(new FileReader(tabPath(fileName)));
 		} catch (FileNotFoundException e) {
@@ -64,19 +71,14 @@ public class DBCat {
 		return null;
 	}
 	
-	public static Table getTable(String tabName) {
-		String fileName = tabName;
-		if (aliases.containsKey(fileName))
-			fileName = aliases.get(fileName);
-		BufferedReader br = getTabReader(fileName);
-		if (br == null) return null;
-		return new Table(tabName, br);
+	public static List<String> getSchema(String tabName) {
+		return schemas.get(origName(tabName));
 	}
 	
-	public static List<String> getSchema(String tabName) {
-		if (aliases.containsKey(tabName))
-			tabName = aliases.get(tabName);
-		return schemas.get(tabName);
+	public static Table getTable(String tabName) {
+		BufferedReader br = getTabReader(tabName);
+		if (br == null) return null;
+		return new Table(tabName, getSchema(tabName), br);
 	}
 	
 	// intentionally make the constructor private, which 
@@ -86,7 +88,7 @@ public class DBCat {
 		try {
 			br = new BufferedReader(new FileReader(schemaPath));
 			String line = null;
-			while ((line = br.readLine()) != null) {
+			while ((line = br.readLine()) != null) {				
 				String[] scm = line.split(" ");
 				if (scm.length < 2) continue;
 				

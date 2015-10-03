@@ -18,6 +18,8 @@ public abstract class BinaryOperator extends Operator {
 	}
 	
 	public BinaryOperator(Operator left, Operator right) {
+		this.left = left;
+		this.right = right;
 		schema = new ArrayList<String>(left.schema());
 		schema.addAll(right.schema());
 	}

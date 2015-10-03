@@ -37,16 +37,13 @@ public class SQLInterpreter {
 					new FileOutputStream(file)));
 				SelState selState = new SelState(statement);
 				if (!isMute) {
-					System.out.println(statement);
+					System.out.println("Parsing: " + statement);
 				}
-				//Operator root = Helpers.generatePlan(selState);
-				//selState.buildOpTree();
 				Operator root = selState.root;
 				root.dump(ps);
+				// root.dump(System.out.);
 				ps.close();
 				counter++;
-				// SelectOperator slctOp 
-					// = new SelectOperator(DBCat.getTable(tabName), ps.getWhere());	
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

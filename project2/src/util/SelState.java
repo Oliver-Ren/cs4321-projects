@@ -43,7 +43,6 @@ public class SelState {
 		}
 		return idx;
 	}
-	
 
 	private Expression getSelCond(int idx) {
 		return fnSelCond.get(froms.get(idx));

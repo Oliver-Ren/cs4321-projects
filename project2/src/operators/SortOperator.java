@@ -38,7 +38,7 @@ public class SortOperator extends UnaryOperator {
 		}
 		
 		for (OrderByElement obe : orders)
-			this.orders.add(schema.indexOf(obe.toString()));
+			this.orders.add(schema().indexOf(obe.toString()));
 		
 		Collections.sort(tps, new tupleComp(this.orders));
 	}

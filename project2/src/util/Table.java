@@ -42,14 +42,13 @@ public class Table {
 				e.printStackTrace();
 			}
 		}
-		
 		br = DBCat.getTabReader(name);
 	}
 	
-	public Table(String name, BufferedReader br) {
+	public Table(String name, List<String> schema, BufferedReader br) {
 		this.name = name;
+		this.schema = schema;
 		this.br = br;
-		schema = DBCat.schemas.get(name);
 	}
 	
 }
