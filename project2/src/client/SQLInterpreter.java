@@ -9,7 +9,6 @@ import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.statement.Statement;
 import operators.Operator;
 import util.DBCat;
-import util.Helpers;
 import util.SelState;
 
 /**

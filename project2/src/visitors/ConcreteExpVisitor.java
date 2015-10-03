@@ -1,8 +1,6 @@
 
 package visitors;
 
-import java.util.List;
-
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
@@ -11,10 +9,6 @@ import net.sf.jsqlparser.expression.operators.relational.GreaterThanEquals;
 import net.sf.jsqlparser.expression.operators.relational.MinorThan;
 import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
 import net.sf.jsqlparser.expression.operators.relational.NotEqualsTo;
-import net.sf.jsqlparser.schema.Column;
-import util.DBCat;
-import util.Helpers;
-import util.Tuple;
 
 /**
  * A abstract "concrete" class of the expression visitor.

@@ -106,7 +106,8 @@ public class SelState {
 	}
 	
 	/**
-	 * Constructor.
+	 * Constructor. It extracts all the binary expressions and 
+	 * analyze the relevant ones at each joining stage.
 	 * @param st the SQL statement
 	 */
 	public SelState(Statement st) {
