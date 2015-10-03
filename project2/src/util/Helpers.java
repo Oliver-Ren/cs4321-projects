@@ -66,6 +66,26 @@ public class Helpers {
 	}
 	
 	/**
+	 * Get the index of a tp's attribute.
+	 * @param tp the tuple
+	 * @param attr the attribute
+	 * @param schema the schema
+	 * @return the position of the attribute
+	 */
+	public static int getAttrIdx(Tuple tp, String attr, List<String> schema) {
+		int idx = schema.indexOf(attr);
+		if (idx != -1) return idx;
+		
+		for(int i = 0; i < schema.size(); i++) {
+			String colName = getColName(schema.get(i));
+			if (colName.equals(attr))
+				return i;
+		}
+		
+		return -1;
+	}
+	
+	/**
 	 * Obtain the tuple's attribute.
 	 * @param tp the tuple
 	 * @param attr the attribute
@@ -73,15 +93,8 @@ public class Helpers {
 	 * @return the long value of the attribute
 	 */
 	public static Long getAttr(Tuple tp, String attr, List<String> schema) {
-		int idx = schema.indexOf(attr);
+		int idx = getAttrIdx(tp, attr, schema);
 		if (idx != -1) return (long) tp.get(idx);
-		
-		for(int i = 0; i < schema.size(); i++) {
-			String colName = getColName(schema.get(i));
-			if (colName.equals(attr))
-				return (long) tp.get(i);
-		}
-		
 		return null;
 	}
 	

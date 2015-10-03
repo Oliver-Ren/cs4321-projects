@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.sf.jsqlparser.statement.select.OrderByElement;
+import util.Helpers;
 import util.Tuple;
 
 /**
@@ -55,7 +56,7 @@ public class SortOperator extends UnaryOperator {
 		}
 		
 		for (OrderByElement obe : orders)
-			this.orders.add(child.schema().indexOf(obe.toString()));
+			this.orders.add(Helpers.getAttrIdx(tp, obe.toString(), child.schema()));
 		
 		Collections.sort(tps, new tupleComp(this.orders));
 	}
