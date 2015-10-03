@@ -1,18 +1,21 @@
 package util;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
 
 import operators.*;
 
+/**
+ * A class which parses the select statement 
+ * and builds the operator tree.
+ * @author Guantian Zheng (gz94)
+ *
+ */
 public class SelState {
 
 	public Select sel;
@@ -31,10 +34,20 @@ public class SelState {
 	
 	public Operator root = null;
 	
+	/**
+	 * Return a table according to its index in the FROM clause.
+	 * @param idx the index
+	 * @return the table
+	 */
 	private Table getTable(int idx) {
 		return DBCat.getTable(froms.get(idx));
 	}
 	
+	/**
+	 * The max index of a list of tables in FROM.
+	 * @param tabs the list of tables
+	 * @return the last index
+	 */
 	private int lastIdx(List<String> tabs) {
 		if (tabs == null) return froms.size() - 1;
 		int idx = 0;
@@ -44,14 +57,30 @@ public class SelState {
 		return idx;
 	}
 
+	/**
+	 * Get the select condition of the idx'th
+	 * table.
+	 * @param idx the index
+	 * @return the final select condition
+	 */
 	private Expression getSelCond(int idx) {
 		return fnSelCond.get(froms.get(idx));
 	}
 	
+	/**
+	 * Get the join condition of the idx'th
+	 * table with its precedents in FROM.
+	 * @param idx the index
+	 * @return the join condition
+	 */
 	private Expression getJoinCond(int idx) {
 		return fnJoinCond.get(froms.get(idx));
 	}
 	
+	/**
+	 * Build the operator tree according to conditions in fnSelCond 
+	 * and fnJoinCond.
+	 */
 	private void buildOpTree() {
 		Operator curRoot = new ScanOperator(getTable(0));
 		if (getSelCond(0) != null)
@@ -76,6 +105,10 @@ public class SelState {
 		root = curRoot;
 	}
 	
+	/**
+	 * Constructor.
+	 * @param st the SQL statement
+	 */
 	public SelState(Statement st) {
 		sel = (Select) st;
 		ps = (PlainSelect) sel.getSelectBody();

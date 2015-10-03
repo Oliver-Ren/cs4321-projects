@@ -6,7 +6,11 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 
-
+/**
+ * The abstraction of a table file.
+ * @author Guantian Zheng (gz94)
+ *
+ */
 public class Table {
 	
 	public String name = "";
@@ -14,6 +18,10 @@ public class Table {
 	
 	private BufferedReader br = null;
 	
+	/**
+	 * Read the next line of the table.
+	 * @return the next line wrapped in a Tuple
+	 */
 	public Tuple nextTuple() {
 		try {
 			String line = br.readLine();
@@ -33,6 +41,10 @@ public class Table {
 		return null;
 	}
 	
+	/**
+	 * Close the current buffered reader 
+	 * and open a new one.
+	 */
 	public void reset() {
 		if (br != null) {
 			try {
@@ -45,6 +57,12 @@ public class Table {
 		br = DBCat.getTabReader(name);
 	}
 	
+	/**
+	 * Constructor.
+	 * @param name the table name / alias
+	 * @param schema the schema
+	 * @param br the file reader
+	 */
 	public Table(String name, List<String> schema, BufferedReader br) {
 		this.name = name;
 		this.schema = schema;

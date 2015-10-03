@@ -2,10 +2,20 @@ package operators;
 
 import util.Tuple;
 
+/**
+ * Operator dealing with DISTINCT.
+ * @author Guantian Zheng (gz94)
+ *
+ */
 public class DuplicateEliminationOperator extends UnaryOperator {
 
 	Tuple last = null;
 	
+	/**
+	 * The current tuple is checked against the last 
+	 * one returned. If equal skip it.
+	 * @return the next nun-duplicate tuple
+	 */
 	@Override
 	public Tuple getNextTuple() {
 		if (last == null) {
@@ -21,11 +31,10 @@ public class DuplicateEliminationOperator extends UnaryOperator {
 		}
 	}
 
-	@Override
-	public void reset() {
-		child.reset();
-	}
-
+	/**
+	 * The child needs to be a sort operator.
+	 * @param sop a sort operator
+	 */
 	public DuplicateEliminationOperator(SortOperator sop) {
 		child = sop;
 	}
