@@ -26,7 +26,7 @@ public class EndToEndTest {
 		
 		private void testFunction() {
 			SQLInterpreter itpr = new SQLInterpreter();
-			itpr.execute(inPath, outPath, true);
+			itpr.execute(inPath, outPath, false);
 			String[] results = Diff.dirList(outPath);
 			for (String s : results) {
 				if (!Diff.areSame(outPath + File.separator + s, 

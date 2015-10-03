@@ -35,7 +35,7 @@ public class DuplicateEliminationOperator extends UnaryOperator {
 	 * The child needs to be a sort operator.
 	 * @param sop a sort operator
 	 */
-	public DuplicateEliminationOperator(SortOperator sop) {
+	public DuplicateEliminationOperator(Operator sop) {
 		child = sop;
 	}
 	

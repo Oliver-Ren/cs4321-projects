@@ -39,13 +39,11 @@ public class SQLInterpreter {
 					if (!isMute) {
 						System.out.println("Parsing: " + statement);
 					}
-					Operator root = selState.root;
-					root.dump(ps);
-					// root.dump(System.out.);
+					selState.root.dump(ps);
 					ps.close();
 					counter++;
 				} catch (Exception e) {
-					//System.out.println("Exception when parsing query" + counter);
+					System.out.println("Exception when parsing query" + counter);
 					e.printStackTrace();
 					continue;
 				}

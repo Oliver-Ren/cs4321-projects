@@ -98,8 +98,9 @@ public class SelState {
 		if (sels != null)
 			curRoot = new ProjectOperator(curRoot, sels);
 		if (dist != null) {
-			curRoot = new SortOperator(curRoot, new ArrayList<OrderByElement>());
-			curRoot = new DuplicateEliminationOperator((SortOperator) curRoot);
+			if (orders != null)
+				curRoot = new SortOperator(curRoot, new ArrayList<OrderByElement>());
+			curRoot = new DuplicateEliminationOperator(curRoot);
 		}
 		
 		root = curRoot;
