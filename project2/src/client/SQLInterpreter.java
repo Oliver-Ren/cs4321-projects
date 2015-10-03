@@ -21,6 +21,13 @@ import util.SelState;
  *
  */
 public class SQLInterpreter {
+	
+	/**
+	 * Execute the parser with the given input / output directory.
+	 * @param inPath input directory
+	 * @param outPath output directory
+	 * @param isMute whether to print debugging info
+	 */
 	public void execute(String inPath, String outPath, boolean isMute) {
 		DBCat.getInstance();
 		DBCat.resetDirs(inPath, outPath);
@@ -54,6 +61,10 @@ public class SQLInterpreter {
 		
 	}
 	
+	/**
+	 * The main function invoked by jar.
+	 * @param args argument list
+	 */
 	public static void main(String[] args) {
 		if (args.length != 2) {
 			throw new IllegalArgumentException("Number of arguments not right");

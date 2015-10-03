@@ -11,11 +11,20 @@ import net.sf.jsqlparser.statement.*;
 import net.sf.jsqlparser.statement.select.*;
 import util.DBCat;
 
+/**
+ * Preliminary tests of the JSqlParser interface.
+ * @author Guantian Zheng (gz94)
+ *
+ */
 public class tests {
 	
 	public static final PrintStream so = System.out;
 	
-	public static void main(String[] args) {
+	/**
+	 * Some random tests and printing.
+	 * @param args argument list
+	 */
+	public static void tests(String[] args) {
 		DBCat.getInstance();
 		
 		try {

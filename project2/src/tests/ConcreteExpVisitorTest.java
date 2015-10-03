@@ -14,8 +14,18 @@ import util.Tuple;
 import visitors.ConcreteExpVisitor;
 import visitors.SelExpVisitor;
 
+/**
+ * Test of concrete expression visitor.
+ * @author Chengxiang Ren (cr486)
+ *
+ */
 public class ConcreteExpVisitorTest {
 
+	/**
+	 * Test the visitor with constant conditions.
+	 * @param query
+	 * @return true / false
+	 */
 	private boolean testVisitor(String query) {
 		ConcreteExpVisitor vi = new SelExpVisitor(null);
 		try {
@@ -28,6 +38,12 @@ public class ConcreteExpVisitorTest {
 		return vi.getFinalCondition();
 	}
 	
+	/**
+	 * Test the visitor with a tuple with specified schema. 
+	 * @param query
+	 * @param cols the columns of the tuple
+	 * @return true / false
+	 */
 	private boolean testVisitorWithTuple(String query, int[] cols) {
 		DBCat.getInstance();
 		Tuple tuple = new Tuple(cols);
@@ -43,6 +59,9 @@ public class ConcreteExpVisitorTest {
 		return vi.getFinalCondition();
 	}
 	
+	/**
+	 * Test = condition.
+	 */
 	@Test
 	public void testVisitEqualsTo() {
 		String query = "select * from aa where 1=2";
@@ -55,6 +74,9 @@ public class ConcreteExpVisitorTest {
 		assertEquals(true, testVisitor(query));
 	}
 	
+	/**
+	 * Test != condition.
+	 */
 	@Test
 	public void testVisitNotEqualsTo() {
 		String query = "select * from aa where 1 <> 2";
@@ -70,6 +92,9 @@ public class ConcreteExpVisitorTest {
 		assertEquals(true, testVisitor(query));
 	}
 	
+	/**
+	 * Test > condition.
+	 */
 	@Test
 	public void testVisitGreaterThan() {
 		String query = "select * from aa where 1 > 2";
@@ -85,6 +110,9 @@ public class ConcreteExpVisitorTest {
 		assertEquals(true, testVisitor(query));
 	}
 	
+	/**
+	 * Test >= condition.
+	 */
 	@Test
 	public void testVisitGreaterThanEquals() {
 		String query = "select * from aa where 1 >= 2";
@@ -100,6 +128,9 @@ public class ConcreteExpVisitorTest {
 		assertEquals(true, testVisitor(query));
 	}
 	
+	/**
+	 * Test < condition.
+	 */
 	@Test
 	public void testVisitMinorThan() {
 		String query = "select * from aa where 1 < 2";
@@ -115,6 +146,9 @@ public class ConcreteExpVisitorTest {
 		assertEquals(false, testVisitor(query));
 	}
 	
+	/**
+	 * Test <= condition.
+	 */
 	@Test
 	public void testVisitMinorThanEquals() {
 		String query = "select * from aa where 1 <= 2";
@@ -130,6 +164,9 @@ public class ConcreteExpVisitorTest {
 		assertEquals(false, testVisitor(query));
 	}
 	
+	/**
+	 * Test AND expression.
+	 */
 	@Test
 	public void testAndExpression() {
 		String query = "select * from aa where 1 <= 2 and 1 = 1";
@@ -145,6 +182,9 @@ public class ConcreteExpVisitorTest {
 		assertEquals(true, testVisitor(query));
 	}
 	
+	/**
+	 * Test column expression.
+	 */
 	@Test
 	public void testColumn() {
 		String query = "select * from Sailors where Sailors.A = 1";
