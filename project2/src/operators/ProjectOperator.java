@@ -12,11 +12,20 @@ import net.sf.jsqlparser.statement.select.SelectItem;
 import util.Helpers;
 import util.Tuple;
 
+/**
+ * The project operator selecting certain attributes 
+ * from each tuple.
+ * @author Guantian Zheng (gz94)
+ *
+ */
 public class ProjectOperator extends UnaryOperator {
 	
+	/**
+	 * Generate a projected tuple from the schema.
+	 * @return the projected tuple
+	 */
 	@Override
 	public Tuple getNextTuple() {
-		// TODO Auto-generated method stub
 		Tuple tp = child.getNextTuple();
 		if (tp == null) return null;
 		
@@ -30,12 +39,12 @@ public class ProjectOperator extends UnaryOperator {
 		return new Tuple(cols);
 	}
 
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		child.reset();
-	}
-
+	/**
+	 * Construct a project operator. Both AllColumns, AllTableColumns 
+	 * and SelectExpressionItem are considered.
+	 * @param child the child
+	 * @param sis the list of selected columns
+	 */
 	public ProjectOperator(Operator child, List<SelectItem> sis) {
 		this.child = child;
 		
@@ -61,7 +70,7 @@ public class ProjectOperator extends UnaryOperator {
 				else {
 					String colName = col.getColumnName();
 					for (String tabCol : chdScm) {
-						if (tabCol.split(".")[1].equals(colName)) {
+						if (Helpers.getColName(tabCol).equals(colName)) {
 							tmpScm.add(tabCol);
 							continue;
 						}

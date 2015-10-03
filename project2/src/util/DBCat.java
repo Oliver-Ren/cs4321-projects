@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,24 +24,29 @@ import java.util.List;
  */
 public class DBCat {
 	private static DBCat instance;	// The instance of DBCat;
-	
-	public static String inputDir = "samples/input/";
-	public static String outputDir = "samples/output/";
-	public static String qryPath = ""; // inputDir + "queries.sql";
-	public static String dbDir = ""; // inputDir + "db/";
-	public static String dataDir = ""; // dbDir + "data/";
-	public static String schemaPath = ""; // dbDir + "schema.txt";
+
+	public static String inputDir = "samples" + File.separator + "input" + File.separator;
+	public static String outputDir = "samples" + File.separator + "output" + File.separator;
+	public static String qryPath = "";
+	public static String dbDir = "";
+	public static String dataDir = "";
+	public static String schemaPath = "";
 	
 	public static HashMap<String, List<String>> schemas = new HashMap<String, List<String>>();
 	public static HashMap<String, String> aliases = new HashMap<String, String>();
 	
+	/**
+	 * Reset the input and output directory.
+	 * @param input the input directory
+	 * @param output the output directory
+	 */
 	public static void resetDirs(String input, String output) {
 		if (input != null) {
-			inputDir = input;
-			qryPath = inputDir + File.separator + "queries.sql";
-			dbDir = inputDir + File.separator + "db/";
-			dataDir = dbDir + File.separator + "data/";
-			schemaPath = dbDir + File.separator + "schema.txt";
+			inputDir = input + File.separator;
+			qryPath = inputDir + "queries.sql";
+			dbDir = inputDir + "db" + File.separator;
+			dataDir = dbDir + "data" + File.separator;
+			schemaPath = dbDir + "schema.txt";
 		}
 		
 		if (output != null) {
@@ -50,16 +54,31 @@ public class DBCat {
 		}
 	}
 	
+	/**
+	 * Generate the file path of a table.
+	 * @param tabName the table's name
+	 * @return the file path
+	 */
 	public static String tabPath(String tabName) {
 		return dataDir + tabName + ".csv";
 	}
 	
+	/**
+	 * Obtain the origianl file name for aliases.
+	 * @param tabName the table name or an alias
+	 * @return the original name
+	 */
 	private static String origName(String tabName) {
 		if (aliases.containsKey(tabName))
 			return aliases.get(tabName);
 		return tabName;
 	}
 	
+	/**
+	 * Get a buffered reader of the table file.
+	 * @param fileName the file name
+	 * @return the buffered reader
+	 */
 	public static BufferedReader getTabReader(String fileName) {
 		fileName = origName(fileName);
 		try {
@@ -71,10 +90,20 @@ public class DBCat {
 		return null;
 	}
 	
+	/**
+	 * Acquire the table schema.
+	 * @param tabName the table name
+	 * @return the schema as a list of strings
+	 */
 	public static List<String> getSchema(String tabName) {
 		return schemas.get(origName(tabName));
 	}
 	
+	/**
+	 * Create a table with schema and alias.
+	 * @param tabName the table name
+	 * @return the created table
+	 */
 	public static Table getTable(String tabName) {
 		BufferedReader br = getTabReader(tabName);
 		if (br == null) return null;

@@ -7,11 +7,9 @@ import java.io.StringReader;
 import operators.ScanOperator;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.parser.CCJSqlParser;
-import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.*;
 import net.sf.jsqlparser.statement.select.*;
 import util.DBCat;
-import util.Table;
 
 public class tests {
 	

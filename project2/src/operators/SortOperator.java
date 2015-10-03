@@ -5,17 +5,26 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Queue;
 
 import net.sf.jsqlparser.statement.select.OrderByElement;
 import util.Tuple;
 
+/**
+ * The sort operator which acts according to 
+ * the order by elements.
+ * @author Guantian Zheng (gz94)
+ *
+ */
 public class SortOperator extends UnaryOperator {
 	
 	List<Tuple> tps = new ArrayList<Tuple>();
 	List<Integer> orders = new ArrayList<Integer>();
 	private int curIdx = 0;
 	
+	/**
+	 * Since the whole table is buffered in memory, 
+	 * we can keep track of the next index to be read.
+	 */
 	@Override
 	public Tuple getNextTuple() {
 		// TODO Auto-generated method stub
@@ -23,12 +32,20 @@ public class SortOperator extends UnaryOperator {
 		return tps.get(curIdx++);
 	}
 
+	/**
+	 * Zero the current index.
+	 */
 	@Override
 	public void reset() {
 		// TODO Auto-generated method stub
 		curIdx = 0;
 	}
 
+	/**
+	 * Construct a sort operator.
+	 * @param child its child
+	 * @param orders the list of attributes to be ordered
+	 */
 	public SortOperator(Operator child, List<OrderByElement> orders) {
 		this.child = child;
 		
@@ -38,11 +55,17 @@ public class SortOperator extends UnaryOperator {
 		}
 		
 		for (OrderByElement obe : orders)
-			this.orders.add(schema().indexOf(obe.toString()));
+			this.orders.add(child.schema().indexOf(obe.toString()));
 		
 		Collections.sort(tps, new tupleComp(this.orders));
 	}
 	
+	/**
+	 * A comparator for tuples. It compares the tupes in 
+	 * the specified order.
+	 * @author Guantian Zheng (gz94)
+	 *
+	 */
 	public class tupleComp implements Comparator<Tuple> {
 		List<Integer> orders = null;
 		HashSet<Integer> set = null;

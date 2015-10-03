@@ -12,11 +12,12 @@ import util.DBCat;
 import util.SelState;
 import util.Tuple;
 import visitors.ConcreteExpVisitor;
+import visitors.SelExpVisitor;
 
 public class ConcreteExpVisitorTest {
 
 	private boolean testVisitor(String query) {
-		ConcreteExpVisitor vi = new ConcreteExpVisitor();
+		ConcreteExpVisitor vi = new SelExpVisitor(null);
 		try {
 			CCJSqlParser parser = new CCJSqlParser(new StringReader(query));
 			SelState ss = new SelState(parser.Statement());
@@ -30,10 +31,11 @@ public class ConcreteExpVisitorTest {
 	private boolean testVisitorWithTuple(String query, int[] cols) {
 		DBCat.getInstance();
 		Tuple tuple = new Tuple(cols);
-		ConcreteExpVisitor vi = new ConcreteExpVisitor(tuple, DBCat.getSchema("Sailors"));
+		SelExpVisitor vi = new SelExpVisitor(DBCat.getSchema("Sailors"));
 		try {
 			CCJSqlParser parser = new CCJSqlParser(new StringReader(query));
 			SelState ss = new SelState(parser.Statement());
+			vi.setTuple(tuple);
 			ss.where.accept(vi);	
 		} catch (Exception e) {
 			e.printStackTrace();

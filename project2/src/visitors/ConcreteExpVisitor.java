@@ -1,8 +1,6 @@
 
 package visitors;
 
-import java.util.List;
-
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
@@ -11,32 +9,18 @@ import net.sf.jsqlparser.expression.operators.relational.GreaterThanEquals;
 import net.sf.jsqlparser.expression.operators.relational.MinorThan;
 import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
 import net.sf.jsqlparser.expression.operators.relational.NotEqualsTo;
-import net.sf.jsqlparser.schema.Column;
-import util.DBCat;
-import util.Helpers;
-import util.Tuple;
 
-public class ConcreteExpVisitor extends AbstractExpVisitor {
+/**
+ * A abstract "concrete" class of the expression visitor.
+ * @author Chengxiang Ren (cr486)
+ *
+ */
+public abstract class ConcreteExpVisitor extends AbstractExpVisitor {
 	// the current numeric value holding in the visitor.
 	protected long currNumericValue = 0;
 	// the current condition holding in the visitor.
 	protected boolean currCondition = false;
 	// the current tuple the visitor holds.
-	private Tuple tuple = null;
-	private List<String> schema = null;
-	
-	public ConcreteExpVisitor() {
-		
-	}
-	
-	public ConcreteExpVisitor(Tuple tuple, List<String> schema) {
-		this.tuple = tuple;
-		this.schema = schema;
-	}
-	
-	public final void setTuple(Tuple tuple) {
-		this.tuple = tuple;
-	}
 	
 	/**
 	 * Returns the final condition of the visitor.
@@ -75,13 +59,6 @@ public class ConcreteExpVisitor extends AbstractExpVisitor {
 		boolean rightCondition = currCondition;
 		// update the condition.
 		currCondition = leftCondition && rightCondition;
-	}
-
-	@Override
-	public void visit(Column arg0) {
-		String tableName = arg0.getTable().getName();
-		String colName = arg0.getColumnName();
-		currNumericValue = Helpers.getAttr(tuple, colName, schema);
 	}
 
 	/**

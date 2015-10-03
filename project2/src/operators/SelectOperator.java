@@ -1,38 +1,46 @@
 package operators;
 
 import net.sf.jsqlparser.expression.Expression;
-import util.Table;
+import util.Helpers;
 import util.Tuple;
-import visitors.ConcreteExpVisitor;
+import visitors.SelExpVisitor;
 
+/**
+ * The select operator which filters tuples from 
+ * its child according to the expression.
+ * @author Guantian Zheng (gz94)
+ *
+ */
 public class SelectOperator extends UnaryOperator {
 
 	Expression exp = null;
-	ConcreteExpVisitor vi = null;
+	SelExpVisitor sv = null;
 	
+	/**
+	 * Keep skipping until the tuple 
+	 * satisfies the expression.
+	 */
 	@Override
 	public Tuple getNextTuple() {
 		// TODO Auto-generated method stub
 		Tuple tp = null;
 		while ((tp = child.getNextTuple()) != null) {
 			if (exp == null) return tp;
-			vi.setTuple(tp);
-			exp.accept(vi);
-			if (vi.getFinalCondition()) return tp;
+			if (Helpers.getSelRes(tp, exp, sv))
+				return tp;
 		}
 		return null;
 	}
 
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		child.reset();
-	}
-
+	/**
+	 * Construct a select operator.
+	 * @param sop a scan operator as its child
+	 * @param exp select conditions
+	 */
 	public SelectOperator(ScanOperator sop, Expression exp) {
 		child = sop;
 		this.exp = exp;
-		vi = new ConcreteExpVisitor(null, child.schema());
+		sv = new SelExpVisitor(child.schema());
 	}
 	
 }
