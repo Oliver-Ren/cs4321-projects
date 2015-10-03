@@ -15,8 +15,8 @@ _How do I, as a developer, start working on the project?_
 
 We categorize conditions from the WHERE clause into:
 	1. Comparison between constants.
-	2. Inner-table select condition.
-	3. Inter-table join condition.
+	2. In-table select condition.
+	3. Cross-table join condition.
 
 At the start of parsing, all conditions are extracted by recursively breaking up the AND expressions. Then for each table we record: 1) its select conditions, and 2) its join condition with all of the __preceding__ tables. This way, we could move along the FROM tables, and focus only on relevant conditions when a new table needs to be joined with the current left sub-tree. And of course, constant conditions are handled before everything.
 

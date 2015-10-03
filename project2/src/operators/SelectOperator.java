@@ -22,7 +22,6 @@ public class SelectOperator extends UnaryOperator {
 	 */
 	@Override
 	public Tuple getNextTuple() {
-		// TODO Auto-generated method stub
 		Tuple tp = null;
 		while ((tp = child.getNextTuple()) != null) {
 			if (exp == null) return tp;
