@@ -62,7 +62,7 @@ public class SortOperator extends UnaryOperator {
 	}
 	
 	/**
-	 * A comparator for tuples. It compares the tupes in 
+	 * A comparator for tuples. It compares the tuples in 
 	 * the specified order.
 	 * @author Guantian Zheng (gz94)
 	 *
