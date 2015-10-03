@@ -19,6 +19,7 @@ import java.util.List;
  * @author Chengxiang Ren
  *
  */
+
 public class Diff {
 	/**
 	 * Returns a list of file names under this path
@@ -113,10 +114,10 @@ public class Diff {
 	}
 	
 	/**
-	 * This method is under debugging. Do not use!!!
+	 * This method returns true if the two files have the smaae content.
 	 * @param path1
 	 * @param path2
-	 * @return
+	 * @return true only if the two files have the same content.
 	 */
 	public static boolean areSame(String path1, String path2) {
 		

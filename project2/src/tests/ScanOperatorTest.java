@@ -15,6 +15,11 @@ import org.junit.Test;
 
 import util.DBCat;
 
+/** This is the unit test for the scan operator.
+ * 
+ * @author Mingyuan Huang, (MH2239)
+ *
+ */
 public class ScanOperatorTest {
 	private ScanOperator getScanOperator(int queryId) {
 		ScanOperator sop = null;
@@ -42,7 +47,7 @@ public class ScanOperatorTest {
 		return sop;
 	}
 	
-	
+	// test the function of get next tuple
 	@Test
 	public void testGetNextTuple() {
 		// SELECT * FROM Sailors;
@@ -56,6 +61,7 @@ public class ScanOperatorTest {
 		assertEquals(null, scanOptr.getNextTuple());
 	}
 
+	// test the function of reset operator.
 	@Test
 	public void testReset() {
 		ScanOperator scanOptr = getScanOperator(0);

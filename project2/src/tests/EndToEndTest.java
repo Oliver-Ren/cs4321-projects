@@ -9,6 +9,14 @@ import org.junit.Test;
 
 import client.SQLInterpreter;
 
+/**
+ * This is the end-to-end test class which tests 
+ * every differect functions of the interpretor in througb out 
+ * the whole process.
+ * 
+ * @author Mingyuan Huang (MH2239)
+ *
+ */
 public class EndToEndTest {
 	// The test harness for efficient tests.
 	private static class Harness {
