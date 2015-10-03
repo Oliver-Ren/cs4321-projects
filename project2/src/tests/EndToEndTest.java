@@ -117,6 +117,14 @@ public class EndToEndTest {
 		harness.testFunction();
 	}
 	
+	/**
+	 * Test case for queries of distinct.
+	 */
+	@Test
+	public void testDistinct() {
+		Harness harness = new Harness("distinct");
+		harness.testFunctionNoOrder();
+	}
 	
 	/**
 	 * Test case for sample queries.

@@ -33,6 +33,10 @@ public class ProjectOperator extends UnaryOperator {
 		int i = 0;
 		for (String attr : schema) {
 			Long val = Helpers.getAttr(tp, attr, child.schema());
+			List<String> ls = child.schema;
+			if (val == null) {
+				System.out.println("");
+			}
 			cols[i++] = val.intValue();
 		}
 		

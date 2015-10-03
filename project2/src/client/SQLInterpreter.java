@@ -45,7 +45,8 @@ public class SQLInterpreter {
 					ps.close();
 					counter++;
 				} catch (Exception e) {
-					System.out.println("Exception when parsing query" + counter);
+					//System.out.println("Exception when parsing query" + counter);
+					e.printStackTrace();
 					continue;
 				}
 			}
