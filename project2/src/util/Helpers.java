@@ -3,6 +3,7 @@ package util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import visitors.JoinExpVisitor;
@@ -11,7 +12,10 @@ import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.statement.select.AllColumns;
 import net.sf.jsqlparser.statement.select.FromItem;
+import net.sf.jsqlparser.statement.select.OrderByElement;
+import net.sf.jsqlparser.statement.select.SelectItem;
 
 /**
  * The helper functions useful througout the project.
@@ -162,6 +166,31 @@ public class Helpers {
 		for (int i = 1; i < exps.size(); i++)
 			ret = new AndExpression(ret, exps.get(i));
 		return ret;
+	}
+	
+	/**
+	 * Check if the ordered elements are not selected.
+	 * @param sels the selected items
+	 * @param orders the ordered elements
+	 * @return true / false
+	 */
+	public static boolean projLossy(List<SelectItem> sels, List<OrderByElement> orders) {
+		if (sels.get(0) instanceof AllColumns)
+			return false;
+		
+		if (orders == null || orders.isEmpty())
+			return false;
+		
+		HashSet<String> selCols = new HashSet<String>();
+		HashSet<String> ordCols = new HashSet<String>();
+		
+		for (SelectItem si : sels)
+			selCols.add(si.toString());
+		for (OrderByElement obe : orders)
+			ordCols.add(obe.toString());
+		
+		ordCols.removeAll(selCols);
+		return !ordCols.isEmpty();
 	}
 	
 }

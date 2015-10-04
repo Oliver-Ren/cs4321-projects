@@ -30,18 +30,31 @@ public class Tuple {
 	}
 	
 	/**
+	 * Hashcode of the tuple.
+	 * @return the hash code of the string form
+	 */
+	@Override
+	public int hashCode() {
+		return toString().hashCode();
+	}
+	
+	/**
 	 * Overriding the equals method by
 	 * comparing two arrays element by element.
 	 */
 	@Override
 	public boolean equals(Object obj) {
 		Tuple tp = (Tuple) obj;
-		if (this.cols.length != tp.cols.length)
+		
+		int len1 = this.cols.length;
+		int len2 = tp.cols.length;
+		if (len1 != len2)
 			return false;
-		int len = this.cols.length;
-		for (int i = 0; i < len; i++)
+		
+		for (int i = 0; i < len1; i++)
 			if (this.cols[i] != tp.cols[i])
 				return false;
+		
 		return true;
 	}
 	

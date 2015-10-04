@@ -29,4 +29,12 @@ public abstract class UnaryOperator extends Operator {
 			return this.schema;
 		return child.schema();
 	}
+	
+	/**
+	 * Constructor.
+	 * @param child the child
+	 */
+	public UnaryOperator(Operator child) {
+		this.child = child;
+	}
 }

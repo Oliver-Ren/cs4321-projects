@@ -36,7 +36,7 @@ public class DuplicateEliminationOperator extends UnaryOperator {
 	 * @param sop a sort operator
 	 */
 	public DuplicateEliminationOperator(Operator sop) {
-		child = sop;
+		super(sop);
 	}
 	
 }

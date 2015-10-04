@@ -46,7 +46,7 @@ public class ProjectOperator extends UnaryOperator {
 	 * @param sis the list of selected columns
 	 */
 	public ProjectOperator(Operator child, List<SelectItem> sis) {
-		this.child = child;
+		super(child);
 		
 		List<String> chdScm = child.schema();
 		List<String> tmpScm = new ArrayList<String>();

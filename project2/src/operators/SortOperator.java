@@ -48,7 +48,7 @@ public class SortOperator extends UnaryOperator {
 	 * @param orders the list of attributes to be ordered
 	 */
 	public SortOperator(Operator child, List<OrderByElement> orders) {
-		this.child = child;
+		super(child);
 		
 		Tuple tp = null;
 		while ((tp = child.getNextTuple()) != null) {
@@ -56,9 +56,8 @@ public class SortOperator extends UnaryOperator {
 		}
 		
 		for (OrderByElement obe : orders) {
-			int idx = Helpers.getAttrIdx(obe.toString(), child.schema());
-			if (idx != -1)
-				this.orders.add(idx);
+			this.orders.add(Helpers.getAttrIdx(obe.toString(), child.schema()));
+			
 		}
 		
 		Collections.sort(tps, new tupleComp(this.orders));

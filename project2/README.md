@@ -27,6 +27,10 @@ We categorize conditions from the WHERE clause into:
 
 At the start of parsing, all conditions are extracted by recursively breaking up the AND expressions. Then for each table we record: 1) its select conditions, and 2) its join condition with all of the __preceding__ tables. This way, we could move along the FROM tables, and focus only on relevant conditions when a new table needs to be joined with the current left sub-tree. And of course, constant conditions are handled before everything.
 
+## ORDER BY & DISTINCT
+
+We implemented the SortOperator as per the instructions. If certain ordered elements are not projected (e.g., SELECT S.A FROM S ORDER BY S.B) and DISTINCT is required, we have another operator using HashSet to maintain the order.
+
 ## Testing
 
 We make use of two testing strategies

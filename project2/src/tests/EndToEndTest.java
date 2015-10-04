@@ -52,6 +52,7 @@ public class EndToEndTest {
 			for (String s : results) {
 				if (!Diff.containSameTuples(outPath + File.separator + s, 
 					expectedPath + File.separator + s)) {
+					System.out.println("FAILED: " + outPath + File.separator + s);
 					fail( "The " + s + " is not same as expected." );
 				}
 				

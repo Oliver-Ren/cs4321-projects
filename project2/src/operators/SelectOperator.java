@@ -37,7 +37,8 @@ public class SelectOperator extends UnaryOperator {
 	 * @param exp select conditions
 	 */
 	public SelectOperator(ScanOperator sop, Expression exp) {
-		child = sop;
+		super(sop);
+		
 		this.exp = exp;
 		sv = new SelExpVisitor(child.schema());
 	}

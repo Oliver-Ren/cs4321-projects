@@ -42,9 +42,9 @@ public class SQLInterpreter {
 							+ File.separator + "query" + counter);
 					PrintStream ps = new PrintStream(new BufferedOutputStream(
 						new FileOutputStream(file)));
-					if (!isMute) {
+					// if (!isMute) {
 						System.out.println("Parsing: " + statement);
-					}
+					// }
 					SelState selState = new SelState(statement);
 					selState.root.dump(ps);
 					ps.close();

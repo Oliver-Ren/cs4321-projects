@@ -95,12 +95,19 @@ public class SelState {
 		
 		if (orders != null)
 			curRoot = new SortOperator(curRoot, orders);
+		
 		if (sels != null)
 			curRoot = new ProjectOperator(curRoot, sels);
+		
 		if (dist != null) {
-			if (orders != null)
-				curRoot = new SortOperator(curRoot, orders);
-			curRoot = new DuplicateEliminationOperator(curRoot);
+			if (orders == null) {
+				curRoot = new SortOperator(curRoot, new ArrayList<OrderByElement>());
+			}
+			
+			if (Helpers.projLossy(sels, orders))
+				curRoot = new HshDupElimOperator(curRoot);
+			else
+				curRoot = new DuplicateEliminationOperator(curRoot);
 		}
 		
 		root = curRoot;
