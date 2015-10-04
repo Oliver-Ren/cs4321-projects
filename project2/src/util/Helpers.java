@@ -72,7 +72,7 @@ public class Helpers {
 	 * @param schema the schema
 	 * @return the position of the attribute
 	 */
-	public static int getAttrIdx(Tuple tp, String attr, List<String> schema) {
+	public static int getAttrIdx(String attr, List<String> schema) {
 		int idx = schema.indexOf(attr);
 		if (idx != -1) return idx;
 		
@@ -93,7 +93,7 @@ public class Helpers {
 	 * @return the long value of the attribute
 	 */
 	public static Long getAttr(Tuple tp, String attr, List<String> schema) {
-		int idx = getAttrIdx(tp, attr, schema);
+		int idx = getAttrIdx(attr, schema);
 		if (idx != -1) return (long) tp.get(idx);
 		return null;
 	}

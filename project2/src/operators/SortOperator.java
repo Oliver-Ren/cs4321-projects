@@ -55,8 +55,11 @@ public class SortOperator extends UnaryOperator {
 			tps.add(tp);
 		}
 		
-		for (OrderByElement obe : orders)
-			this.orders.add(Helpers.getAttrIdx(tp, obe.toString(), child.schema()));
+		for (OrderByElement obe : orders) {
+			int idx = Helpers.getAttrIdx(obe.toString(), child.schema());
+			if (idx != -1)
+				this.orders.add(idx);
+		}
 		
 		Collections.sort(tps, new tupleComp(this.orders));
 	}
