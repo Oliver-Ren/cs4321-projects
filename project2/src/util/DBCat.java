@@ -52,6 +52,38 @@ public class DBCat {
 		if (output != null) {
 			outputDir = output;
 		}
+		
+		resetSchemas();
+	}
+	
+	/**
+	 * Reset the schemas in the input directory.
+	 */
+	private static void resetSchemas() {
+		BufferedReader br;
+		schemas.clear();
+		
+		try {
+			br = new BufferedReader(new FileReader(schemaPath));
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				String[] scm = line.split(" ");
+				if (scm.length < 2) continue;
+				
+				String key = scm[0];
+				List<String> val = new ArrayList<String>();
+				for (int i = 1; i < scm.length; i++) {
+					val.add(scm[i]);
+				}
+				
+				schemas.put(key, val);
+			}
+			
+			br.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -113,28 +145,7 @@ public class DBCat {
 	// intentionally make the constructor private, which 
 	// avoids instances being created outside the class
 	private DBCat() {
-		BufferedReader br;
-		try {
-			br = new BufferedReader(new FileReader(schemaPath));
-			String line = null;
-			while ((line = br.readLine()) != null) {				
-				String[] scm = line.split(" ");
-				if (scm.length < 2) continue;
-				
-				String key = scm[0];
-				List<String> val = new ArrayList<String>();
-				for (int i = 1; i < scm.length; i++) {
-					val.add(scm[i]);
-				}
-				
-				schemas.put(key, val);
-			}
-			
-			br.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		resetDirs(inputDir, outputDir);
 	}
 	
 	/**
@@ -145,7 +156,6 @@ public class DBCat {
 	 */
 	public static DBCat getInstance() {
 		if (instance == null) {
-			resetDirs(inputDir, null);
 			instance = new DBCat();
 		}
 		return instance;

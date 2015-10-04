@@ -99,7 +99,7 @@ public class SelState {
 			curRoot = new ProjectOperator(curRoot, sels);
 		if (dist != null) {
 			if (orders != null)
-				curRoot = new SortOperator(curRoot, new ArrayList<OrderByElement>());
+				curRoot = new SortOperator(curRoot, orders);
 			curRoot = new DuplicateEliminationOperator(curRoot);
 		}
 		
@@ -121,7 +121,7 @@ public class SelState {
 		joins = ps.getJoins();
 		where = ps.getWhere();
 		orders = ps.getOrderByElements();
-		
+				
 		DBCat.aliases.clear();
 		if (from.getAlias() != null) {
 			DBCat.aliases.put(from.getAlias(), Helpers.getFromTab(from));
