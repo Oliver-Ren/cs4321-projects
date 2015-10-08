@@ -19,7 +19,7 @@ public class SelExpVisitor extends ConcreteExpVisitor {
 	
 	/**
 	 * Constructor.
-	 * @param schema the currrent schema
+	 * @param schema the current schema
 	 */
 	public SelExpVisitor(List<String> schema) {
 		this.schema = schema;
@@ -39,7 +39,7 @@ public class SelExpVisitor extends ConcreteExpVisitor {
 	 */
 	@Override
 	public void visit(Column arg0) {
-		currNumericValue = Helpers.getAttr(tuple, arg0.toString(), schema);
+		currNumericValue = Helpers.getAttrVal(tuple, arg0.toString(), schema);
 	}
 	
 }

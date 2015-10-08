@@ -49,16 +49,12 @@ public class SortOperator extends UnaryOperator {
 	 */
 	public SortOperator(Operator child, List<OrderByElement> orders) {
 		super(child);
-		
 		Tuple tp = null;
-		while ((tp = child.getNextTuple()) != null) {
-			tps.add(tp);
-		}
 		
-		for (OrderByElement obe : orders) {
+		while ((tp = child.getNextTuple()) != null)
+			tps.add(tp);
+		for (OrderByElement obe : orders)
 			this.orders.add(Helpers.getAttrIdx(obe.toString(), child.schema()));
-			
-		}
 		
 		Collections.sort(tps, new tupleComp(this.orders));
 	}

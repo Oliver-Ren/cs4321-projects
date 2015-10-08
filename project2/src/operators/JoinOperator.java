@@ -25,6 +25,7 @@ public class JoinOperator extends BinaryOperator {
 	private Tuple joinTp(Tuple tp1, Tuple tp2) {
 		int[] cols = new int[tp1.length() + tp2.length()];
 		int i = 0;
+		
 		for (int val : tp1.cols)
 			cols[i++] = val;
 		for (int val : tp2.cols)
@@ -44,9 +45,9 @@ public class JoinOperator extends BinaryOperator {
 		while (curLeft != null && curRight != null) {
 			if (exp == null)
 				ret = joinTp(curLeft, curRight);
-			else
-				if (Helpers.getJoinRes(curLeft, curRight, exp, jv))
-					ret = joinTp(curLeft, curRight);			
+			else if (Helpers.getJoinRes(curLeft, curRight, exp, jv))
+				ret = joinTp(curLeft, curRight);
+			
 			next();
 			if (ret != null) return ret;
 		}
@@ -83,7 +84,7 @@ public class JoinOperator extends BinaryOperator {
 		this.exp = exp;
 		curLeft = left.getNextTuple();
 		curRight = right.getNextTuple();
-		jv = new JoinExpVisitor(null, left.schema(), null, right.schema());
+		jv = new JoinExpVisitor(left.schema(), right.schema());
 	}
 	
 }

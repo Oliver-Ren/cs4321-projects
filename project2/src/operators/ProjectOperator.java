@@ -32,7 +32,7 @@ public class ProjectOperator extends UnaryOperator {
 		int[] cols = new int[schema.size()];
 		int i = 0;
 		for (String attr : schema) {
-			Long val = Helpers.getAttr(tp, attr, child.schema());
+			Long val = Helpers.getAttrVal(tp, attr, child.schema());
 			cols[i++] = val.intValue();
 		}
 		
@@ -62,10 +62,10 @@ public class ProjectOperator extends UnaryOperator {
 				allTabCols.add(si.toString().split(".")[0]);
 			else {
 				Column col = (Column) ((SelectExpressionItem) si).getExpression();
-				if (col.toString().indexOf('.') != -1) {// if (col.getTable() != null) {
-					String tab = col.toString().split("\\.")[0];
+				if (col.getTable() != null && (col.getTable().getName() != null)) {
+					String tab = col.getTable().getName();
 					if (allTabCols.contains(tab)) continue;
-					tmpScm.add(col.toString());
+					tmpScm.add(tab + '.' + col.getColumnName());
 				}
 				else {
 					String colName = col.getColumnName();

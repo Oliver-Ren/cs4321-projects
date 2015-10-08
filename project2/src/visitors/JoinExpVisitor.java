@@ -24,9 +24,9 @@ public class JoinExpVisitor extends ConcreteExpVisitor {
 	 * @param tp2 tuple 2
 	 * @param scm2 schema 2
 	 */
-	public JoinExpVisitor(Tuple tp1, List<String> scm1, Tuple tp2, List<String> scm2) {
-		this.tp1 = tp1; this.scm1 = scm1;
-		this.tp2 = tp2; this.scm2 = scm2;
+	public JoinExpVisitor(List<String> scm1, List<String> scm2) {
+		this.scm1 = scm1;
+		this.scm2 = scm2;
 	}
 	
 	/**
@@ -45,9 +45,9 @@ public class JoinExpVisitor extends ConcreteExpVisitor {
 	 */
 	@Override
 	public void visit(Column arg0) {
-		Long val = Helpers.getAttr(tp1, arg0.toString(), scm1);
+		Long val = Helpers.getAttrVal(tp1, arg0.toString(), scm1);
 		if (val == null)
-			val = Helpers.getAttr(tp2, arg0.toString(), scm2);
+			val = Helpers.getAttrVal(tp2, arg0.toString(), scm2);
 		currNumericValue = val;
 	}
 }
