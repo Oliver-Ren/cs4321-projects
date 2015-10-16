@@ -1,7 +1,7 @@
 create user 'tester'@'localhost';
 create database cs4321 character set = utf8;
 grant all on cs4321.* to 'tester'@localhost;
-
+use cs4321;
 # create the tables
 CREATE TABLE Sailors
 (
