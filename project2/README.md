@@ -8,16 +8,16 @@ In this project, we implemented a simple interpreter for SQL statements which ta
 
 The project is structured as follows:
 
-    * the _src_ directory for source files.
-    * the _sqltests_ directory for the test queries, database file, expected input and output directory.
+  * the _src_ directory for source files.
+  * the _sqltests_ directory for the test queries, database file, expected input and output directory.
 
 For packages for the project source file is arranged by the following rational:
 
-    * the _client_ package is for top-level class.
-    * the _operators_ package is for various Operator classes.
-    * the _test_ package contains unit tests, end-to-end test as well as the utilities and test test harness.
-    * the _util_ package contains various classes for dealing with queries, expressions, and trees as well as data-structures for storing query elements.
-    * the _visitors_ package contains generic visitor as well as different concrete visitors.
+  * the _client_ package is for top-level class.
+  * the _operators_ package is for various Operator classes.
+  * the _test_ package contains unit tests, end-to-end test as well as the utilities and test test harness.
+  * the _util_ package contains various classes for dealing with queries, expressions, and trees as well as data-structures for storing query elements.
+  * the _visitors_ package contains generic visitor as well as different concrete visitors.
 
 ## Interpreter
 

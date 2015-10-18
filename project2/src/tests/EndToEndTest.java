@@ -62,7 +62,16 @@ public class EndToEndTest {
 		
 	}
 	
+	/**
+	 * The error test case.
+	 */
 	@Test
+	public void testError() {
+		Harness harness = new Harness("error");
+		harness.testFunction();
+	}
+	
+	//@Test
 	public void testSimpleScan() {
 		Harness harness = new Harness("scan");
 		harness.testFunction();		
@@ -73,7 +82,7 @@ public class EndToEndTest {
 	 * "and" expression is allowed.
 	 * e.g. "select * from Sailors where 1 = 1 and 0 <> 2;"
 	 */
-	@Test
+	//@Test
 	public void testConstSelect() {
 		Harness harness = new Harness("constselect");
 		harness.testFunction();
@@ -84,7 +93,7 @@ public class EndToEndTest {
 	 * "and" expression is allowed, no joins or alias allowed.
 	 * e.g. "SELECT * FROM Sailors WHERE Sailors.A > 1;"
 	 */
-	@Test
+	//@Test
 	public void testSimplePureSelect() {
 		Harness harness = new Harness("simple-pure-select");
 		harness.testFunction();
@@ -93,7 +102,7 @@ public class EndToEndTest {
 	/**
 	 * Test case for queries of cross-product.
 	 */
-	@Test
+	//@Test
 	public void testCrossProduct() {
 		Harness harness = new Harness("cross-product");
 		harness.testFunctionNoOrder();
@@ -102,7 +111,7 @@ public class EndToEndTest {
 	/**
 	 * Test case for queries of join.
 	 */
-	@Test
+	//@Test
 	public void testJoin() {
 		Harness harness = new Harness("join");
 		harness.testFunctionNoOrder();
@@ -111,7 +120,7 @@ public class EndToEndTest {
 	/**
 	 * Test case for queries of projection.
 	 */
-	@Test
+	//@Test
 	public void testProjection() {
 		Harness harness = new Harness("projection");
 		harness.testFunctionNoOrder();
@@ -120,7 +129,7 @@ public class EndToEndTest {
 	/**
 	 * Test case for queries of order-by.
 	 */
-	@Test
+	//@Test
 	public void testOrderBy() {
 		Harness harness = new Harness("order-by");
 		harness.testFunction();
@@ -129,7 +138,7 @@ public class EndToEndTest {
 	/**
 	 * Test case for queries of distinct.
 	 */
-	@Test
+	//@Test
 	public void testDistinct() {
 		Harness harness = new Harness("distinct");
 		harness.testFunctionNoOrder();
@@ -138,7 +147,7 @@ public class EndToEndTest {
 	/**
 	 * Test case for queries of distinct with order by.
 	 */
-	@Test
+	//@Test
 	public void testDistinctOrdered() {
 		Harness harness = new Harness("distinct-ordered");
 		harness.testFunction();
@@ -147,11 +156,22 @@ public class EndToEndTest {
 	/**
 	 * Test case for sample queries.
 	 */
-	@Test
+	//@Test
 	public void testSamples() {
 		Harness harness = new Harness("samples");
 		harness.testFunction();
 	}
+	
+	/**
+	 * The official test cases provided by the course.
+	 */
+	//@Test
+	public void testOffcial() {
+		Harness harness = new Harness("official");
+		harness.testFunction();
+	}
+	
+	
 	
 	
 

@@ -133,6 +133,7 @@ public class Diff {
 				s2 = in2.readLine();
 				if (s1 == null || s2 == null) break;
 				
+		
 				if (!s1.equals(s2)) {
 					areSame = false;
 					System.out.printf("%s VS %s: FAILED\n", s1, s2);
