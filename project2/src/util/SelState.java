@@ -93,18 +93,22 @@ public class SelState {
 			curRoot = new JoinOperator(curRoot, newOp, getJoinCond(i));
 		}
 		
-		if (orders != null)
+		boolean isLossy = Helpers.projLossy(sels, orders);
+		
+		if (orders != null && isLossy)
 			curRoot = new SortOperator(curRoot, orders);
 		
 		if (sels != null)
 			curRoot = new ProjectOperator(curRoot, sels);
 		
+		if (orders != null && !isLossy)
+			curRoot = new SortOperator(curRoot, orders);
+		
 		if (dist != null) {
-			if (orders == null) {
+			if (orders == null)
 				curRoot = new SortOperator(curRoot, new ArrayList<OrderByElement>());
-			}
 			
-			if (Helpers.projLossy(sels, orders))
+			if (isLossy)
 				curRoot = new HshDupElimOperator(curRoot);
 			else
 				curRoot = new DuplicateEliminationOperator(curRoot);
