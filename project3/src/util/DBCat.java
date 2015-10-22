@@ -29,6 +29,9 @@ public class DBCat {
 	public static String outputDir = "samples" + File.separator + "output" + File.separator;
 	public static String qryPath = "";
 	public static String dbDir = "";
+	/**
+	 * in the format of 
+	 */
 	public static String dataDir = "";
 	public static String schemaPath = "";
 	

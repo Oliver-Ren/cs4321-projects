@@ -1,7 +1,21 @@
 package nio;
 
-public class TupleReader {
+import util.Tuple;
 
-	int numAttrs;
+public interface TupleReader {
+
+	
+	
+	
+	/**
+	 * read the next tuple from the table
+	 * author:hmy
+	 */
+	public Tuple readTuple();
+	
+	/**
+	 * reset the current buffer, 
+	 * read the file from start
+	 */
 	
 }
