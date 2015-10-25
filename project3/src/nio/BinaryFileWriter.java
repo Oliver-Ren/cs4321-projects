@@ -65,6 +65,9 @@ public class BinaryFileWriter implements TupleWriter {
 			}
 			numOfTuples++;								
 		} else {
+			//update the numOfTuples
+			buffer.putInt(4, numOfTuples);
+			numOfTuples = 0;
 			buffer.flip();
 			fc.write(buffer);
 			// rellocate a new buffer page
@@ -78,7 +81,10 @@ public class BinaryFileWriter implements TupleWriter {
 	
 	@Override
 	public void close() throws IOException {
-		// TODO Auto-generated method stub
+		// close the when finish output tuples
+		//update the num of tuple
+		buffer.putInt(4, numOfTuples);
+		fc.close();
 		
 	}
 	
