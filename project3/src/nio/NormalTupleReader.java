@@ -83,7 +83,7 @@ public final class NormalTupleReader implements TupleReader {
 	 * This operation is not supported.
 	 */
 	@Override
-	public void reset(int index) throws IOException {
+	public void reset(long index) throws IOException {
 		throw new UnsupportedOperationException("not supported in normal reader");
 	}
 

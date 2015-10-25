@@ -11,6 +11,8 @@ import nio.TupleReader;
 
 import org.junit.Test;
 
+import util.Tuple;
+
 public class TupleReaderTest {
 
 	//@Test
@@ -34,7 +36,15 @@ public class TupleReaderTest {
 	public void testBinaryTupleRead() {
 		try {
 			TupleReader reader = new BinaryTupleReader("sandbox/Boats");
-			reader.reset();
+			Tuple tup;
+			while ((tup = reader.read()) != null) {
+				//System.out.println(tup);
+			}
+			reader.reset(99);
+			System.out.println(reader.read());
+//			while ((tup = reader.read()) != null) {
+//				System.out.println(tup);
+//			}
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();

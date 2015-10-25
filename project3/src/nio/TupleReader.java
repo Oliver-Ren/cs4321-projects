@@ -30,7 +30,7 @@ public interface TupleReader {
 	 * @throws IOException If an I/O error occurs while calling the underlying
 	 * 					 	reader's reset method
 	 */
-	public void reset(int index) throws IOException;
+	public void reset(long index) throws IOException;
 	
 	
 	/**
