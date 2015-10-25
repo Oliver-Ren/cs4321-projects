@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import jdk.management.resource.internal.TotalResourceContext;
 import util.Tuple;
 
 /**
@@ -49,7 +48,6 @@ public final class BinaryTupleReader implements TupleReader {
 	 * @throws FileNotFoundException if the file does not exist or cannot be 
 	 * 		   opened for reading.
 	 */
-	@SuppressWarnings("resource")
 	public BinaryTupleReader(File file) throws FileNotFoundException {
 		fc = new FileInputStream(file).getChannel();
 		buffer = ByteBuffer.allocate(B_SIZE);

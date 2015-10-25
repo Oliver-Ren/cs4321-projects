@@ -32,7 +32,7 @@ public class TupleReaderTest {
 		
 	}
 	
-	@Test
+	//@Test
 	public void testBinaryTupleRead() {
 		try {
 			TupleReader reader = new BinaryTupleReader("sandbox/Boats");
@@ -45,6 +45,25 @@ public class TupleReaderTest {
 //			while ((tup = reader.read()) != null) {
 //				System.out.println(tup);
 //			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * The test cases for TupleReader's reset(long index) method.
+	 */
+	@Test
+	public void testBinaryTupleReadResetByIndex() {
+		try {
+			TupleReader reader = new BinaryTupleReader("sandbox/Boats");
+			Tuple tup;
+			while ((tup = reader.read()) != null) {
+				//System.out.println(tup);
+			}
+			reader.reset(99);
+			System.out.println(reader.read());
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
