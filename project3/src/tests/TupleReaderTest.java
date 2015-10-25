@@ -62,7 +62,8 @@ public class TupleReaderTest {
 			while ((tup = reader.read()) != null) {
 				//System.out.println(tup);
 			}
-			reader.reset(99);
+			
+			reader.reset(1000);
 			System.out.println(reader.read());
 			reader.close();
 		} catch (IOException e) {
