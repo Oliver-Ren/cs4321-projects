@@ -28,15 +28,16 @@ import util.Tuple;
  *
  */
 public final class BinaryTupleReader implements TupleReader {
+	private File file;						// the file reading
 	private static final int B_SIZE = 4096;	// the size of the buffer page
 	private static final int INT_LEN = 4;	// the bytes a integer occupies
 	private FileChannel fc;					// The file channel for reader
 	private ByteBuffer buffer;				// The buffer page.
 	private int numOfAttr;					// Number of attributes in a tuple
 	private int numOfTuples;				// Number of tuples in the page
+	private long currTupleIdx;				// the index of current tuple
 	private boolean needNewPage;			// flag for read new page to buffer
 	private boolean endOfFile;				// flag for end of file
-	private long numTuplesBuffered;			// the total number of tuples buffered
 	private List<Long> offsets;				// the list stores the maximum
 											// tuple index in the page at 
 											// current index.
@@ -49,12 +50,14 @@ public final class BinaryTupleReader implements TupleReader {
 	 * 		   opened for reading.
 	 */
 	public BinaryTupleReader(File file) throws FileNotFoundException {
+		this.file = file;
 		fc = new FileInputStream(file).getChannel();
 		buffer = ByteBuffer.allocate(B_SIZE);
+		endOfFile = false;
 		needNewPage = true;
 		offsets = new ArrayList<Long>();
 		offsets.add(new Long(0));
-		numTuplesBuffered = 0;
+		currTupleIdx = 0;
 	}
 	
 	/**
@@ -69,6 +72,15 @@ public final class BinaryTupleReader implements TupleReader {
 		this(new File(fileName));
 	}
 
+	/**
+	 * read the next tuple from the table.
+	 * 
+	 * @return Tuple the tuple at the reader's current position
+	 * 		   <tt>null</tt> if reached the end of the file
+	 * @throws IOException If an I/O error occurs while calling the underlying
+	 * 					 	reader's read method
+	 *
+	 */
 	@Override
 	public Tuple read() throws IOException {
 		while (!endOfFile) {
@@ -88,24 +100,31 @@ public final class BinaryTupleReader implements TupleReader {
 				for (int i = 0; i < numOfAttr; i++) {
 					cols[i] = buffer.getInt();
 				}
+				currTupleIdx++;
 				return new Tuple(cols);
 			}
 			
 			// does not has remaining
-			buffer.clear();
-			// fill with 0 to clear the buffer
-			buffer.put(new byte[B_SIZE]);
-			buffer.clear();
+			eraseBuffer();
 			needNewPage = true;		
 		}
 		
 		return null;	// if reached the end of the file, return null
 	}
 
+	/**
+	 * Resets the reader to the specified tuple index. the index should be 
+	 * smaller than the tuple index the reader currently at.
+	 * 
+	 * @param index the tuple index.
+	 * @throws IOException If an I/O error occurs while calling the underlying
+	 * 					 	reader's read method
+	 * @throws IndexOutOfBoundsException unless <tt>0 &le; index &lt; currIndex</tt>
+	 */
 	@Override
 	public void reset(long index) throws IOException, IndexOutOfBoundsException {
 		// precondition: the index should not exceed the number of tuples buffered
-		if (index >= numTuplesBuffered || index < 0) {
+		if (index >= currTupleIdx || index < 0) {
 			throw new IndexOutOfBoundsException("The index is too large");
 		}
 		int pageIdx = Collections.binarySearch(offsets, new Long(index + 1));
@@ -114,15 +133,18 @@ public final class BinaryTupleReader implements TupleReader {
 		fc.position((long) (pageIdx - 1) * B_SIZE);
 		
 		// reset the page containing the tuple
+		eraseBuffer();
 		needNewPage = true;
 		endOfFile = false;
 		offsets = offsets.subList(0, pageIdx);
-		numTuplesBuffered = offsets.get(offsets.size() - 1);
+		currTupleIdx = index;
+		long numTuplesBuffered = offsets.get(offsets.size() - 1);
 		
 		// go to the exact position
 		int newTupleOffset = (int) (index - numTuplesBuffered);
 		int newPos = (newTupleOffset * numOfAttr + 2) * INT_LEN;
 		
+		// fetch the page 
 		try {
 			fetchPage();
 		} catch (EOFException e) {
@@ -130,25 +152,39 @@ public final class BinaryTupleReader implements TupleReader {
 		}
 		
 		buffer.position(newPos);
-		for (Long l : offsets) {
-			System.out.println("offest" + l);
-		}
-		System.out.println("tup buffered" + (offsets.get(offsets.size() - 1)));
+//		for (Long l : offsets) {
+//			System.out.println("offest" + l);
+//		}
+//		System.out.println("tup buffered" + (offsets.get(offsets.size() - 1)));
 	}
-
+	
+	
+	/**
+	 * Resets the reader to the beginning of the file.
+	 * 
+	 * @throws IOException If an I/O error occurs while calling the underlying
+	 * 					 	reader's read method
+	 */
 	@Override
 	public void reset() throws IOException {
-		
-		// TODO Auto-generated method stub
-
+		close();
+		fc = new FileInputStream(file).getChannel();
+		buffer = ByteBuffer.allocate(B_SIZE);
+		endOfFile = false;
+		needNewPage = true;	
+		offsets = new ArrayList<Long>();
+		offsets.add(new Long(0));
+		currTupleIdx = 0;
 	}
 
+	/**
+	 * closes the target
+	 * 
+	 * @throws IOException If an I/O error occurs while calling the underlying
+	 * 					 	reader's close method
+	 */
 	@Override
 	public void close() throws IOException {
-		// TODO Auto-generated method stub
-		for (Long l : offsets) {
-			System.out.println("offest" + l);
-		}
 		fc.close();
 	}
 	
@@ -162,18 +198,23 @@ public final class BinaryTupleReader implements TupleReader {
 		buffer.flip();
 		numOfAttr = buffer.getInt();	// metadata 0
 		numOfTuples = buffer.getInt();	// metadata 1
-		numTuplesBuffered += numOfTuples;
-		offsets.add(numTuplesBuffered);
+		offsets.add(offsets.get(offsets.size() - 1) + numOfTuples);
 		// set the limit according to the number of tuples and
 		// attributes actually in the page.
 		buffer.limit((numOfAttr * numOfTuples + 2) * INT_LEN);
 	}
 	
+	// Helper method that erases the buffer by filling zeros.
+	private void eraseBuffer() {
+		buffer.clear();
+		// fill with 0 to clear the buffer
+		buffer.put(new byte[B_SIZE]);
+		buffer.clear();
+	}
+	
 	// Helper method that dumps the file to the System.out for ease of debugging
 	private void dump() throws IOException {
 		while (fc.read(buffer) > 0) {
-		
-			
 			buffer.flip();
 			
 			int attr = buffer.getInt();
