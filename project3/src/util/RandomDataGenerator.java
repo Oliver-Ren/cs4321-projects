@@ -4,8 +4,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
-
-
 /**
  * This class is used for generating randoms tuples with values
  * in specific range
