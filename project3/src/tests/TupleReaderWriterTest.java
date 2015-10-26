@@ -46,7 +46,7 @@ public class TupleReaderWriterTest {
 	/**
 	 * Test case for test the normal tuple write and the normal tuple read.
 	 */
-	//@Test
+	@Test
 	public void testNormalReadWrite() {
 		String inDir = "normal-input";
 		String outDir = "normal-output";
@@ -89,7 +89,7 @@ public class TupleReaderWriterTest {
 				e.printStackTrace();
 			}
 		}
-		Diff.cleanFolder(outPath);
+		//Diff.cleanFolder(outPath);
 	}
 	
 	/**
@@ -97,6 +97,7 @@ public class TupleReaderWriterTest {
 	 */
 	@Test
 	public void testNormalReadBinWrite() {
+		
 		String inDir = "normal-input";
 		String outDir = "bin-output";
 		String expectedDir = "normal-input";
