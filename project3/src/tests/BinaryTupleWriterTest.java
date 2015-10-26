@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 
-import nio.BinaryFileWriter;
+import nio.BinaryTupleWriter;
 import nio.NormalTupleReader;
 import nio.TupleReader;
 
@@ -19,7 +19,7 @@ public class BinaryTupleWriterTest {
 		try{
 			TupleReader reader = new
 					NormalTupleReader("sandbox/Boats_humanreadable");
-			BinaryFileWriter writer = new BinaryFileWriter("sandBox/HMY");		
+			BinaryTupleWriter writer = new BinaryTupleWriter("sandBox/HMY");		
 //		for(int i =0 ; i< 1000; i++){
 //			Tuple t = reader.read();
 //			writer.write(t);
