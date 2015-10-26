@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.IOException;
 
 import nio.BinaryTupleReader;
+import nio.BinaryTupleWriter;
+import nio.FormatConverter;
 import nio.NormalTupleReader;
 import nio.NormalTupleWriter;
 import nio.TupleReader;
@@ -44,7 +46,7 @@ public class TupleReaderWriterTest {
 	/**
 	 * Test case for test the normal tuple write and the normal tuple read.
 	 */
-	@Test
+	//@Test
 	public void testNormalReadWrite() {
 		String inDir = "normal-input";
 		String outDir = "normal-output";
@@ -56,7 +58,7 @@ public class TupleReaderWriterTest {
 				TupleReader r = new NormalTupleReader(h.inPath);
 				TupleWriter w = new NormalTupleWriter(h.outPath);
 				h.testIO(r, w);
-				assertTrue(h.verify());
+				assertEquals(true, h.verify());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -67,7 +69,7 @@ public class TupleReaderWriterTest {
 	/**
 	 * Test case for test the normal tuple write and the binary tuple read.
 	 */
-	@Test
+	//@Test
 	public void testBinReadNormalWrite() {
 		String inDir = "bin-input";
 		String outDir = "normal-output";
@@ -82,33 +84,39 @@ public class TupleReaderWriterTest {
 				TupleReader r = new BinaryTupleReader(h.inPath);
 				TupleWriter w = new NormalTupleWriter(h.outPath);
 				h.testIO(r, w);
-				assertTrue(h.verify());
+				assertEquals(true, h.verify());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		//Diff.deleteFolder(outPath);
+		Diff.cleanFolder(outPath);
 	}
 	
 	/**
 	 * Test case for normal tuple read and binary tuple write, a converter is used.
 	 */
-	//@Test
+	@Test
 	public void testNormalReadBinWrite() {
 		String inDir = "normal-input";
 		String outDir = "bin-output";
 		String expectedDir = "normal-input";
 		String resultDir = "normal-output";
 		String inPath = Harness.testPart + File.separator + inDir;
+		String outPath = Harness.testPart + File.separator + outDir;
+		String resultPath = Harness.testPart + File.separator + resultDir;
 		String expPath = Harness.testPart + File.separator + expectedDir;
+		Diff.cleanFolder(outPath);
+		Diff.cleanFolder(resultPath);
 		for (String fileName : Diff.dirList(expPath)) {
 			Harness h = new Harness(fileName, inDir, outDir, expectedDir);
 			Harness c = new Harness(fileName, outDir, resultDir, expectedDir);
 			try {
-				TupleReader r = new BinaryTupleReader(h.inPath);
-				TupleWriter w = new NormalTupleWriter(h.outPath);
+				TupleReader r = new NormalTupleReader(h.inPath);
+				TupleWriter w = new BinaryTupleWriter(h.outPath);
 				h.testIO(r, w);
-				assertTrue(c.verify());
+				FormatConverter.binToNormal(outPath + File.separator + fileName
+						, resultPath + File.separator + fileName);
+				assertEquals(true, c.verify());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
