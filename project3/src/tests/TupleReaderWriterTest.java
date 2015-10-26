@@ -73,7 +73,9 @@ public class TupleReaderWriterTest {
 		String outDir = "normal-output";
 		String expectedDir = "normal-input";
 		String inPath = Harness.testPart + File.separator + inDir;
+		String outPath = Harness.testPart + File.separator + outDir;
 		String expPath = Harness.testPart + File.separator + expectedDir;
+		Diff.cleanFolder(outPath);
 		for (String fileName : Diff.dirList(expPath)) {
 			Harness h = new Harness(fileName, inDir, outDir, expectedDir);
 			try {
@@ -81,6 +83,32 @@ public class TupleReaderWriterTest {
 				TupleWriter w = new NormalTupleWriter(h.outPath);
 				h.testIO(r, w);
 				assertTrue(h.verify());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		//Diff.deleteFolder(outPath);
+	}
+	
+	/**
+	 * Test case for normal tuple read and binary tuple write, a converter is used.
+	 */
+	//@Test
+	public void testNormalReadBinWrite() {
+		String inDir = "normal-input";
+		String outDir = "bin-output";
+		String expectedDir = "normal-input";
+		String resultDir = "normal-output";
+		String inPath = Harness.testPart + File.separator + inDir;
+		String expPath = Harness.testPart + File.separator + expectedDir;
+		for (String fileName : Diff.dirList(expPath)) {
+			Harness h = new Harness(fileName, inDir, outDir, expectedDir);
+			Harness c = new Harness(fileName, outDir, resultDir, expectedDir);
+			try {
+				TupleReader r = new BinaryTupleReader(h.inPath);
+				TupleWriter w = new NormalTupleWriter(h.outPath);
+				h.testIO(r, w);
+				assertTrue(c.verify());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

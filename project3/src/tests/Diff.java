@@ -34,6 +34,28 @@ public class Diff {
 	}
 	
 	/**
+	 * deletes all the contents in the folder.
+	 * @param folderName the name of the folder
+	 */
+	public static void cleanFolder(String folderName) {
+		File folder = new File(folderName);
+	    cleanFolder(folder);
+	}
+	
+	private static void cleanFolder(File folder) {
+	    File[] files = folder.listFiles();
+	    if(files!=null) { //some JVMs return null for empty dirs
+	        for(File f: files) {
+	            if(f.isDirectory()) {
+	                cleanFolder(f);
+	            } else {
+	                f.delete();
+	            }
+	        }
+	    }
+	}
+	
+	/**
 	 * Returns true if two files have the same collection of tuples.
 	 * The orders of the tuples are not considered.
 	 * 
