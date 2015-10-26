@@ -58,32 +58,52 @@ public class BinaryFileWriter implements TupleWriter {
 			//can be fit in one page not include the metadata
 			TUPLE_LIMIT = (B_SIZE - 8)/(INT_LEN * numOfAttr);			
 		}
-		if(buffer.position()<=(B_SIZE-(INT_LEN*numOfAttr))){
+//		if(buffer.position()<=(B_SIZE-(INT_LEN*numOfAttr))){
+		if(numOfTuples<TUPLE_LIMIT){
 			// write the tuple into the buffer
 			for(int i = 0; i < tuple.length(); i++){
 				buffer.putInt(tuple.get(i));
 			}
 			numOfTuples++;								
 		} else {
+			//paddle the buffer if necessary
+			paddle(buffer);
 			//update the numOfTuples
-			buffer.putInt(4, numOfTuples);
-			numOfTuples = 0;
-			buffer.flip();
+			buffer.putInt(4, numOfTuples);		
+			buffer.clear();
+			System.out.println("Current positon is "+
+			buffer.position()+ " " + "curent limit" + buffer.limit());
+			
 			fc.write(buffer);
 			// rellocate a new buffer page
+			numOfTuples = 0;
+			firstCallWrite = true;
 			buffer.clear();
 			buffer  = buffer.put(new byte[B_SIZE]);
 			buffer.clear();
 			write(tuple);
 		}		
 	}
-	
+	/**
+	 * paddel zero to the end of the page
+	 * if there are still some spaces left
+	 * @param bf
+	 */
+	public void paddle(ByteBuffer bf){
+		while(bf.hasRemaining()){
+			bf.putInt(0);
+		}
+	}
 	
 	@Override
 	public void close() throws IOException {
-		// close the when finish output tuples
+		// close the when finish output tuples		
+		//paddel the buffer
+		paddle(buffer);
 		//update the num of tuple
 		buffer.putInt(4, numOfTuples);
+		buffer.clear();
+		fc.write(buffer);
 		fc.close();
 		
 	}
