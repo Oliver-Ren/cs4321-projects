@@ -34,5 +34,21 @@ public class FormatConverter {
 		writer.close();
 	}
 	
-	public static void 
+	/**
+	 * The util method which converts human readable database file to binary.
+	 * 
+	 * @param inPath	the input file path
+	 * @param outPath	the output file path
+	 * @throws IOException	if I/O error occurs
+	 */
+	public static void normalToBin(String inPath, String outPath) throws IOException {
+		TupleReader reader = new NormalTupleReader(inPath);
+		TupleWriter writer = new BinaryTupleWriter(outPath);
+		Tuple t;
+		while ((t = reader.read()) != null) {
+			writer.write(t);
+		}
+		reader.close();
+		writer.close();
+	}
 }
