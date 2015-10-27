@@ -31,6 +31,7 @@ public class DBCat {
 
 	public static String inputDir = "samples" + File.separator + "input" + File.separator;
 	public static String outputDir = "samples" + File.separator + "output" + File.separator;
+	public static String tempDir = "temp" + File.separator;
 	public static String configPath = "";
 	public static String qryPath = "";
 	public static String dbDir = "";
@@ -41,7 +42,7 @@ public class DBCat {
 	public static String schemaPath = "";
 	
 	static {
-		resetDirs(inputDir, outputDir);
+		resetDirs(inputDir, outputDir, tempDir);
 	}
 	
 	public enum JoinMethod {
@@ -68,7 +69,7 @@ public class DBCat {
 	 * @param input the input directory
 	 * @param output the output directory
 	 */
-	public static void resetDirs(String input, String output) {
+	public static void resetDirs(String input, String output, String temp) {
 		if (input != null) {
 			inputDir = input + File.separator;
 			configPath = inputDir + "plan_builder_config.txt";
@@ -80,6 +81,10 @@ public class DBCat {
 		
 		if (output != null) {
 			outputDir = output;
+		}
+		
+		if (temp != null) {
+			tempDir = temp;
 		}
 		
 		resetConfig();
@@ -210,7 +215,7 @@ public class DBCat {
 	// intentionally make the constructor private, which 
 	// avoids instances being created outside the class
 	private DBCat() {
-		resetDirs(inputDir, outputDir);
+		resetDirs(inputDir, outputDir, tempDir);
 	}
 	
 	/**
