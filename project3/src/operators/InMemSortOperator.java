@@ -16,7 +16,7 @@ import util.Tuple;
  * @author Guantian Zheng (gz94)
  *
  */
-public class SortOperator extends UnaryOperator {
+public class InMemSortOperator extends UnaryOperator {
 	
 	List<Tuple> tps = new ArrayList<Tuple>();
 	List<Integer> orders = new ArrayList<Integer>();
@@ -47,7 +47,7 @@ public class SortOperator extends UnaryOperator {
 	 * @param child its child
 	 * @param orders the list of attributes to be ordered
 	 */
-	public SortOperator(Operator child, List<OrderByElement> orders) {
+	public InMemSortOperator(Operator child, List<OrderByElement> orders) {
 		super(child);
 		Tuple tp = null;
 		

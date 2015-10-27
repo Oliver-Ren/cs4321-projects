@@ -1,8 +1,10 @@
 package operators;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
 
+import nio.TupleWriter;
 import util.Tuple;
 
 /**
@@ -37,9 +39,19 @@ public abstract class Operator {
 	 */
 	public void dump(PrintStream ps) {
 		Tuple tp = null;
-		while ((tp = getNextTuple()) != null) {
+		while ((tp = getNextTuple()) != null)
 			tp.dump(ps);
-		}
+	}
+	
+	public void dump(TupleWriter tw) {
+		Tuple tp = null;
+		while ((tp = getNextTuple()) != null)
+			try {
+				tw.write(tp);
+			} catch (IOException e) {
+				e.printStackTrace();
+				break;
+			}
 	}
 	
 }

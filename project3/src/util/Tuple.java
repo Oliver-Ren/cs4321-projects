@@ -84,7 +84,6 @@ public class Tuple {
 			String str = toString() + '\n';
 			ps.write(str.getBytes());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

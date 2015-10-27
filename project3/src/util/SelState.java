@@ -9,6 +9,14 @@ import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
 
 import operators.*;
+import operators.logic.LogicDupElimOp;
+import operators.logic.LogicJoinOp;
+import operators.logic.LogicOperator;
+import operators.logic.LogicProjectOp;
+import operators.logic.LogicScanOp;
+import operators.logic.LogicSelectOp;
+import operators.logic.LogicSortOp;
+import visitors.PhysicalPlanBuilder;
 
 /**
  * A class which parses the select statement 
@@ -80,41 +88,77 @@ public class SelState {
 	/**
 	 * Build the operator tree according to conditions in fnSelCond 
 	 * and fnJoinCond.
-	 */
+	 */	
 	private void buildOpTree() {
-		Operator curRoot = new ScanOperator(getTable(0));
+		LogicOperator curRoot = new LogicScanOp(getTable(0));
 		if (getSelCond(0) != null)
-			curRoot = new SelectOperator((ScanOperator) curRoot, getSelCond(0));
+			curRoot = new LogicSelectOp(curRoot, getSelCond(0));
 		
 		for (int i = 1; i < froms.size(); i++) {
-			Operator newOp = new ScanOperator(getTable(i));
+			LogicOperator newOp = new LogicScanOp(getTable(i));
 			if (getSelCond(i) != null)
-				newOp = new SelectOperator((ScanOperator) newOp, getSelCond(i));
-			curRoot = new JoinOperator(curRoot, newOp, getJoinCond(i));
+				newOp = new LogicSelectOp(newOp, getSelCond(i));
+			curRoot = new LogicJoinOp(curRoot, newOp, getJoinCond(i));
 		}
 		
-		boolean isLossy = Helpers.projLossy(sels, orders);
+		boolean isLossy = false; // Helpers.projLossy(sels, orders);
 		
-		if (orders != null && isLossy)
-			curRoot = new SortOperator(curRoot, orders);
+//		if (orders != null && isLossy)
+//			curRoot = new LogicSortOp(curRoot, orders);
 		
 		if (sels != null)
-			curRoot = new ProjectOperator(curRoot, sels);
+			curRoot = new LogicProjectOp(curRoot, sels);
 		
 		if (orders != null && !isLossy)
-			curRoot = new SortOperator(curRoot, orders);
+			curRoot = new LogicSortOp(curRoot, orders);
 		
 		if (dist != null) {
 			if (orders == null)
-				curRoot = new SortOperator(curRoot, new ArrayList<OrderByElement>());
+				curRoot = new LogicSortOp(curRoot, new ArrayList<OrderByElement>());
 			
-			if (isLossy)
-				curRoot = new HshDupElimOperator(curRoot);
-			else
-				curRoot = new DuplicateEliminationOperator(curRoot);
+//			if (isLossy)
+//				curRoot = new HshDupElimOperator(curRoot);
+//			else
+				curRoot = new LogicDupElimOp(curRoot);
 		}
 		
-		root = curRoot;
+		PhysicalPlanBuilder ppb = new PhysicalPlanBuilder();
+		curRoot.accept(ppb);
+		root = ppb.getPhyOp();
+		
+//		Operator curRoot = new ScanOperator(getTable(0));
+//		if (getSelCond(0) != null)
+//			curRoot = new SelectOperator((ScanOperator) curRoot, getSelCond(0));
+//		
+//		for (int i = 1; i < froms.size(); i++) {
+//			Operator newOp = new ScanOperator(getTable(i));
+//			if (getSelCond(i) != null)
+//				newOp = new SelectOperator((ScanOperator) newOp, getSelCond(i));
+//			curRoot = new TupleJoinOperator(curRoot, newOp, getJoinCond(i));
+//		}
+//		
+//		boolean isLossy = Helpers.projLossy(sels, orders);
+//		
+//		if (orders != null && isLossy)
+//			curRoot = new SortOperator(curRoot, orders);
+//		
+//		if (sels != null)
+//			curRoot = new ProjectOperator(curRoot, sels);
+//		
+//		if (orders != null && !isLossy)
+//			curRoot = new SortOperator(curRoot, orders);
+//		
+//		if (dist != null) {
+//			if (orders == null)
+//				curRoot = new SortOperator(curRoot, new ArrayList<OrderByElement>());
+//			
+//			if (isLossy)
+//				curRoot = new HshDupElimOperator(curRoot);
+//			else
+//				curRoot = new DuplicateEliminationOperator(curRoot);
+//		}
+//		
+//		root = curRoot;
 	}
 	
 	/**

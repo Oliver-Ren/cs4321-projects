@@ -5,16 +5,12 @@ import util.Helpers;
 import util.Tuple;
 import visitors.JoinExpVisitor;
 
-/**
- * Join operator is a subclass of binary operator.
- * @author Guantian Zheng (gz94)
- *
- */
-public class JoinOperator extends BinaryOperator {
+public abstract class JoinOperator extends BinaryOperator {
 
-	Expression exp = null;
-	Tuple curLeft = null, curRight = null;
-	JoinExpVisitor jv = null;
+	protected Tuple curLeft = null, curRight = null;
+	
+	protected Expression exp = null;
+	protected JoinExpVisitor jv = null;
 	
 	/**
 	 * Concatenate two tuples.
@@ -22,7 +18,7 @@ public class JoinOperator extends BinaryOperator {
 	 * @param tp2 the second tuple
 	 * @return the joined tuple
 	 */
-	private Tuple joinTp(Tuple tp1, Tuple tp2) {
+	protected Tuple joinTp(Tuple tp1, Tuple tp2) {
 		int[] cols = new int[tp1.length() + tp2.length()];
 		int i = 0;
 		
@@ -43,49 +39,22 @@ public class JoinOperator extends BinaryOperator {
 		Tuple ret = null;
 		
 		while (curLeft != null && curRight != null) {
-			if (exp == null)
+			if (exp == null || 
+					Helpers.getJoinRes(curLeft, curRight, exp, jv))
 				ret = joinTp(curLeft, curRight);
-			else if (Helpers.getJoinRes(curLeft, curRight, exp, jv))
-				ret = joinTp(curLeft, curRight);
-			
 			next();
 			if (ret != null) return ret;
 		}
 		
 		return null;
 	}
-
-	/**
-	 * Fix the left tuple and move on to the next right tuple.
-	 * If the end of right is reached, reset it and get the 
-	 * next left tuple.
-	 */
-	public void next() {
-		if (curLeft == null) return;
-		
-		if (curRight != null)
-			curRight = right.getNextTuple();
-		
-		if (curRight == null) {
-			curLeft = left.getNextTuple();
-			right.reset();
-			curRight = right.getNextTuple();
-		}
-	}
 	
-	/**
-	 * Construct a join operator.
-	 * @param left the left operator
-	 * @param right the right operator
-	 * @param exp the join condition
-	 */
+	protected abstract void next();
+	
 	public JoinOperator(Operator left, Operator right, Expression exp) {
 		super(left, right);
 		this.exp = exp;
-		curLeft = left.getNextTuple();
-		curRight = right.getNextTuple();
 		jv = new JoinExpVisitor(left.schema(), right.schema());
 	}
-	
-}
 
+}

@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
+import nio.TupleReader;
+
 /**
  * The abstraction of a table file.
  * @author Guantian Zheng (gz94)
@@ -14,7 +16,7 @@ public class Table {
 	public String name = "";
 	public List<String> schema = null;
 	
-	private BufferedReader br = null;
+	private TupleReader tr = null;
 	
 	/**
 	 * Read the next line of the table.
@@ -22,17 +24,8 @@ public class Table {
 	 */
 	public Tuple nextTuple() {
 		try {
-			String line = br.readLine();
-			if (line == null) return null;
-			String[] elems = line.split(",");
-			int len = schema.size();
-			int[] cols = new int[len];
-			for (int i = 0; i < len; i++) {
-				cols[i] = Integer.valueOf(elems[i]);
-			}
-			return new Tuple(cols);
+			return tr.read();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -44,15 +37,11 @@ public class Table {
 	 * and open a new one.
 	 */
 	public void reset() {
-		if (br != null) {
-			try {
-				br.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			tr.reset();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		br = DBCat.getTabReader(name);
 	}
 	
 	/**
@@ -61,10 +50,10 @@ public class Table {
 	 * @param schema the schema
 	 * @param br the file reader
 	 */
-	public Table(String name, List<String> schema, BufferedReader br) {
+	public Table(String name, List<String> schema, TupleReader tr) {
 		this.name = name;
 		this.schema = schema;
-		this.br = br;
+		this.tr = tr;
 	}
 	
 }

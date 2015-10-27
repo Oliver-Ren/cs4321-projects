@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import nio.BinaryTupleReader;
+import nio.NormalTupleReader;
+import nio.TupleReader;
+
 /**
  * The <tt>DBCat</tt> class represents a database catalog which keeps track
  * of information such as where a file for a given table is located, what
@@ -27,6 +31,7 @@ public class DBCat {
 
 	public static String inputDir = "samples" + File.separator + "input" + File.separator;
 	public static String outputDir = "samples" + File.separator + "output" + File.separator;
+	public static String configPath = "";
 	public static String qryPath = "";
 	public static String dbDir = "";
 	/**
@@ -34,6 +39,26 @@ public class DBCat {
 	 */
 	public static String dataDir = "";
 	public static String schemaPath = "";
+	
+	static {
+		resetDirs(inputDir, outputDir);
+	}
+	
+	public enum JoinMethod {
+		TNLJ, BNLG;
+	}
+	
+	public static JoinMethod joinMethod = JoinMethod.TNLJ;
+	public static Integer joinBufPgs = null;
+	
+	public enum SortMethod {
+		INMEM, EXTERN;
+	}
+	
+	public static SortMethod sortMethod = SortMethod.INMEM;
+	public static Integer sortBufPgs = null;
+	
+	public static boolean isBinary = true;
 	
 	public static HashMap<String, List<String>> schemas = new HashMap<String, List<String>>();
 	public static HashMap<String, String> aliases = new HashMap<String, String>();
@@ -46,6 +71,7 @@ public class DBCat {
 	public static void resetDirs(String input, String output) {
 		if (input != null) {
 			inputDir = input + File.separator;
+			configPath = inputDir + "plan_builder_config.txt";
 			qryPath = inputDir + "queries.sql";
 			dbDir = inputDir + "db" + File.separator;
 			dataDir = dbDir + "data" + File.separator;
@@ -56,7 +82,41 @@ public class DBCat {
 			outputDir = output;
 		}
 		
+		resetConfig();
 		resetSchemas();
+	}
+	
+	private static void defConfig() {
+		joinMethod = JoinMethod.TNLJ;
+		joinBufPgs = null;
+		sortMethod = SortMethod.INMEM;
+		sortBufPgs = null;
+	}
+	
+	private static void resetConfig() {
+		defConfig();
+		BufferedReader br;
+		
+		try {
+			br = new BufferedReader(new FileReader(configPath));
+			String[] join = br.readLine().split(" ");
+			String[] sort = br.readLine().split(" ");
+			
+			if (!join[0].equals("0")) {
+				joinMethod = JoinMethod.BNLG;
+				joinBufPgs = Math.max(1, Integer.valueOf(join[1]));
+			}
+			
+			if (!sort[0].equals("0")) {
+				sortMethod = SortMethod.EXTERN;
+				sortBufPgs = Math.max(3, Integer.valueOf(sort[1]));
+			}
+			
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			defConfig();
+		}
 	}
 	
 	/**
@@ -114,14 +174,16 @@ public class DBCat {
 	 * @param fileName the file name
 	 * @return the buffered reader
 	 */
-	public static BufferedReader getTabReader(String fileName) {
+	public static TupleReader getTabReader(String fileName) {
 		fileName = origName(fileName);
 		try {
-			return new BufferedReader(new FileReader(tabPath(fileName)));
+			return (isBinary) ? new BinaryTupleReader(fileName) :
+				new NormalTupleReader(fileName);
+			// return new BufferedReader(new FileReader(tabPath(fileName)));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
 	
@@ -140,9 +202,9 @@ public class DBCat {
 	 * @return the created table
 	 */
 	public static Table getTable(String tabName) {
-		BufferedReader br = getTabReader(tabName);
-		if (br == null) return null;
-		return new Table(tabName, getSchema(tabName), br);
+		TupleReader btr = getTabReader(tabName);
+		if (btr == null) return null;
+		return new Table(tabName, getSchema(tabName), btr);
 	}
 	
 	// intentionally make the constructor private, which 
