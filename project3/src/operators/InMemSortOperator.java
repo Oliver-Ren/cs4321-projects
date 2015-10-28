@@ -51,7 +51,7 @@ public class InMemSortOperator extends SortOperator {
 		Tuple tp = null;
 		while ((tp = child.getNextTuple()) != null)
 			tps.add(tp);
-		Collections.sort(tps, new tupleComp(this.orders));
+		Collections.sort(tps, tpCmp);
 	}
 	
 }

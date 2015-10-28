@@ -12,6 +12,7 @@ import util.Tuple;
 public abstract class SortOperator extends UnaryOperator {
 
 	List<Integer> orders = new ArrayList<Integer>();
+	TupleComp tpCmp = null;
 	
 	public SortOperator(Operator child, List<OrderByElement> orders) {
 		super(child);
@@ -19,6 +20,7 @@ public abstract class SortOperator extends UnaryOperator {
 			this.orders.add(Helpers.getAttrIdx(
 					obe.toString(), child.schema()));
 		}
+		tpCmp = new TupleComp(this.orders);
 	}
 	
 	/**
@@ -27,7 +29,7 @@ public abstract class SortOperator extends UnaryOperator {
 	 * @author Guantian Zheng (gz94)
 	 *
 	 */
-	public class tupleComp implements Comparator<Tuple> {
+	public class TupleComp implements Comparator<Tuple> {
 		List<Integer> orders = null;
 		HashSet<Integer> set = null;
 		
@@ -60,7 +62,7 @@ public abstract class SortOperator extends UnaryOperator {
 			return 0;
 		}
 		
-		public tupleComp(List<Integer> orders) {
+		public TupleComp(List<Integer> orders) {
 			this.orders = orders;
 			this.set = new HashSet<Integer>(orders);
 		}

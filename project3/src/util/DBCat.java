@@ -93,9 +93,9 @@ public class DBCat {
 	
 	private static void defConfig() {
 		joinMethod = JoinMethod.TNLJ;
-		joinBufPgs = null;
+		joinBufPgs = 1;
 		sortMethod = SortMethod.INMEM;
-		sortBufPgs = null;
+		sortBufPgs = 3;
 	}
 	
 	private static void resetConfig() {
