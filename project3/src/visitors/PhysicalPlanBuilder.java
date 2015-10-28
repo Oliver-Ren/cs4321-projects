@@ -2,6 +2,7 @@ package visitors;
 
 import operators.BlockJoinOperator;
 import operators.DuplicateEliminationOperator;
+import operators.ExternSortOperator;
 import operators.Operator;
 import operators.ProjectOperator;
 import operators.ScanOperator;
@@ -81,8 +82,7 @@ public class PhysicalPlanBuilder {
 		if (DBCat.sortMethod == SortMethod.INMEM)
 			phyOp = new InMemSortOperator(phyOp, lop.orders);
 		else
-			// TODO
-			phyOp = null;
+			phyOp = new ExternSortOperator(phyOp, lop.orders);
 	}
 	
 }

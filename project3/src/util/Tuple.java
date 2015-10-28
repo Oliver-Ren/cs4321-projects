@@ -3,6 +3,8 @@ package util;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import nio.TupleReader;
+
 /**
  * The abstraction of a tuple.
  * @author Guantian Zheng (gz94)
@@ -11,6 +13,8 @@ import java.io.PrintStream;
 public class Tuple {
 
 	public int[] cols = null;
+	
+	public TupleReader tr = null;
 	
 	/**
 	 * Get the value of the i'th column.

@@ -24,18 +24,30 @@ public class ExternSortOperator extends SortOperator {
 			toString().substring(0, 8);
 	private final String localDir = DBCat.tempDir + 
 			id + File.separator;
-	private List<TupleReader> buffers;
+	private TupleReader tr = null;
+	private List<TupleReader> buffers = 
+			new ArrayList<TupleReader>(DBCat.sortBufPgs - 1);
 	private int tpsPerPg = 0;
 		
 	@Override
 	public Tuple getNextTuple() {
-		// TODO Auto-generated method stub
-		return null;
+		if (tr == null) return null;
+		try {
+			return tr.read();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
 	public void reset() {
-		//TODO
+		if (tr == null) return;
+		try {
+			tr.reset();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private String fileName(int pass, int run) {
@@ -46,8 +58,10 @@ public class ExternSortOperator extends SortOperator {
 	private int merge(int curPass, int lastRuns) {
 		int curRuns = 0;
 		int i = 0;
+		
 		while (i < lastRuns) {
 			buffers.clear();
+			
 			int maxJ = Math.min(i + DBCat.sortBufPgs - 1, lastRuns);
 			for (int j = i; j < maxJ; j++) {
 				try {
@@ -59,57 +73,69 @@ public class ExternSortOperator extends SortOperator {
 					break;
 				}
 			}
-			
-			List<Tuple> tmpBuf = new ArrayList<Tuple>(DBCat.sortBufPgs - 1);
-			
+						
 			try {
 				TupleWriter tw = new BinaryTupleWriter(fileName(curPass, curRuns++));
 				PriorityQueue<Tuple> pq = new PriorityQueue<Tuple>(DBCat.sortBufPgs - 1, 
 						tpCmp);
 				
-				int nonEmpty = DBCat.sortBufPgs - 1;
 				for (TupleReader tr : buffers) {
 					Tuple tp = tr.read();
-					if (tp == null) nonEmpty--;
-					tmpBuf.add(tp);
+					if (tp != null) {
+						tp.tr = tr;
+						pq.add(tp);
+					}
 				}
 				
 				while (!pq.isEmpty()) {
-					tw.write(pq.poll());
-					for (TupleReader tr : buffers) {
-						Tuple tp = tr.read();
-						if (tp != null) {
-							
-						}
+					Tuple tp = pq.poll();
+					tw.write(tp);
+					TupleReader tr = tp.tr;
+					tp = tr.read();
+					if (tp != null) {
+						tp.tr = tr;
+						pq.add(tp);
 					}
+				}
+				
+				tw.close();
+				
+				for (TupleReader tr : buffers)
+					tr.close();
+				
+				for (int j = i; j < maxJ; j++) {
+					File file = new File(fileName(curPass - 1, j));
+					file.delete();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 				break;
 			}
+			
+			i += DBCat.sortBufPgs - 1;
 		}
+		
+		return curRuns;
 	}
 	
 	public ExternSortOperator(Operator child, List<OrderByElement> orders) {
 		super(child, orders);
+		
 		new File(localDir).mkdirs();
-		buffers = new ArrayList<TupleReader>(DBCat.sortBufPgs - 1);
 		tpsPerPg = Constants.PAGESZ / (
 				Constants.ATTRSZ * schema().size());
 		int tpsPerRun = tpsPerPg * DBCat.sortBufPgs;
 		
 		List<Tuple> tps = new ArrayList<Tuple>(tpsPerRun);
-		
-		int curPass = 0;
-		
+				
 		int i = 0;
 		while (true) {
 			try {
 				tps.clear();
 				int cnt = tpsPerRun;
 				Tuple tp = null;
-				while ((tp = child.getNextTuple()) != null && 
-						cnt-- > 0)
+				while (cnt-- > 0 && 
+						(tp = child.getNextTuple()) != null)
 						tps.add(tp);
 				
 				if (tps.isEmpty()) break;
@@ -117,7 +143,7 @@ public class ExternSortOperator extends SortOperator {
 				Collections.sort(tps, tpCmp);
 				
 				TupleWriter tw = new BinaryTupleWriter(
-						fileName(curPass, i++));
+						fileName(0, i++));
 				for (Tuple tuple : tps)
 					tw.write(tuple);
 				tw.close();
@@ -131,15 +157,20 @@ public class ExternSortOperator extends SortOperator {
 		
 		if (i == 0) return;
 		
-		if (i == 1) {
-			File oldFile = new File(fileName(0, 0));
-			File newFile = new File(localDir + "final");
-			oldFile.renameTo(newFile);
-			return;
+		int curPass = 1;
+		int lastRuns = i;
+		while (lastRuns > 1)
+			lastRuns = merge(curPass++, lastRuns);
+		
+		File oldFile = new File(fileName(curPass - 1, 0));
+		File newFile = new File(localDir + "final");
+		oldFile.renameTo(newFile);
+		
+		try {
+			tr = new BinaryTupleReader(localDir + "final");
+		} catch (FileNotFoundException e) {
+			tr = null;
 		}
-		
-		curPass++;
-		
 	}
 
 }
