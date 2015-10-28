@@ -50,6 +50,16 @@ public class ExternSortOperator extends SortOperator {
 		}
 	}
 	
+	@Override
+	public void reset(long idx) {
+		if (tr == null) return;
+		try {
+			tr.reset(idx);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private String fileName(int pass, int run) {
 		return localDir + String.valueOf(pass) + 
 				"_" + String.valueOf(run);

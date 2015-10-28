@@ -19,7 +19,7 @@ import util.Tuple;
 public class InMemSortOperator extends SortOperator {
 	
 	List<Tuple> tps = new ArrayList<Tuple>();
-	private int curIdx = 0;
+	private long curIdx = 0;
 	
 	/**
 	 * Since the whole table is buffered in memory, 
@@ -29,7 +29,7 @@ public class InMemSortOperator extends SortOperator {
 	public Tuple getNextTuple() {
 		// TODO Auto-generated method stub
 		if (curIdx >= tps.size()) return null;
-		return tps.get(curIdx++);
+		return tps.get((int) curIdx++);
 	}
 
 	/**
@@ -37,10 +37,16 @@ public class InMemSortOperator extends SortOperator {
 	 */
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
 		curIdx = 0;
 	}
 
+	@Override
+	public void reset(long idx) {
+		if (idx < 0 || idx >= tps.size())
+			return;
+		curIdx = idx;
+	}
+	
 	/**
 	 * Construct a sort operator.
 	 * @param child its child

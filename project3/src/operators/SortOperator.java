@@ -23,6 +23,8 @@ public abstract class SortOperator extends UnaryOperator {
 		tpCmp = new TupleComp(this.orders);
 	}
 	
+	public abstract void reset(long idx);
+	
 	/**
 	 * A comparator for tuples. It compares the tuples in 
 	 * the specified order.
