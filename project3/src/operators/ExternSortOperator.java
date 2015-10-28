@@ -101,7 +101,6 @@ public class ExternSortOperator extends SortOperator {
 		List<Tuple> tps = new ArrayList<Tuple>(tpsPerRun);
 		
 		int curPass = 0;
-		int lastRuns = 0;
 		
 		int i = 0;
 		while (true) {
@@ -117,20 +116,26 @@ public class ExternSortOperator extends SortOperator {
 				
 				Collections.sort(tps, tpCmp);
 				
-				TupleWriter tw = new BinaryTupleWriter(localDir + 
-						String.valueOf(curPass) + "_" + 
-						String.valueOf(i++));
+				TupleWriter tw = new BinaryTupleWriter(
+						fileName(curPass, i++));
 				for (Tuple tuple : tps)
 					tw.write(tuple);
 				tw.close();
-				
-				lastRuns++;
-				
+								
 				if (tps.size() < tpsPerRun) break;
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;
 			}
+		}
+		
+		if (i == 0) return;
+		
+		if (i == 1) {
+			File oldFile = new File(fileName(0, 0));
+			File newFile = new File(localDir + "final");
+			oldFile.renameTo(newFile);
+			return;
 		}
 		
 		curPass++;
