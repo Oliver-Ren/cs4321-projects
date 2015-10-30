@@ -106,4 +106,9 @@ public final class NormalTupleReader implements TupleReader {
 		br.close();
 	}
 
+	@Override
+	public Long getIndex() throws IOException {
+		throw new UnsupportedOperationException("not supported in normal reader");
+	}
+
 }

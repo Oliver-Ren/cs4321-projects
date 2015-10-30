@@ -13,6 +13,12 @@ import util.Tuple;
  *
  */
 public interface TupleReader {
+	/**
+	 * get the index of the current tuple  
+	 * @return
+	 * @throws IOException
+	 */
+	public Long getIndex() throws IOException;
 	
 	/**
 	 * read the next tuple from the table.

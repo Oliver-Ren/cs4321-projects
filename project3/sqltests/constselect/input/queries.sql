@@ -1,0 +1,10 @@
+SELECT * FROM Reserves WHERE 1 = 1;
+SELECT * FROM Boats WHERE -2 < 1;
+SELECT * FROM Sailors WHERE 999 >= 999;
+SELECT * FROM Reserves WHERE 0 = 1;
+Select * FROM Boats where 8 <> 8;
+SELECT * FROM Reserves WHERE 1 = 1 AND 3 > 2;
+SELECT * FROM Boats WHERE -2 < 1 AND 281>=281 AND 5 <= 5;
+SELECT * FROM Sailors WHERE 999 >= 999 AND 0 <> 0 AND 1 > 9;
+SELECT * FROM Reserves WHERE 0 = 0 and 1 = 1;
+Select * FROM Boats where 8 <> 7 and 7 <> 8 and 7 <> 6 and 1 <> 2 and 2 <> 3;

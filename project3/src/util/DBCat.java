@@ -41,10 +41,6 @@ public class DBCat {
 	public static String dataDir = "";
 	public static String schemaPath = "";
 	
-	static {
-		resetDirs(inputDir, outputDir, tempDir);
-	}
-	
 	public enum JoinMethod {
 		TNLJ, BNLG;
 	}
@@ -80,11 +76,11 @@ public class DBCat {
 		}
 		
 		if (output != null) {
-			outputDir = output;
+			outputDir = output + File.separator;
 		}
 		
 		if (temp != null) {
-			tempDir = temp;
+			tempDir = temp + File.separator;
 		}
 		
 		resetConfig();
@@ -180,7 +176,7 @@ public class DBCat {
 	 * @return the buffered reader
 	 */
 	public static TupleReader getTabReader(String fileName) {
-		fileName = origName(fileName);
+		fileName = dataDir + origName(fileName);
 		try {
 			return (isBinary) ? new BinaryTupleReader(fileName) :
 				new NormalTupleReader(fileName);

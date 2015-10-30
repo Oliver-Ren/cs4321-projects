@@ -7,8 +7,13 @@ import java.io.PrintStream;
 
 import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.statement.Statement;
+import nio.BinaryTupleWriter;
+import nio.NormalTupleWriter;
+import nio.TupleWriter;
+import tests.Diff;
 import util.DBCat;
 import util.SelState;
+import util.SortTuple;
 
 /**
  * The <tt>SqlInterpreter</tt> class provides a client for accepting
@@ -21,17 +26,25 @@ import util.SelState;
  */
 public class SQLInterpreter {
 	
+	public void execute(String inPath, String outPath, boolean isMute) {
+		execute(inPath, outPath, "", isMute);
+	}
+	
 	/**
 	 * Execute the parser with the given input / output directory.
 	 * @param inPath input directory
 	 * @param outPath output directory
 	 * @param isMute whether to print debugging info
 	 */
-	public void execute(String inPath, String outPath, boolean isMute) {
-		DBCat.resetDirs(inPath, outPath);
+	public void execute(String inPath, String outPath, String tempPath, boolean isMute) {
+		DBCat.resetDirs(inPath, outPath, tempPath);
 		DBCat.getInstance();
 
 		try {
+			
+			Diff.cleanFolder(outPath);
+			Diff.cleanFolder(tempPath);
+			
 			CCJSqlParser parser 
 				= new CCJSqlParser(new FileReader(DBCat.qryPath));
 			Statement statement;
@@ -40,14 +53,18 @@ public class SQLInterpreter {
 				try {
 					File file = new File(DBCat.outputDir 
 							+ File.separator + "query" + counter);
-					PrintStream ps = new PrintStream(new BufferedOutputStream(
-						new FileOutputStream(file)));
+					
 					// if (!isMute) {
 						System.out.println("Parsing: " + statement);
 					// }
 					SelState selState = new SelState(statement);
-					selState.root.dump(ps);
-					ps.close();
+					
+					TupleWriter writer = new NormalTupleWriter(file);
+					selState.root.dump(writer);
+					writer.close();
+					if (counter >= 8) {
+						SortTuple.sortTuples(file.getAbsolutePath(), file.getAbsolutePath() + "sorted");
+					}
 					counter++;
 				} catch (Exception e) {
 					System.out.println("Exception when parsing query" + counter);
@@ -65,11 +82,11 @@ public class SQLInterpreter {
 	 * @param args argument list
 	 */
 	public static void main(String[] args) {
-		if (args.length != 2) {
+		if (args.length != 3) {
 			throw new IllegalArgumentException("Number of arguments not right");
 		}
 		
 		SQLInterpreter itpr = new SQLInterpreter();
-		itpr.execute(args[0], args[1], true);
+		itpr.execute(args[0], args[1], args[2], true);
 	}
 }

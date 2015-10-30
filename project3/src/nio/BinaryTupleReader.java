@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import util.DBCat;
 import util.Tuple;
 
 /**
@@ -243,6 +244,11 @@ public final class BinaryTupleReader implements TupleReader {
 		}
 		
 	}
+
+	@Override
+	public Long getIndex() throws IOException {
+		return currTupleIdx;
+		}
 	
 	
 

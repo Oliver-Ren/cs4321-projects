@@ -127,21 +127,22 @@ public class ExternSortOperator extends SortOperator {
 		
 		return curRuns;
 	}
-	
+	//constructor 
 	public ExternSortOperator(Operator child, List<OrderByElement> orders) {
 		super(child, orders);
 		
 		new File(localDir).mkdirs();
 		tpsPerPg = Constants.PAGESZ / (
 				Constants.ATTRSZ * schema().size());
+		//the total number of tuples in a run(temp output file)
 		int tpsPerRun = tpsPerPg * DBCat.sortBufPgs;
-		
+		//create a array to keep the sorted tuple
 		List<Tuple> tps = new ArrayList<Tuple>(tpsPerRun);
 				
 		int i = 0;
 		while (true) {
 			try {
-				tps.clear();
+				tps.clear(); 
 				int cnt = tpsPerRun;
 				Tuple tp = null;
 				while (cnt-- > 0 && 
