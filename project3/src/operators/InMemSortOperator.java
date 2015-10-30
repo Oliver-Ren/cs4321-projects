@@ -52,7 +52,7 @@ public class InMemSortOperator extends SortOperator {
 	 * @param child its child
 	 * @param orders the list of attributes to be ordered
 	 */
-	public InMemSortOperator(Operator child, List<OrderByElement> orders) {
+	public InMemSortOperator(Operator child, List<?> orders) {
 		super(child, orders);
 		Tuple tp = null;
 		while ((tp = child.getNextTuple()) != null)

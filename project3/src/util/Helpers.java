@@ -11,6 +11,7 @@ import visitors.SelExpVisitor;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
+import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.select.AllColumns;
 import net.sf.jsqlparser.statement.select.FromItem;
@@ -166,6 +167,60 @@ public class Helpers {
 		for (int i = 1; i < exps.size(); i++)
 			ret = new AndExpression(ret, exps.get(i));
 		return ret;
+	}
+	
+	public static Expression procJoinConds(Expression exp, 
+			List<String> outScm, List<String> inScm, 
+			List<Integer> outIdxs, List<Integer> inIdxs) {
+		outIdxs.clear(); inIdxs.clear();
+		if (exp == null) return null;
+		
+		List<Expression> exps = decompAnds(exp);
+		List<Expression> eqs = new ArrayList<Expression>();
+		List<Expression> others = new ArrayList<Expression>();
+		
+		for (Expression e : exps) {
+			if (!(e instanceof EqualsTo)) {
+				others.add(e);
+				continue;
+			}
+			
+			EqualsTo et = (EqualsTo) e;
+			String left = et.getLeftExpression().toString();
+			String right = et.getRightExpression().toString();
+			
+			boolean ol = outScm.contains(left), 
+					or = outScm.contains(right), 
+					il = inScm.contains(left),
+					ir = inScm.contains(right);
+			
+			if (ol && or || il && ir || 
+					!(ol && ir || or && il)) {
+				others.add(e);
+				continue;
+			}
+			
+			System.out.println("Equals: " + left + ' ' + right);
+			
+			if (or) {
+				et = new EqualsTo(et.getRightExpression(), 
+						et.getLeftExpression());
+				String tmp = left; left = right; right = tmp;
+			}
+			
+			int outIdx = getAttrIdx(left, outScm);
+			int inIdx = getAttrIdx(right, inScm);
+			
+			if (outIdx == -1 || inIdx == -1)
+				throw new IllegalArgumentException();
+			
+			outIdxs.add(outIdx);
+			inIdxs.add(inIdx);
+			eqs.add(et);
+		}
+		
+		eqs.addAll(others);
+		return genAnds(eqs);
 	}
 	
 	/**

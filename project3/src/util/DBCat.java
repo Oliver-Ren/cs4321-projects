@@ -42,7 +42,7 @@ public class DBCat {
 	public static String schemaPath = "";
 	
 	public enum JoinMethod {
-		TNLJ, BNLG;
+		TNLJ, BNLJ, SMJ;
 	}
 	
 	public static JoinMethod joinMethod = JoinMethod.TNLJ;
@@ -103,10 +103,12 @@ public class DBCat {
 			String[] join = br.readLine().split(" ");
 			String[] sort = br.readLine().split(" ");
 			
-			if (!join[0].equals("0")) {
-				joinMethod = JoinMethod.BNLG;
+			if (join[0].equals("1")) {
+				joinMethod = JoinMethod.BNLJ;
 				joinBufPgs = Math.max(1, Integer.valueOf(join[1]));
 			}
+			else if (join[0].equals("2"))
+				joinMethod = JoinMethod.SMJ;
 			
 			if (!sort[0].equals("0")) {
 				sortMethod = SortMethod.EXTERN;

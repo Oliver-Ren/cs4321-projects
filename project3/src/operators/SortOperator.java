@@ -14,12 +14,29 @@ public abstract class SortOperator extends UnaryOperator {
 	List<Integer> orders = new ArrayList<Integer>();
 	TupleComp tpCmp = null;
 	
-	public SortOperator(Operator child, List<OrderByElement> orders) {
+	public SortOperator(Operator child, List<?> orders) {
 		super(child);
-		for (OrderByElement obe : orders) {
-			this.orders.add(Helpers.getAttrIdx(
-					obe.toString(), child.schema()));
+		if (!orders.isEmpty()) {
+			if (orders.get(0) instanceof OrderByElement) {
+				for (Object obj : orders) {
+					OrderByElement obe = (OrderByElement) obj;
+					this.orders.add(Helpers.getAttrIdx(
+							obe.toString(), child.schema()));
+				}
+			}
+			else if (orders.get(0) instanceof Integer) {
+				this.orders = (List<Integer>) orders;
+			}
+			else
+				throw new IllegalArgumentException();
 		}
+
+		tpCmp = new TupleComp(this.orders);
+	}
+	
+	public SortOperator(List<Integer> orders, Operator child) {
+		super(child);
+		this.orders = orders;
 		tpCmp = new TupleComp(this.orders);
 	}
 	
