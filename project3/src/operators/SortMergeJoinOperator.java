@@ -135,5 +135,11 @@ public class SortMergeJoinOperator extends JoinOperator {
 		}
 		
 	}
+
+	@Override
+	protected void next() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
