@@ -95,7 +95,6 @@ public class PhysicalPlanBuilder {
 					children[1] = new ExternSortOperator(
 							children[1], inIdxs);
 				}
-				
 				phyOp = new SortMergeJoinOperator(children[0], children[1], 
 						lop.exp, outIdxs, inIdxs);						
 			}
