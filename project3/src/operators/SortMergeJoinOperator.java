@@ -30,6 +30,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 	 * scan a list of expressions and keep the equals expression
 	 * 
 	 * @return
+	 * @throws IOException 
 	 */
 //	public List<EqualsTo> getEqualExps(List<Expression> exp){
 //		if(exp == null) return null;
@@ -42,7 +43,22 @@ public class SortMergeJoinOperator extends JoinOperator {
 //		return equalExps;
 //		
 //	}
-	
+	public void dumpLeft() {
+		BinaryTupleWriter tw;
+		try{
+			tw  = new BinaryTupleWriter("benchmarking/samples/temps/myleft");
+			Tuple t;
+			while((t = left.getNextTuple())!=null){
+				tw.write(t);
+			}
+			SortOperator sp = (SortOperator)left;
+			sp.reset(0);
+		}catch(IOException e){
+			return;
+		}
+		
+		
+	}
 	@Override
 	public Tuple getNextTuple()  {
 		Tuple rst = null;
@@ -85,7 +101,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 	}
 	public SortMergeJoinOperator(Operator left, 
 			Operator right, Expression exp,List<Integer> leftOrders,
-			List<Integer> rightOrders) throws IOException {
+			List<Integer> rightOrders) {
 		super(left, right, exp);
 		//EqualsTo et = (EqualsTo) exp;
 		//left.schema().contains(et.getLeftExpression());
@@ -98,13 +114,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 		curRightIndex =0;
 		this.leftOrders = leftOrders;
 		this.rightOrders =rightOrders;
-		BinaryTupleWriter tw  = new BinaryTupleWriter("benchmarking/samples/temps/myleft");
-		Tuple t;
-		while((t = left.getNextTuple())!=null){
-			tw.write(t);
-		}
-		SortOperator sp = (SortOperator)left;
-		sp.reset(0);
+		dumpLeft();
 		
 		
 	}
