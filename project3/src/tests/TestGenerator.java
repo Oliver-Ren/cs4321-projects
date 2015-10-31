@@ -101,18 +101,29 @@ public class TestGenerator {
 	}
 	
 	public void genBinaryInput() {
-		try {
-			FormatConverter.normalToBin(Boats + "_humanreadable", Boats);
-			FormatConverter.normalToBin(Sailors + "_humanreadable", Sailors);
-			FormatConverter.normalToBin(Reserves + "_humanreadable", Reserves);
-		} catch (IOException e) {
-			e.printStackTrace();
+		String[] normalData = Diff.dirList(dataPath);
+		for (String s : normalData) {
+			if (s.contains("_humanreadable")) {
+				String input = dataPath + File.separator + s;
+				String output = dataPath + File.separator 
+						+ s.substring(0, s.lastIndexOf("_humanreadable"));	
+				try {
+					FormatConverter.normalToBin(input, output);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
 	public void genExpected() {
 		ConfigGen configGen = new ConfigGen(inPath);
-		Diff.cleanFolder(expectedPath);
+		File dir = new File(expectedPath);
+		if (!dir.exists()) {
+			dir.mkdir();
+		} else {
+			Diff.cleanFolder(expectedPath);
+		}
 		configGen.setJoinMethod(configGen.TNLJ, 0);
 		configGen.setSortMethod(configGen.MEM_SORT, 0);
 		configGen.gen();
@@ -163,13 +174,14 @@ public class TestGenerator {
 	
 	
 	public static void main(String[] args) {
-		TestGenerator gen = new TestGenerator("large1");
-		gen.genBoats(5000, 1000);
-		gen.genSailors(6000, 2000);
-		gen.genReserves(2000, 500);
+
+		TestGenerator gen = new TestGenerator("grading_test_cases");
+//		gen.genBoats(5, 10);
+//		gen.genSailors(10, 20);
+//		gen.genReserves(5, 10);
 		gen.genBinaryInput();
-		gen.genExpected();
-		gen.convertExpHuman();
+//		gen.genExpected();
+//		gen.convertExpHuman();
 		gen.convertExpSortedHuman();
 	}
 	
