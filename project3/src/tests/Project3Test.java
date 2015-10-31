@@ -104,7 +104,7 @@ public class Project3Test {
 						+ File.separator + s;
 				String output_humanreadable = outHumanPath 
 						+ File.separator + s;
-				if (!Diff.containSameTuples(exp_humanreadable, output_humanreadable)) {
+				if (!Diff.areTotallySame(exp_humanreadable, output_humanreadable)) {
 					fail( "The " + s + " is not same as expected." );
 				}
 			}
@@ -141,7 +141,7 @@ public class Project3Test {
 						+ File.separator + s;
 				String output_humanreadable = outSortedHumanPath 
 						+ File.separator + s;
-				if (!Diff.containSameTuples(exp_humanreadable, output_humanreadable)) {
+				if (!Diff.areTotallySame(exp_humanreadable, output_humanreadable)) {
 					fail( "The " + s + " is not same as expected." );
 				}
 			}
@@ -179,7 +179,10 @@ public class Project3Test {
 			harness.executeAllQueries();
 			harness.convertToHumanReadable();
 			harness.convertToSortedHumanReadable();
-			harness.verifyHumanReadable();
+			// The order does not matter.
+			harness.verifySortedReadable(1, 31);
+			// The order should be correct.
+			harness.verifyHumanReadable(32, 40);
 			finished = true;
 		} catch (Exception e) {
 			finished = false;
@@ -187,7 +190,127 @@ public class Project3Test {
 		}
 		assertEquals(true, finished);
 	}
-
+	
+	/**
+	 * Test case for block nested loop join and in memory sort
+	 * with the given grading test cases
+	 */
+	//@Test
+	public void test_BNLJ_MemSort_Grading() {
+		Harness harness = new Harness("grading_test_cases");
+		ConfigGen configGen = new ConfigGen(harness.inPath);
+		boolean finished = false;
+		try {
+			configGen.setJoinMethod(configGen.BNLJ, 1);
+			configGen.setSortMethod(configGen.MEM_SORT, 0);
+			configGen.gen();
+			harness.clearOutputFolder();
+			harness.clearTempFolder();
+			harness.executeAllQueries();
+			harness.convertToHumanReadable();
+			harness.convertToSortedHumanReadable();
+			// The order does not matter.
+			harness.verifySortedReadable(1, 31);
+			// The order should be correct.
+			harness.verifyHumanReadable(32, 40);
+			finished = true;
+		} catch (Exception e) {
+			finished = false;
+			e.printStackTrace();
+		}
+		assertEquals(true, finished);
+	}
+	
+	/**
+	 * Test case for block nested loop join and external merge sort
+	 * with the given grading test cases
+	 */
+	//@Test
+	public void test_BNLJ_EMSort_Grading() {
+		Harness harness = new Harness("grading_test_cases");
+		ConfigGen configGen = new ConfigGen(harness.inPath);
+		boolean finished = false;
+		try {
+			configGen.setJoinMethod(configGen.BNLJ, 1);
+			configGen.setSortMethod(configGen.EM_SORT, 3);
+			configGen.gen();
+			harness.clearOutputFolder();
+			harness.clearTempFolder();
+			harness.executeAllQueries();
+			harness.convertToHumanReadable();
+			harness.convertToSortedHumanReadable();
+			// The order does not matter.
+			harness.verifySortedReadable(1, 31);
+			// The order should be correct.
+			harness.verifyHumanReadable(32, 40);
+			finished = true;
+		} catch (Exception e) {
+			finished = false;
+			e.printStackTrace();
+		}
+		assertEquals(true, finished);
+	}
+	
+	/**
+	 * Test case for sort merge join and external merge sort
+	 * with the given grading test cases
+	 */
+	//@Test
+	public void test_SMJ_EMSort_Grading() {
+		Harness harness = new Harness("grading_test_cases");
+		ConfigGen configGen = new ConfigGen(harness.inPath);
+		boolean finished = false;
+		try {
+			configGen.setJoinMethod(configGen.SMJ, 0);
+			configGen.setSortMethod(configGen.EM_SORT, 3);
+			configGen.gen();
+			harness.clearOutputFolder();
+			harness.clearTempFolder();
+			harness.executeAllQueries();
+			harness.convertToHumanReadable();
+			harness.convertToSortedHumanReadable();
+			// The order does not matter.
+			harness.verifySortedReadable(1, 31);
+			// The order should be correct.
+			harness.verifyHumanReadable(32, 40);
+			finished = true;
+		} catch (Exception e) {
+			finished = false;
+			e.printStackTrace();
+		}
+		assertEquals(true, finished);
+	}
+	
+	/**
+	 * Test case for block nested loop join and in memory sort
+	 * with the given grading test cases
+	 */
+	@Test
+	public void test_SMJ_MemSort_Grading() {
+		Harness harness = new Harness("grading_test_cases");
+		ConfigGen configGen = new ConfigGen(harness.inPath);
+		boolean finished = false;
+		try {
+			configGen.setJoinMethod(configGen.SMJ, 0);
+			configGen.setSortMethod(configGen.MEM_SORT, 0);
+			configGen.gen();
+			harness.clearOutputFolder();
+			harness.clearTempFolder();
+			harness.executeAllQueries();
+			harness.convertToHumanReadable();
+			harness.convertToSortedHumanReadable();
+			// The order does not matter.
+			harness.verifySortedReadable(1, 31);
+			// The order should be correct.
+			harness.verifyHumanReadable(32, 40);
+			finished = true;
+		} catch (Exception e) {
+			finished = false;
+			e.printStackTrace();
+		}
+		assertEquals(true, finished);
+	}
+	
 
 	//@Test
 	public void testBNLJ() {
@@ -210,7 +333,7 @@ public class Project3Test {
 	/**
 	 * Test case for sort merge join.
 	 */
-	@Test
+	//@Test
 	public void testSMJ() {
 		Harness harness = new Harness("samples");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
