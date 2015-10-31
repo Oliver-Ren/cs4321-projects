@@ -155,7 +155,7 @@ public class Project3Test {
 	/**
 	 * Test case for sort merge join.
 	 */
-	//@Test
+	@Test
 	public void testSMJ() {
 		Harness harness = new Harness("samples");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
@@ -182,7 +182,7 @@ public class Project3Test {
 	/**
 	 * Test case for tuple nexted loop join.
 	 */
-	@Test
+	//@Test
 	public void testTNLJ() {
 		Harness harness = new Harness("samples");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
