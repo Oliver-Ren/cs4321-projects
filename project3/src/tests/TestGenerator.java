@@ -204,13 +204,13 @@ public class TestGenerator {
 	
 	public static void main(String[] args) {
 
-		TestGenerator gen = new TestGenerator("grading_test_cases");
-//		gen.genBoats(5, 10);
-//		gen.genSailors(10, 20);
-//		gen.genReserves(5, 10);
+		TestGenerator gen = new TestGenerator("large3");
+		gen.genBoats(5000, 500);
+		gen.genSailors(6000, 600);
+		gen.genReserves(6000, 600);
 		gen.genBinaryInput();
-//		gen.genExpected();
-//		gen.convertExpHuman();
+		gen.genExpected();
+		gen.convertExpHuman();
 		gen.convertExpSortedHuman();
 	}
 	

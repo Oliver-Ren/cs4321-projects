@@ -285,7 +285,7 @@ public class Project3Test {
 	 * Test case for block nested loop join and in memory sort
 	 * with the given grading test cases
 	 */
-	@Test
+	//@Test
 	public void test_SMJ_MemSort_Grading() {
 		Harness harness = new Harness("grading_test_cases");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
@@ -312,12 +312,12 @@ public class Project3Test {
 	}
 	
 
-	@Test
+	//@Test
 	public void testBNLJ() {
 		Harness harness = new Harness("large2");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
 		try {
-			configGen.setJoinMethod(configGen.BNLJ, 1);
+			configGen.setJoinMethod(configGen.BNLJ, 5);
 			configGen.gen();
 			harness.clearOutputFolder();
 			harness.executeAllQueries();
@@ -333,7 +333,7 @@ public class Project3Test {
 	/**
 	 * Test case for sort merge join.
 	 */
-	//@Test
+	@Test
 	public void testSMJ() {
 		Harness harness = new Harness("large1");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
