@@ -46,14 +46,16 @@ public class SortMergeJoinOperator extends JoinOperator {
 	public void dumpLeft() {
 		BinaryTupleWriter tw;
 		try{
-			tw  = new BinaryTupleWriter("benchmarking/samples/temps/myleft");
+			tw  = new BinaryTupleWriter("benchmarking/samples/temp");
 			Tuple t;
 			while((t = left.getNextTuple())!=null){
 				tw.write(t);
 			}
+			tw.close();
 			SortOperator sp = (SortOperator)left;
 			sp.reset(0);
 		}catch(IOException e){
+			e.printStackTrace();
 			return;
 		}
 		
@@ -114,6 +116,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 		curRightIndex =0;
 		this.leftOrders = leftOrders;
 		this.rightOrders =rightOrders;
+		System.out.println("I'm in sort merge join");
 		dumpLeft();
 		
 		
