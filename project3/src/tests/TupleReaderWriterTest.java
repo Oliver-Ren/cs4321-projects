@@ -17,6 +17,12 @@ import org.junit.Test;
 
 import util.Tuple;
 
+/**
+ * Unit tests for the tuple writer and tuple reader.
+ * 
+ * @author Chengxiang Ren
+ *
+ */
 public class TupleReaderWriterTest {
 	private static class Harness {
 		private static final String testPart = "iotests";

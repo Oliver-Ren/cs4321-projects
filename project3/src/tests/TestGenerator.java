@@ -12,7 +12,7 @@ import util.SortTuple;
 /** 
  * Utility Class for generating test cases.
  * 
- * @author Chenxiang Ren
+ * @author Chenxiang Ren (cr486).
  *
  */
 public class TestGenerator {
@@ -40,7 +40,10 @@ public class TestGenerator {
 	public String Boats;
 	public String Reserves;
 	
-	
+	/**
+	 * Construct the generator using the part name.
+	 * @param part	the part to be tested
+	 */
 	public TestGenerator(String part) {
 		this.testPart = "benchmarking" + File.separator + part;
 		inPath = testPart + File.separator + "input";
@@ -69,7 +72,11 @@ public class TestGenerator {
 //		outSortedHuman = new File(outSortedHumanPath);
 	}
 	
-	
+	/**
+	 * Generates the Sailors table.
+	 * @param numTup
+	 * @param range
+	 */
 	public void genSailors(int numTup, int range) {
 		try {
 			RandomDataGenerator.tuplesGenerator(Sailors + "_humanreadable", 
@@ -80,6 +87,11 @@ public class TestGenerator {
 		}
 	}
 	
+	/**
+	 * Generates the Boats table.
+	 * @param numTup
+	 * @param range
+	 */
 	public void genBoats(int numTup, int range) {
 		try {
 			RandomDataGenerator.tuplesGenerator(Boats + "_humanreadable", 
@@ -90,6 +102,11 @@ public class TestGenerator {
 		}
 	}
 	
+	/**
+	 * Generates the Reserves Table.
+	 * @param numTup
+	 * @param range
+	 */
 	public void genReserves(int numTup, int range) {
 		try {
 			RandomDataGenerator.tuplesGenerator(Reserves + "_humanreadable", 
@@ -100,6 +117,9 @@ public class TestGenerator {
 		}
 	}
 	
+	/**
+	 * Generates the binary version of the tables.
+	 */
 	public void genBinaryInput() {
 		String[] normalData = Diff.dirList(dataPath);
 		for (String s : normalData) {
@@ -116,6 +136,9 @@ public class TestGenerator {
 		}
 	}
 	
+	/**
+	 * Generates the expected result using tuple nested loop join.
+	 */
 	public void genExpected() {
 		ConfigGen configGen = new ConfigGen(inPath);
 		File dir = new File(expectedPath);
@@ -131,6 +154,9 @@ public class TestGenerator {
 		itpr.execute(inPath, expectedPath, tempPath, false);
 	}
 	
+	/**
+	 * Converts the Expected result into the human readable version.
+	 */
 	public void convertExpHuman() {
 		String[] binaryResults = Diff.dirList(expectedPath);
 		
@@ -152,6 +178,9 @@ public class TestGenerator {
 		}	
 	}
 	
+	/**
+	 * Converts the human readable version of the expression into sorted.
+	 */
 	public void convertExpSortedHuman() {
 		String[] readableResults = Diff.dirList(expectedHumanPath);
 		File dir = new File(expSortedHumanPath);
