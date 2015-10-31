@@ -189,9 +189,9 @@ public class Project3Test {
 	}
 
 
-	//@Test
+	@Test
 	public void testBNLJ() {
-		Harness harness = new Harness("samples");
+		Harness harness = new Harness("large2");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
 		try {
 			configGen.setJoinMethod(configGen.BNLJ, 1);
@@ -210,9 +210,9 @@ public class Project3Test {
 	/**
 	 * Test case for sort merge join.
 	 */
-	@Test
+	//@Test
 	public void testSMJ() {
-		Harness harness = new Harness("samples");
+		Harness harness = new Harness("large1");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
 		boolean finished = false;
 		try {
@@ -239,7 +239,7 @@ public class Project3Test {
 	 */
 	//@Test
 	public void testTNLJ() {
-		Harness harness = new Harness("small");
+		Harness harness = new Harness("small1");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
 		boolean finished = false;
 		try {
