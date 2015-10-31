@@ -76,6 +76,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 			//reset my right tuple index
 			SortOperator x = (SortOperator)right;
 			x.reset(partitionIndex);
+			curRightIndex = partitionIndex;
 			leftTp = left.getNextTuple();	
 		}
 		return null;
