@@ -62,3 +62,6 @@ In order to better conduct the testing, we have written a bash script which dump
 Also, we have created the util class _Diff_ for comparing two files which will automatically judge the correctness of the output.
 
 
+### Benchmarking
+#### Testing Plan
+Compare BNLJ or SMJ with TNLJ with the following three queries and the generated data (about )

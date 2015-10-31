@@ -127,8 +127,8 @@ public class ExternSortOperator extends SortOperator {
 		
 		return curRuns;
 	}
-	//constructor 
-	public ExternSortOperator(Operator child, List<OrderByElement> orders) {
+
+	public ExternSortOperator(Operator child, List<?> orders) {
 		super(child, orders);
 		
 		new File(localDir).mkdirs();
