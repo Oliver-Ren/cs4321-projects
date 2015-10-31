@@ -59,12 +59,12 @@ public class ConfigGen {
 	 * @param bufferSize the size of the buffer.
 	 */
 	public void setJoinMethod(int method, int bufferSize) {
-		if (method != 0 && bufferSize <= 0) {
+		if (method == 1 && bufferSize <= 0) {
 			throw new IndexOutOfBoundsException("The size is too small");
 		}
 		joinSeted = true;
 		this.joinMethod = method;
-		if (method != 0) {
+		if (method == 1) {
 			joinBufferSize = bufferSize;
 		} else {
 			joinBufferSize = 0;

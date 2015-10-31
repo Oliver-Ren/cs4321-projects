@@ -59,12 +59,9 @@ public class SQLInterpreter {
 					// }
 					SelState selState = new SelState(statement);
 					
-					TupleWriter writer = new NormalTupleWriter(file);
+					TupleWriter writer = new BinaryTupleWriter(file.getAbsolutePath());
 					selState.root.dump(writer);
 					writer.close();
-					if (counter >= 8) {
-						SortTuple.sortTuples(file.getAbsolutePath(), file.getAbsolutePath() + "sorted");
-					}
 					counter++;
 				} catch (Exception e) {
 					System.out.println("Exception when parsing query" + counter);

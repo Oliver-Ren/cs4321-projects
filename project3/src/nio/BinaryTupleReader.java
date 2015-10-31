@@ -202,6 +202,10 @@ public final class BinaryTupleReader implements TupleReader {
 		offsets.add(offsets.get(offsets.size() - 1) + numOfTuples);
 		// set the limit according to the number of tuples and
 		// attributes actually in the page.
+		int newLim = (numOfAttr * numOfTuples + 2) * INT_LEN;
+		if (newLim >= 4096) {
+			System.out.println(this.file.getAbsolutePath() + " the new limit is" + newLim);
+		}
 		buffer.limit((numOfAttr * numOfTuples + 2) * INT_LEN);
 	}
 	
