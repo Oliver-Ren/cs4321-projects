@@ -74,7 +74,43 @@ public class SortMergeJoinOperator extends JoinOperator {
 		
 		
 	}
+	
+	public Tuple getNextTuple2()  {		
+		while(leftTp !=null && rightTp !=null){
+			if (cp.compare(leftTp, rightTp) < 0) {
+				leftTp = left.getNextTuple();
+				continue;
+			}
+			
+			if (cp.compare(leftTp, rightTp) > 0) {
+				rightTp = right.getNextTuple();
+				curRightIndex++;
+				partitionIndex = curRightIndex;
+				continue;
+			}
+			
+			Tuple rst = null;
+			
+			if(exp == null || 
+					Helpers.getJoinRes(leftTp, rightTp, exp, jv)){
+				rst = joinTp(leftTp,rightTp);
+			}
+			
+			rightTp = right.getNextTuple();
+			curRightIndex++;
+			if (rightTp == null || 
+					cp.compare(leftTp, rightTp) != 0) {
+				leftTp = left.getNextTuple();
+				((SortOperator) right).reset(partitionIndex);
+				curRightIndex = partitionIndex;
+			}
+			
+			if (rst != null) return rst;
+		}
 		
+		return null;
+	}
+	
 	@Override
 	public Tuple getNextTuple()  {		
 		while(leftTp !=null && rightTp !=null){ //当两个table都没EOF
@@ -140,6 +176,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 		
 		return null;
 	}
+	
 	public SortMergeJoinOperator(Operator left, 
 			Operator right, Expression exp,List<Integer> leftOrders,
 			List<Integer> rightOrders) {
