@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,6 +103,9 @@ public class DBCat {
 			br = new BufferedReader(new FileReader(configPath));
 			String[] join = br.readLine().split(" ");
 			String[] sort = br.readLine().split(" ");
+			
+			System.out.println("join: " + Arrays.toString(join));
+			System.out.println("sort: " + Arrays.toString(sort));
 			
 			if (join[0].equals("1")) {
 				joinMethod = JoinMethod.BNLJ;

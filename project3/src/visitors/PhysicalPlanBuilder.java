@@ -96,11 +96,14 @@ public class PhysicalPlanBuilder {
 							children[1], inIdxs);
 				}
 				phyOp = new SortMergeJoinOperator(children[0], children[1], 
-						lop.exp, outIdxs, inIdxs);						
+						lop.exp, outIdxs, inIdxs);
 			}
 			else
 				phyOp = new BlockJoinOperator(children[0], 
 						children[1], lop.exp);
+			break;
+		default:
+			throw new UnsupportedOperationException();
 		}
 	}
 	
