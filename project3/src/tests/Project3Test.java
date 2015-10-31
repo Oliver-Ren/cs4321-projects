@@ -144,7 +144,8 @@ public class Project3Test {
 			harness.clearOutputFolder();
 			harness.executeAllQueries();
 			harness.convertToHumanReadable();
-			harness.verifyHumanReadable();
+			harness.convertToSortedHumanReadable();
+			harness.verifySortedReadable();
 		} catch (Exception e) {
 			fail( "exception happend" );
 			e.printStackTrace();
@@ -154,7 +155,7 @@ public class Project3Test {
 	/**
 	 * Test case for sort merge join.
 	 */
-	@Test
+	//@Test
 	public void testSMJ() {
 		Harness harness = new Harness("samples");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
@@ -181,14 +182,14 @@ public class Project3Test {
 	/**
 	 * Test case for tuple nexted loop join.
 	 */
-	//@Test
+	@Test
 	public void testTNLJ() {
 		Harness harness = new Harness("samples");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
 		boolean finished = false;
 		try {
 			configGen.setJoinMethod(configGen.TNLJ, 0);
-			configGen.setSortMethod(configGen.MEM_SORT, 3);
+			configGen.setSortMethod(configGen.MEM_SORT, 0);
 			configGen.gen();
 			harness.clearOutputFolder();
 			harness.clearTempFolder();
