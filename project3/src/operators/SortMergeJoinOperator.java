@@ -27,8 +27,8 @@ public class SortMergeJoinOperator extends JoinOperator {
 	//List<EqualsTo> equalExps; 
 	JoinExpVisitor jv;
 	
-	Tuple leftTp = null;
-	Tuple rightTp = null;
+	Tuple leftTp;
+	Tuple rightTp;
 	
 	TupleComp cp = null;
 	
@@ -74,7 +74,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 		
 		
 	}
-	
+	//@Override
 	public Tuple getNextTuple2()  {		
 		while(leftTp !=null && rightTp !=null){
 			if (cp.compare(leftTp, rightTp) < 0) {
@@ -87,15 +87,12 @@ public class SortMergeJoinOperator extends JoinOperator {
 				curRightIndex++;
 				partitionIndex = curRightIndex;
 				continue;
-			}
-			
+			}			
 			Tuple rst = null;
-			
 			if(exp == null || 
 					Helpers.getJoinRes(leftTp, rightTp, exp, jv)){
 				rst = joinTp(leftTp,rightTp);
-			}
-			
+			}			
 			rightTp = right.getNextTuple();
 			curRightIndex++;
 			if (rightTp == null || 
@@ -113,39 +110,31 @@ public class SortMergeJoinOperator extends JoinOperator {
 	
 	@Override
 	public Tuple getNextTuple()  {		
+		
+		
+		
+		
 		while(leftTp !=null && rightTp !=null){ //当两个table都没EOF
 			if(cp.compare(leftTp, rightTp)!=0){
 				while (leftTp != null && 
 						cp.compare(leftTp, rightTp) < 0) { // left[i] < right[j]
-					//System.out.println(leftTp.toString() + ' ' + rightTp.toString() + " <");
 					leftTp = left.getNextTuple();
-				}
-				
+				}				
 				if (leftTp == null) return null;
 				
 				while(rightTp!=null &&
 						cp.compare(leftTp, rightTp)>0){// left[i]>right[j]
-					//System.out.println(leftTp.toString() + ' ' + rightTp.toString() + " >");
 					rightTp = right.getNextTuple();
 					curRightIndex++;
 				}
 				//update my partition
 				partitionIndex = curRightIndex;
-			}
-			
+			}		
 			// check if reaches EOF
 			if(rightTp ==null) return null;
-			
 			//reset my right tuple index
-			
 			if (cp.compare(leftTp, rightTp) != 0) continue;
-			
-			//if (partitionIndex == -1)
-				//partitionIndex = curRightIndex;
-			
 			// keep track my current right tuple index
-			// System.out.println("new partition " + partitionIndex);
-			
 			while(rightTp != null && cp.compare(leftTp,rightTp) == 0){
 				//System.out.println(leftTp.toString() + ' ' + rightTp.toString() + " =");
 				// compare other non equality condition
@@ -168,7 +157,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 					rightTp = right.getNextTuple();
 					leftTp = left.getNextTuple();
 					curRightIndex = partitionIndex;
-					//System.out.println("the partition is reset");
+					System.out.println("the partition is reset");
 				}
 				if(rst!= null) return rst;
 			}
@@ -198,12 +187,12 @@ public class SortMergeJoinOperator extends JoinOperator {
 		// decompose all the end expression to a list
 		//equalExps = getEqualExps(list); // assign the equalExpression to my list
 		this.jv = new JoinExpVisitor(left.schema(),right.schema());
-		
 		leftTp = left.getNextTuple();
 		rightTp = right.getNextTuple();
 		
+		
 		System.out.println("I'm in sort merge join");
-		dumpLeft();
+		
 		
 		
 	}
