@@ -30,7 +30,9 @@ public class SortMergeJoinOperator extends JoinOperator {
 	
 	List<Integer> leftOrders = null; // the order of attributes in left table
 	List<Integer> rightOrders = null;// the order of attributes in right table
-	
+	/**
+	 *get the next tuple which satisfied the join condition 
+	 */
 	@Override
 	public Tuple getNextTuple()  {
 		while(leftTp !=null && rightTp !=null){
@@ -136,18 +138,18 @@ public class SortMergeJoinOperator extends JoinOperator {
 		this.rightOrders = rightOrders;
 		cp  = new TupleComp(leftOrders,rightOrders);
 		
-		System.out.println(left.schema());
-		System.out.println(right.schema());
-		System.out.println(leftOrders);
-		System.out.println(rightOrders);
+//		System.out.println(left.schema());
+//		System.out.println(right.schema());
+//		System.out.println(leftOrders);
+//		System.out.println(rightOrders);
 		
-		System.out.println("------------");
+		//System.out.println("------------");
 		
 		this.jv = new JoinExpVisitor(left.schema(),right.schema());
 		leftTp = left.getNextTuple();
 		rightTp = right.getNextTuple();
 		
-		System.out.println("I'm in sort merge join");
+		//System.out.println("I'm in sort merge join");
 	}
 	
 	// comparator class to compare one tuple from the left table and another from the 

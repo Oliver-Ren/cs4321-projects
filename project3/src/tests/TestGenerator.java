@@ -203,6 +203,7 @@ public class TestGenerator {
 	
 	
 	public static void main(String[] args) {
+
 		TestGenerator gen = new TestGenerator("grading_test_cases");
 //		gen.genBoats(5, 10);
 //		gen.genSailors(10, 20);
