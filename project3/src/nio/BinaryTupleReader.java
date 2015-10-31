@@ -92,8 +92,8 @@ public final class BinaryTupleReader implements TupleReader {
 				} catch (EOFException e) {
 					break;
 				}
-				System.out.println("============ page " + offsets.size() 
-						+ "=== tuple " + numOfTuples +" =======");
+				//System.out.println("============ page " + offsets.size() 
+					//	+ "=== tuple " + numOfTuples +" =======");
 			}
 			
 			if (buffer.hasRemaining()) {
@@ -204,7 +204,7 @@ public final class BinaryTupleReader implements TupleReader {
 		// attributes actually in the page.
 		int newLim = (numOfAttr * numOfTuples + 2) * INT_LEN;
 		if (newLim >= 4096) {
-			System.out.println(this.file.getAbsolutePath() + " the new limit is" + newLim);
+			//System.out.println(this.file.getAbsolutePath() + " the new limit is" + newLim);
 		}
 		buffer.limit((numOfAttr * numOfTuples + 2) * INT_LEN);
 	}
@@ -230,7 +230,7 @@ public final class BinaryTupleReader implements TupleReader {
 			buffer.limit((attr * tuples + 2) * INT_LEN);
 			while (buffer.hasRemaining()) {
 				col++;
-				System.out.print(buffer.getInt());
+				//System.out.print(buffer.getInt());
 				if (col == attr) {
 					System.out.println();
 					col = 0;

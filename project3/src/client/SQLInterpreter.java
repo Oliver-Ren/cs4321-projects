@@ -60,7 +60,15 @@ public class SQLInterpreter {
 					SelState selState = new SelState(statement);
 					
 					TupleWriter writer = new BinaryTupleWriter(file.getAbsolutePath());
+					
+					// begin time
+					long beginTime = System.currentTimeMillis();
 					selState.root.dump(writer);
+					// end time
+					long endTime = System.currentTimeMillis();
+					System.out.println("The running time for query " 
+					+ counter + " is " + (endTime - beginTime) + " milliseconds");
+					
 					writer.close();
 					counter++;
 				} catch (Exception e) {
