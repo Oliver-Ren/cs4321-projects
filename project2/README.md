@@ -64,4 +64,36 @@ Also, we have created the util class _Diff_ for comparing two files which will a
 
 ### Benchmarking
 #### Testing Plan
-Compare BNLJ or SMJ with TNLJ with the following three queries and the generated data (about )
+Compare BNLJ or SMJ with TNLJ with the following three queries and the generated data (about 5000 tuples per relations, in **/project3/benchmarking** directory). 
+
+**Tested Queries**  
+	Query1:  sds    
+	Query2:  
+	Query3:  
+**Description of the Tested Data**  
+1. Table Name:     
+2. Schema:  
+3. Number of Tuples:   
+4. Tuple value range:
+5. Number of buffer used for the SMJ 		
+#### Testing Results
+1. Query1:           
+  
+		TNLJ time:
+		BNLJ time: 
+		SMJ  time: 	
+
+2. Query1:           
+  
+		TNLJ time:
+		BNLJ time: 
+		SMJ  time: 	
+3. Query1:           
+  
+		TNLJ time:
+		BNLJ time: 
+		SMJ  time: 	
+**Bar Graph:**  
+					
+		my image
+
