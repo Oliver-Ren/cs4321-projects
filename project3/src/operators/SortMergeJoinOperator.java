@@ -78,12 +78,10 @@ public class SortMergeJoinOperator extends JoinOperator {
 	@Override
 	public Tuple getNextTuple()  {		
 		while(leftTp !=null && rightTp !=null){ //当两个table都没EOF
-			//((SortOperator) right).reset(partitionIndex);
-			//curRightIndex = partitionIndex;
 			if(cp.compare(leftTp, rightTp)!=0){
 				while (leftTp != null && 
 						cp.compare(leftTp, rightTp) < 0) { // left[i] < right[j]
-					System.out.println(leftTp.toString() + ' ' + rightTp.toString() + " <");
+					//System.out.println(leftTp.toString() + ' ' + rightTp.toString() + " <");
 					leftTp = left.getNextTuple();
 				}
 				
@@ -91,7 +89,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 				
 				while(rightTp!=null &&
 						cp.compare(leftTp, rightTp)>0){// left[i]>right[j]
-					System.out.println(leftTp.toString() + ' ' + rightTp.toString() + " >");
+					//System.out.println(leftTp.toString() + ' ' + rightTp.toString() + " >");
 					rightTp = right.getNextTuple();
 					curRightIndex++;
 				}
@@ -110,10 +108,10 @@ public class SortMergeJoinOperator extends JoinOperator {
 				//partitionIndex = curRightIndex;
 			
 			// keep track my current right tuple index
-			 System.out.println("new partition " + partitionIndex);
+			// System.out.println("new partition " + partitionIndex);
 			
 			while(rightTp != null && cp.compare(leftTp,rightTp) == 0){
-				System.out.println(leftTp.toString() + ' ' + rightTp.toString() + " =");
+				//System.out.println(leftTp.toString() + ' ' + rightTp.toString() + " =");
 				// compare other non equality condition
 				Tuple rst = null;
 				if(exp == null || 
@@ -127,14 +125,14 @@ public class SortMergeJoinOperator extends JoinOperator {
 					rightTp = right.getNextTuple();
 					leftTp = left.getNextTuple();
 					curRightIndex = partitionIndex;
-					System.out.println("the partition is reset");
+					//System.out.println("the partition is reset");
 					
 				} else if(cp.compare(leftTp, rightTp)!=0){
 					((SortOperator) right).reset(partitionIndex);
 					rightTp = right.getNextTuple();
 					leftTp = left.getNextTuple();
 					curRightIndex = partitionIndex;
-					System.out.println("the partition is reset");
+					//System.out.println("the partition is reset");
 				}
 				if(rst!= null) return rst;
 			}
