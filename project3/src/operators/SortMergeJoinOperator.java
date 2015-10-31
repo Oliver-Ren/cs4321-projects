@@ -19,7 +19,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 	//TupleReader leftReader; // the tuple reader for left table 
 	//TupleReader rightReader; //the  tuple reader for the right table
 	Expression exp;  // my expression
-	List<EqualsTo> equalExps; 
+	//List<EqualsTo> equalExps; 
 	JoinExpVisitor jv;
 	// = =============some problems
 	List<Integer> leftOrders = null; // the order of attributes in left table 
@@ -29,17 +29,17 @@ public class SortMergeJoinOperator extends JoinOperator {
 	 * 
 	 * @return
 	 */
-	public List<EqualsTo> getEqualExps(List<Expression> exp){
-		if(exp == null) return null;
-		for(Expression e : exp ){
-			if(e instanceof EqualsTo){
-				EqualsTo eq = (EqualsTo) e;
-				equalExps.add(eq);
-			}
-		}
-		return equalExps;
-		
-	}
+//	public List<EqualsTo> getEqualExps(List<Expression> exp){
+//		if(exp == null) return null;
+//		for(Expression e : exp ){
+//			if(e instanceof EqualsTo){
+//				EqualsTo eq = (EqualsTo) e;
+//				equalExps.add(eq);
+//			}
+//		}
+//		return equalExps;
+//		
+//	}
 	
 	@Override
 	public Tuple getNextTuple()  {
@@ -89,7 +89,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 		this.exp = exp;
 		// decompose all the end expression to a list
 		List<Expression> list = Helpers.decompAnds(exp); 
-		equalExps = getEqualExps(list); // assign the equalExpression to my list
+		//equalExps = getEqualExps(list); // assign the equalExpression to my list
 		this.jv = new JoinExpVisitor(left.schema(),right.schema());
 		partitionIndex = 0;
 		curRightIndex =0;
