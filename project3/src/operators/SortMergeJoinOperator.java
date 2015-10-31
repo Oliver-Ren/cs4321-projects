@@ -124,11 +124,14 @@ public class SortMergeJoinOperator extends JoinOperator {
 				curRightIndex++;
 				if(rightTp == null) {
 					((SortOperator) right).reset(partitionIndex);
+					rightTp = right.getNextTuple();
 					leftTp = left.getNextTuple();
 					curRightIndex = partitionIndex;
 					System.out.println("the partition is reset");
+					
 				} else if(cp.compare(leftTp, rightTp)!=0){
 					((SortOperator) right).reset(partitionIndex);
+					rightTp = right.getNextTuple();
 					leftTp = left.getNextTuple();
 					curRightIndex = partitionIndex;
 					System.out.println("the partition is reset");
