@@ -56,6 +56,13 @@ public class Project3Test {
 		
 		private void convertToHumanReadable() {
 			String[] binaryResults = Diff.dirList(outPath);
+			File dir = new File(outHumanPath);
+			if (!dir.exists()) {
+				dir.mkdir();
+			} else {
+				Diff.cleanFolder(outHumanPath);
+			}
+			
 			for (String s : binaryResults) {
 				String output = outPath + File.separator + s;
 				String output_humanreadable = outHumanPath 
@@ -69,22 +76,15 @@ public class Project3Test {
 			}		
 		}
 		
-		private void genExpSortedHumanReadable() {
-			String[] readableResults = Diff.dirList(expectedHumanPath);
-			for (String s : readableResults) {
-				String input = expectedHumanPath + File.separator + s;
-				String output = expSortedHumanPath + File.separator + s;
-				try {
-					SortTuple.sortTuples(input, output);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-		
-			}	
-		}
 		
 		private void convertToSortedHumanReadable() {
 			String[] readableResults = Diff.dirList(outHumanPath);
+			File dir = new File(outSortedHumanPath);
+			if (!dir.exists()) {
+				dir.mkdir();
+			} else {
+				Diff.cleanFolder(outSortedHumanPath);
+			}
 			for (String s : readableResults) {
 				String input = outHumanPath + File.separator + s;
 				String output = outSortedHumanPath + File.separator + s;
@@ -110,6 +110,20 @@ public class Project3Test {
 			}
 		}
 		
+		private void verifyHumanReadable(int start, int end) {
+			for (int i = start; i <= end; i++) {
+				String s = "query" + i + "_humanreadable";
+				String exp_humanreadable = expectedHumanPath 
+						+ File.separator + s;
+				String output_humanreadable = outHumanPath 
+						+ File.separator + s;
+				if (!Diff.areTotallySame(exp_humanreadable, output_humanreadable)) {
+					fail( "The " + s + " is not same as expected." );
+				}
+			}
+		}
+		
+		
 		private void clearOutputFolder() {
 			Diff.cleanFolder(outPath);
 			Diff.cleanFolder(outHumanPath);
@@ -132,7 +146,48 @@ public class Project3Test {
 				}
 			}
 		}
+		
+		private void verifySortedReadable(int start, int end) {
+			for (int i = start; i <= end; i++) {
+				String s = "query" + i + "_humanreadable";
+				String exp_humanreadable = expSortedHumanPath 
+						+ File.separator + s;
+				String output_humanreadable = outSortedHumanPath 
+						+ File.separator + s;
+				if (!Diff.areTotallySame(exp_humanreadable, output_humanreadable)) {
+					fail( "The " + s + " is not same as expected." );
+				}
+			}
+		}
+		
 	}
+	
+	/**
+	 * Test case for tuple nested loop join with the given grading test cases.
+	 */
+	//@Test
+	public void testTNLJGrading() {
+		Harness harness = new Harness("grading_test_cases");
+		ConfigGen configGen = new ConfigGen(harness.inPath);
+		boolean finished = false;
+		try {
+			configGen.setJoinMethod(configGen.TNLJ, 0);
+			configGen.setSortMethod(configGen.MEM_SORT, 0);
+			configGen.gen();
+			harness.clearOutputFolder();
+			harness.clearTempFolder();
+			harness.executeAllQueries();
+			harness.convertToHumanReadable();
+			harness.convertToSortedHumanReadable();
+			harness.verifyHumanReadable();
+			finished = true;
+		} catch (Exception e) {
+			finished = false;
+			e.printStackTrace();
+		}
+		assertEquals(true, finished);
+	}
+
 
 	//@Test
 	public void testBNLJ() {

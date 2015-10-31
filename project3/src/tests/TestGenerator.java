@@ -122,7 +122,13 @@ public class TestGenerator {
 	
 	public void convertExpHuman() {
 		String[] binaryResults = Diff.dirList(expectedPath);
-		Diff.cleanFolder(expectedHumanPath);
+		
+		File dir = new File(expectedHumanPath);
+		if (!dir.exists()) {
+			dir.mkdir();
+		} else {
+			Diff.cleanFolder(expectedHumanPath);
+		}
 		for (String s : binaryResults) {
 			String input = expectedPath + File.separator + s;
 			String output = expectedHumanPath + File.separator + s + "_humanreadable";	
@@ -137,7 +143,12 @@ public class TestGenerator {
 	
 	public void convertExpSortedHuman() {
 		String[] readableResults = Diff.dirList(expectedHumanPath);
-		Diff.cleanFolder(expSortedHumanPath);
+		File dir = new File(expSortedHumanPath);
+		if (!dir.exists()) {
+			dir.mkdir();
+		} else {
+			Diff.cleanFolder(expSortedHumanPath);
+		}
 		for (String s : readableResults) {
 			String input = expectedHumanPath + File.separator + s;
 			String output = expSortedHumanPath + File.separator + s;
@@ -152,13 +163,13 @@ public class TestGenerator {
 	
 	
 	public static void main(String[] args) {
-		TestGenerator gen = new TestGenerator("small");
-		gen.genBoats(5, 10);
-		gen.genSailors(10, 20);
-		gen.genReserves(5, 10);
-		gen.genBinaryInput();
-		gen.genExpected();
-		gen.convertExpHuman();
+		TestGenerator gen = new TestGenerator("grading_test_cases");
+//		gen.genBoats(5, 10);
+//		gen.genSailors(10, 20);
+//		gen.genReserves(5, 10);
+//		gen.genBinaryInput();
+//		gen.genExpected();
+//		gen.convertExpHuman();
 		gen.convertExpSortedHuman();
 	}
 	
