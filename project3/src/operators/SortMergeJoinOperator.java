@@ -19,8 +19,8 @@ import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 
 public class SortMergeJoinOperator extends JoinOperator {
 	//int cnt = 0;// debug perpiose
-	int partitionIndex;  // the index of the first tuple in the current partition
-	int curRightIndex;  // the index of the current tuple of left table
+	int partitionIndex = 0;  // the index of the first tuple in the current partition
+	int curRightIndex = 0;  // the index of the current tuple of left table
 	//TupleReader leftReader; // the tuple reader for left table 
 	//TupleReader rightReader; //the  tuple reader for the right table
 	Expression exp;  // my expression
@@ -77,36 +77,38 @@ public class SortMergeJoinOperator extends JoinOperator {
 	@Override
 	public Tuple getNextTuple()  {		
 		while(leftTp !=null && rightTp !=null){ //当两个table都没EOF
-			while(leftTp!= null && rightTp!=null 
-					&& cp.compare(leftTp,rightTp)<0){ // left[i] < right[j]
+			while (leftTp != null && 
+					cp.compare(leftTp, rightTp) < 0) { // left[i] < right[j]
 				leftTp = left.getNextTuple();
 			}
-			while(leftTp!=null && rightTp!=null &&
+			
+			if (leftTp == null) return null;
+			
+			while(rightTp!=null &&
 					cp.compare(leftTp, rightTp)>0){// left[i]>right[j]
 				rightTp = right.getNextTuple();
 				curRightIndex++;
 			}
 			// check if reaches EOF
-			if(leftTp ==null || rightTp ==null) break;
+			if(rightTp ==null) return null;
+			
+			if (cp.compare(leftTp, rightTp) != 0) continue;
 			
 			// keep track my current right tuple index
 			partitionIndex = curRightIndex;
 			while(rightTp != null && cp.compare(leftTp,rightTp) == 0){
 				// compare other non equality condition
 				Tuple rst = null;
-				if(Helpers.getJoinRes(leftTp, rightTp, exp, jv)){
+				if(exp == null || 
+						Helpers.getJoinRes(leftTp, rightTp, exp, jv)){
 					rst = joinTp(leftTp,rightTp);
 				}
 				rightTp = right.getNextTuple();
 				curRightIndex++;
-				if (rightTp == null) {
-					leftTp = left.getNextTuple();
-					((SortOperator) right).reset(partitionIndex);
-					curRightIndex = partitionIndex;
-				}
 				if(rst!= null) return rst;
 				if (leftTp == null) return null;
 			}
+			
 			//reset my right tuple index
 			((SortOperator) right).reset(partitionIndex);
 			curRightIndex = partitionIndex;
@@ -120,6 +122,8 @@ public class SortMergeJoinOperator extends JoinOperator {
 			List<Integer> rightOrders) {
 		super(left, right, exp);
 		
+		this.leftOrders = leftOrders;
+		this.rightOrders = rightOrders;
 		cp  = new TupleComp(leftOrders,rightOrders);
 		
 		System.out.println(left.schema());
@@ -131,15 +135,9 @@ public class SortMergeJoinOperator extends JoinOperator {
 		
 		//EqualsTo et = (EqualsTo) exp;
 		//left.schema().contains(et.getLeftExpression());
-		this.exp = exp;
 		// decompose all the end expression to a list
-		List<Expression> list = Helpers.decompAnds(exp); 
 		//equalExps = getEqualExps(list); // assign the equalExpression to my list
 		this.jv = new JoinExpVisitor(left.schema(),right.schema());
-		partitionIndex = 0;
-		curRightIndex =0;
-		this.leftOrders = leftOrders;
-		this.rightOrders =rightOrders;
 		
 		leftTp = left.getNextTuple();
 		rightTp = right.getNextTuple();
