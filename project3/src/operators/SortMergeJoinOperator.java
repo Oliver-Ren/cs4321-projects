@@ -107,15 +107,15 @@ public class SortMergeJoinOperator extends JoinOperator {
 		@Override
 		public int compare(Tuple left, Tuple right) {
 			// verify length
-			if (left.length() != right.length()){
-				try {
-					throw new Exception("Comparing tuples of different lengths");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return 0;
-				}
-			}
+//			if (left.length() != right.length()){
+//				try {
+//					throw new Exception("Comparing tuples of different lengths");
+//				} catch (Exception e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//					return 0;
+//				}
+//			}
 			// compare each attribue based on order
 			for( int i = 0; i< leftOrders.size();i++){
 				int leftVal = left.cols[leftOrders.get(i)];
