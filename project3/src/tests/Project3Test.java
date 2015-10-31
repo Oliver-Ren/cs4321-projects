@@ -184,7 +184,7 @@ public class Project3Test {
 	 */
 	@Test
 	public void testTNLJ() {
-		Harness harness = new Harness("samples");
+		Harness harness = new Harness("small");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
 		boolean finished = false;
 		try {
