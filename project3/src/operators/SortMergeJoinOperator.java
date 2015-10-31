@@ -1,5 +1,6 @@
 package operators;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
@@ -10,6 +11,7 @@ import visitors.JoinExpVisitor;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import nio.BinaryTupleReader;
+import nio.BinaryTupleWriter;
 import nio.TupleReader;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 
@@ -83,7 +85,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 	}
 	public SortMergeJoinOperator(Operator left, 
 			Operator right, Expression exp,List<Integer> leftOrders,
-			List<Integer> rightOrders) {
+			List<Integer> rightOrders) throws IOException {
 		super(left, right, exp);
 		//EqualsTo et = (EqualsTo) exp;
 		//left.schema().contains(et.getLeftExpression());
@@ -96,6 +98,13 @@ public class SortMergeJoinOperator extends JoinOperator {
 		curRightIndex =0;
 		this.leftOrders = leftOrders;
 		this.rightOrders =rightOrders;
+		BinaryTupleWriter tw  = new BinaryTupleWriter("benchmarking/samples/temps/myleft");
+		Tuple t;
+		while((t = left.getNextTuple())!=null){
+			tw.write(t);
+		}
+		SortOperator sp = (SortOperator)left;
+		sp.reset(0);
 		
 		
 	}
