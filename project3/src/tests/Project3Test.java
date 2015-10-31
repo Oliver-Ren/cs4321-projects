@@ -312,12 +312,12 @@ public class Project3Test {
 	}
 	
 
-	//@Test
+	@Test
 	public void testBNLJ() {
-		Harness harness = new Harness("large2");
+		Harness harness = new Harness("large3");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
 		try {
-			configGen.setJoinMethod(configGen.BNLJ, 5);
+			configGen.setJoinMethod(configGen.BNLJ, 1);
 			configGen.gen();
 			harness.clearOutputFolder();
 			harness.executeAllQueries();
@@ -333,7 +333,7 @@ public class Project3Test {
 	/**
 	 * Test case for sort merge join.
 	 */
-	@Test
+	//@Test
 	public void testSMJ() {
 		Harness harness = new Harness("large1");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
