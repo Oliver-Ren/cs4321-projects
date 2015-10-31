@@ -126,6 +126,8 @@ public class SelState {
 		curRoot.accept(ppb);
 		root = ppb.getPhyOp();
 		
+		System.out.println("plan built");
+		
 //		Operator curRoot = new ScanOperator(getTable(0));
 //		if (getSelCond(0) != null)
 //			curRoot = new SelectOperator((ScanOperator) curRoot, getSelCond(0));

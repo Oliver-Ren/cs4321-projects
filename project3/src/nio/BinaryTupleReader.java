@@ -130,7 +130,7 @@ public final class BinaryTupleReader implements TupleReader {
 		}
 		int pageIdx = Collections.binarySearch(offsets, new Long(index + 1));
 		pageIdx = pageIdx >= 0 ? pageIdx : -(pageIdx + 1);
-		System.out.println("the pageIdx is: " + pageIdx);
+		//System.out.println("the pageIdx is: " + pageIdx);
 		fc.position((long) (pageIdx - 1) * B_SIZE);
 		
 		// reset the page containing the tuple

@@ -96,11 +96,16 @@ public class PhysicalPlanBuilder {
 							children[1], inIdxs);
 				}
 				phyOp = new SortMergeJoinOperator(children[0], children[1], 
-						lop.exp, outIdxs, inIdxs);						
+						lop.exp, outIdxs, inIdxs);
 			}
-			else
+			else {
+				System.out.println("No EqualsTo found in join");
 				phyOp = new BlockJoinOperator(children[0], 
 						children[1], lop.exp);
+			}
+			break;
+		default:
+			throw new UnsupportedOperationException();
 		}
 	}
 	
