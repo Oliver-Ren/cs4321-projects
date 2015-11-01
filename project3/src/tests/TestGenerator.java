@@ -277,6 +277,7 @@ public class TestGenerator {
 		gen.genTable2(1000, 800);
 		gen.genTable3(200, 100);
 		gen.genTable4(500, 200);
+
 		gen.genBinaryInput();
 		gen.genExpected();
 		gen.convertExpHuman();
