@@ -21,8 +21,6 @@ hs_err_pid*
 
 project2/src/util/ExpVisitor.java
 
-*.pdf
-
 *.html
 
 project4/samples/expected_indexes/Boats.E

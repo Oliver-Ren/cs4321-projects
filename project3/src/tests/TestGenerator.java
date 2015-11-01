@@ -267,21 +267,21 @@ public class TestGenerator {
 	}
 	
 	
-	public static void main(String[] args) {
-
-		TestGenerator gen = new TestGenerator("grading_test_cases_large");
-		gen.genBoats(1000, 5000);
-		gen.genSailors(400, 3000);
-		gen.genReserves(150, 100);
-		gen.genTable1(300, 60);
-		gen.genTable2(1000, 800);
-		gen.genTable3(200, 100);
-		gen.genTable4(500, 200);
-
-		gen.genBinaryInput();
-		gen.genExpected();
-		gen.convertExpHuman();
-		gen.convertExpSortedHuman();
-	}
+//	public static void main(String[] args) {
+//
+//		TestGenerator gen = new TestGenerator("grading_test_cases_large");
+//		gen.genBoats(1000, 5000);
+//		gen.genSailors(400, 3000);
+//		gen.genReserves(150, 100);
+//		gen.genTable1(300, 60);
+//		gen.genTable2(1000, 800);
+//		gen.genTable3(200, 100);
+//		gen.genTable4(500, 200);
+//
+//		gen.genBinaryInput();
+//		gen.genExpected();
+//		gen.convertExpHuman();
+//		gen.convertExpSortedHuman();
+//	}
 	
 }
