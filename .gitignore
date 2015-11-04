@@ -21,7 +21,9 @@ hs_err_pid*
 
 project2/src/util/ExpVisitor.java
 
-*.pdf
-
 *.html
 
+
+*.pdf
+
+project3/documents/~$benchmarking_report.xlsx

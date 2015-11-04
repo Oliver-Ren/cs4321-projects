@@ -118,6 +118,71 @@ public class TestGenerator {
 	}
 	
 	/**
+	 * Generates the Table 1.
+	 * @param numTup
+	 * @param range
+	 */
+	public void genTable1(int numTup, int range) {
+		try {
+			String file = dataPath + File.separator + "TestTable1";
+			RandomDataGenerator.tuplesGenerator(file + "_humanreadable", 
+					numTup, range, 2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Generates the Table 2.
+	 * @param numTup
+	 * @param range
+	 */
+	public void genTable2(int numTup, int range) {
+		try {
+			String file = dataPath + File.separator + "TestTable2";
+			RandomDataGenerator.tuplesGenerator(file + "_humanreadable", 
+					numTup, range, 3);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Generates the Table 3.
+	 * @param numTup
+	 * @param range
+	 */
+	public void genTable3(int numTup, int range) {
+		try {
+			String file = dataPath + File.separator + "TestTable3";
+			RandomDataGenerator.tuplesGenerator(file + "_humanreadable", 
+					numTup, range, 2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Generates the Table 4.
+	 * @param numTup
+	 * @param range
+	 */
+	public void genTable4(int numTup, int range) {
+		try {
+			String file = dataPath + File.separator + "TestTable4";
+			RandomDataGenerator.tuplesGenerator(file + "_humanreadable", 
+					numTup, range, 3);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
 	 * Generates the binary version of the tables.
 	 */
 	public void genBinaryInput() {
@@ -202,16 +267,21 @@ public class TestGenerator {
 	}
 	
 	
-	public static void main(String[] args) {
-
-		TestGenerator gen = new TestGenerator("large3");
-		gen.genBoats(5000, 500);
-		gen.genSailors(6000, 600);
-		gen.genReserves(6000, 600);
-		gen.genBinaryInput();
-		gen.genExpected();
-		gen.convertExpHuman();
-		gen.convertExpSortedHuman();
-	}
+//	public static void main(String[] args) {
+//
+//		TestGenerator gen = new TestGenerator("grading_test_cases_large");
+//		gen.genBoats(1000, 5000);
+//		gen.genSailors(400, 3000);
+//		gen.genReserves(150, 100);
+//		gen.genTable1(300, 60);
+//		gen.genTable2(1000, 800);
+//		gen.genTable3(200, 100);
+//		gen.genTable4(500, 200);
+//
+//		gen.genBinaryInput();
+//		gen.genExpected();
+//		gen.convertExpHuman();
+//		gen.convertExpSortedHuman();
+//	}
 	
 }
