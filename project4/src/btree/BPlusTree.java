@@ -4,13 +4,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import util.Tuple;
 import nio.BinaryTupleReader;
 
 /**
  * build a b+tree using the input sorted file
- * @author Mingyuanh
+ * @author Mingyuan Huang (mh2239), Chengxiang Ren (cr486)
  *
  */
 
@@ -48,7 +53,7 @@ public class BPlusTree {
 		if(isClust){
 			genClustDataEntries();
 		} else {
-			////////////
+			genUnclustDataEntries();
 		}
 		
 		createLeafLayer();
@@ -87,6 +92,49 @@ public class BPlusTree {
 			
 		}
 		int capacity = 2 * order;// the total entries in each node
+		
+	}
+	
+	/**
+	 * Generates the list of data entries from an unclustered relation.
+	 */
+	public void genUnclustDataEntries() {
+		SortedMap<Integer, DataEntry> entryMap = new TreeMap<Integer, DataEntry>();
+		try {
+			// tuples in this page.
+			ArrayList<Tuple> tps;
+			
+			while ((tps = tr.getNextPage()) != null) {
+				for (int currTupleId = 0; currTupleId < tps.size(); currTupleId++) {
+					Tuple currTuple = tps.get(currTupleId);
+					int key = currTuple.cols[position];
+					if (entryMap.containsKey(key)) {
+						DataEntry target = entryMap.get(key);
+						target.rids.add(new Rid(currPageId, currTupleId));
+					} else {
+						DataEntry newEntry = new DataEntry(key, new ArrayList<Rid>());
+						newEntry.rids.add(new Rid(currPageId, currTupleId));
+						entryMap.put(key, newEntry);
+					}
+				}
+				
+				//finished one page, increment the page id.
+				currPageId++;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Now all the record ids are in the Map, the next step is to sort
+		// all the data entries in the map, and partition the entries to 
+		// different leaf pages.
+		Collection<DataEntry> dataEntries = entryMap.values();
+		
+		for (DataEntry d : dataEntries) {
+			System.out.println(d);
+		}
+		
+		
 		
 	}
 }

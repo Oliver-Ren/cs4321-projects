@@ -13,4 +13,11 @@ public class Rid {
 		this.tupleId  = tupleId;
 	}
 	
+	/**
+	 * Returns the string representation of this record id.
+	 */
+	@Override
+	public String toString() {
+		return "(" + pageId + "," + tupleId + ")";
+	}
 }	
