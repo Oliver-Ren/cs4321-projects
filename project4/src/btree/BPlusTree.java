@@ -95,7 +95,7 @@ public class BPlusTree {
 		// for each sub dataentry list in each node
 		ArrayList<DataEntry> nodeEntries = new ArrayList<DataEntry>();
 		for(int i = 0; i< dataEntries.size(); i++){
-			if(dataEntries.size()-i)
+			//if(dataEntries.size()-i)
 			
 			if(cnt == capacity){
 				LeafNode node = new LeafNode(order,nodeEntries);
@@ -118,7 +118,7 @@ public class BPlusTree {
 		try {
 			// tuples in this page.
 			ArrayList<Tuple> tps;
-			
+			int currPageId = 0;
 			while ((tps = tr.getNextPage()) != null) {
 				System.out.println("i am building" + currPageId);
 				for (int currTupleId = 0; currTupleId < tps.size(); currTupleId++) {

@@ -20,7 +20,7 @@ public class BPlusTreeTest {
 	public void testUnclusteredLeafConstruct() {
 		File relation = new File("tests/unit/bplustree/Boats");
 		try {
-			BPlusTree tree = new BPlusTree(relation, "Boats", 0, 5, false);
+			BPlusTree tree = new BPlusTree(relation, "Boats", 1, 10, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
