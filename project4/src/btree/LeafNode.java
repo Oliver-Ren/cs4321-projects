@@ -1,7 +1,7 @@
 package btree;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 /**
  * 
  * @author Mingyuanh
@@ -9,10 +9,10 @@ import java.util.HashMap;
  */
 public class LeafNode extends TreeNode {
 	
-	ArrayList<DataEntry> dataEntries;
+	List<DataEntry> dataEntries;
 	
 	public LeafNode(int order,
-			ArrayList<DataEntry> dataEntries) {
+			List<DataEntry> dataEntries) {
 		super(order);
 		// TODO Auto-generated constructor stub
 		this.dataEntries = new ArrayList<DataEntry>(dataEntries);
