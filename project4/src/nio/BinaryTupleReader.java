@@ -135,6 +135,8 @@ public final class BinaryTupleReader implements TupleReader {
 				currTupleIdx++;
 				tps.add(new Tuple(cols));
 			}
+			eraseBuffer();
+			needNewPage = true;	
 			return tps;			
 		}
 		// if reaches the end of the file

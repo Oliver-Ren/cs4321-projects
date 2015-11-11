@@ -112,6 +112,7 @@ public class BPlusTree {
 			ArrayList<Tuple> tps;
 			
 			while ((tps = tr.getNextPage()) != null) {
+				System.out.println("i am building" + currPageId);
 				for (int currTupleId = 0; currTupleId < tps.size(); currTupleId++) {
 					Tuple currTuple = tps.get(currTupleId);
 					int key = currTuple.cols[position];
