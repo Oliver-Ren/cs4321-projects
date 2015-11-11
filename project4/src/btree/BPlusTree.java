@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -28,8 +29,8 @@ public class BPlusTree {
 	int capacity = 2 * order;// the total entries in each node
 	int position;
 	boolean isClust;
-	ArrayList<DataEntry> dataEntries; // dataentries for creating leaf nodes
-	ArrayList<LeafNode> leafLayer; // leaflayer that stores all the leaf nodes
+	List<DataEntry> dataEntries; // dataentries for creating leaf nodes
+	List<LeafNode> leafLayer; // leaflayer that stores all the leaf nodes
 	/**
 	 * constructor
 	 * @param file: the input file used for construct the tree
@@ -90,11 +91,10 @@ public class BPlusTree {
 			throw new NullPointerException();
 		}
 		int cnt = 0;		
-		// for each sub dataentry list in each node
+		// each sub dataentry list in each node
 		ArrayList<DataEntry> nodeEntries = new ArrayList<DataEntry>();
+		
 		for(int i = 0; i< dataEntries.size(); i++){
-			//if(dataEntries.size()-i)
-			
 			if(cnt == capacity){
 				LeafNode node = new LeafNode(order,nodeEntries);
 				leafLayer.add(node);
@@ -105,6 +105,39 @@ public class BPlusTree {
 				cnt++;
 			}
 		}
+		if(nodeEntries.size()!=0){
+			//check if the last node is underflow
+			if(nodeEntries.size()>=order){
+				LeafNode node = new LeafNode(order,nodeEntries);
+				leafLayer.add(node);
+//				cnt=0;
+//				nodeEntries.clear();
+			} else { //underflow case
+				if(leafLayer.size() == 0){ // only one node
+					leafLayer.add(new LeafNode(order,nodeEntries));					
+				} else {
+					LeafNode secondLast = leafLayer.remove(leafLayer.size()-1);
+					//num of entries should put in seond last node
+					int numOfEntry = (2*order + nodeEntries.size())/2;
+					
+					List<DataEntry> secondNodeEntries = 
+							secondLast.dataEntries;
+					
+					List<DataEntry> lastNodeEntries = 
+							secondNodeEntries.subList(numOfEntry,secondNodeEntries.size());
+					lastNodeEntries.addAll(nodeEntries);
+					
+					secondNodeEntries = secondNodeEntries.subList(0, numOfEntry);
+					
+					secondLast = new LeafNode(order, secondNodeEntries);
+					//add the second last
+					leafLayer.add(secondLast);
+					// add the last node
+					leafLayer.add(new LeafNode(order,lastNodeEntries));				
+				}
+			}
+		}
+		
 		
 	}
 	
