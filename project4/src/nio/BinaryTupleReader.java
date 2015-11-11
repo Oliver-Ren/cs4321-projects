@@ -127,7 +127,7 @@ public final class BinaryTupleReader implements TupleReader {
 					break;
 				}
 			}
-			while(buffer.hasRemaining()){ //  是不是根据当前的limit？
+			while(buffer.hasRemaining()){ //  
 				int[] cols = new int[numOfAttr];
 				for(int i =0; i < numOfAttr; i++){
 					cols[i] = buffer.getInt();
@@ -135,8 +135,7 @@ public final class BinaryTupleReader implements TupleReader {
 				currTupleIdx++;
 				tps.add(new Tuple(cols));
 			}
-			return tps;
-			
+			return tps;			
 		}
 		// if reaches the end of the file
 		return null;
