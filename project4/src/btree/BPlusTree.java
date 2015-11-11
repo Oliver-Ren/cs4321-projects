@@ -101,10 +101,10 @@ public class BPlusTree {
 				leafLayer.add(node);
 				nodeEntries.clear();
 				cnt = 0;
-			} else {
+			} 
 				nodeEntries.add(dataEntries.get(i));
 				cnt++;
-			}
+		
 		}
 		if(nodeEntries.size()!=0){
 			//check if the last node is underflow
