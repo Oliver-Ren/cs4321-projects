@@ -20,7 +20,7 @@ public class SortTuple {
 	private static BufferedWriter bw;
 	
 	/**
-	 * this method takes an input file, sort it, then returns the sorted list.
+	 * this method takes an input file, sort it, then write out the sorted file.
 	 * @param InputfilePath:  need to include the fileName: eg: sandbox/boat
 	 * @param OutputPath: need to include the fileName eg: sandbox/boat
 	 */
