@@ -93,8 +93,9 @@ public class BPlusTree {
 			throw new NullPointerException();
 		}
 		int cnt = 0;		
-		// for each sub dataentry list in each node
+		// each sub dataentry list in each node
 		ArrayList<DataEntry> nodeEntries = new ArrayList<DataEntry>();
+		
 		for(int i = 0; i< dataEntries.size(); i++){
 			if(cnt == capacity){
 				LeafNode node = new LeafNode(order,nodeEntries);
@@ -114,18 +115,24 @@ public class BPlusTree {
 //				cnt=0;
 //				nodeEntries.clear();
 			} else { //underflow case
-				if(leafLayer.size()==0){ // only one node
+				if(leafLayer.size() == 0){ // only one node
 					leafLayer.add(new LeafNode(order,nodeEntries));					
 				} else {
 					LeafNode secondLast = leafLayer.remove(leafLayer.size()-1);
+					//num of entries should put in seond last node
 					int numOfEntry = (2*order + nodeEntries.size())/2;
+					
 					List<DataEntry> secondNodeEntries = 
 							secondLast.dataEntries;
+					
 					List<DataEntry> lastNodeEntries = 
 							secondNodeEntries.subList(numOfEntry,secondNodeEntries.size());
 					lastNodeEntries.addAll(nodeEntries);
+					
 					secondNodeEntries = secondNodeEntries.subList(0, numOfEntry);
+					
 					secondLast = new LeafNode(order, secondNodeEntries);
+					//add the second last
 					leafLayer.add(secondLast);
 					// add the last node
 					leafLayer.add(new LeafNode(order,lastNodeEntries));				
