@@ -6,6 +6,7 @@ public class IndexNode extends TreeNode {
 	
 	ArrayList<TreeNode> children;
 	ArrayList<Integer> keys;
+	int min; //the minimum key value for its parent
 	
 	public IndexNode(int order, ArrayList<Integer> keys,
 			ArrayList<TreeNode> children) {
