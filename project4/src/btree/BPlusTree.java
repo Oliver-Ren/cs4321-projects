@@ -24,8 +24,8 @@ public class BPlusTree {
 	int currPageId;
 	int currTupleId;
 	boolean isClust;
-	ArrayList<DataEntry> dataEntries; // all the dataentries in the leafnode
-	
+	ArrayList<DataEntry> dataEntries; // dataentries for creating leaf nodes
+	ArrayList<LeafNode> leafLayer; // leaflayer that stores all the leaf nodes
 	/**
 	 * constructor
 	 * @param file: the input file used for construct the tree
@@ -83,6 +83,10 @@ public class BPlusTree {
 		dataEntries.add(new DataEntry(key,rids));
 	}
 	public void createLeafLayer(){
+		if(dataEntries == null){
+			
+		}
+		int capacity = 2 * order;// the total entries in each node
 		
 	}
 }
