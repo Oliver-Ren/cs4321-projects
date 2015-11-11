@@ -88,9 +88,12 @@ public class BPlusTree {
 		if(dataEntries == null){
 			throw new NullPointerException();
 		}
-		
+		int cnt = 0;
+		// for each sub dataentry list in each node
 		for(DataEntry entry : dataEntries){
-			
+			if(cnt<capacity){
+				
+			}
 		}
 	}
 }
