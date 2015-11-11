@@ -93,7 +93,7 @@ public class BPlusTree {
 		}
 		int cnt = 0;		
 		// each sub dataentry list in each node
-		ArrayList<DataEntry> nodeEntries = new ArrayList<DataEntry>();
+		List<DataEntry> nodeEntries = new ArrayList<DataEntry>();
 		
 		for(int i = 0; i< dataEntries.size(); i++){
 			if(cnt == capacity){
