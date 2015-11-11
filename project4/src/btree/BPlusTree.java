@@ -47,45 +47,43 @@ public class BPlusTree {
 		this.name = name;
 		this.order = order;
 		this.isClust = isClust;
-		if(isClust){
-			genClustDataEntries();
-		} else {
-			genUnclustDataEntries();
-		}
 		
-		createLeafLayer();
+		genUnclustDataEntries();
+		
+		
+		//createLeafLayer();
 	}
 	/**
 	 * method to create all the data entries which would store in leaf nodes later
 	 * @throws IOException 
 	 * 
 	 */
-	public void genClustDataEntries() throws IOException{
-		int currPageId = 0;
-		int currTupleId = 0;
-		// generate all the data entries
-		dataEntries = new ArrayList<DataEntry>();
-		ArrayList<Tuple> tps = tr.getNextPage();	
-		int key = tps.get(0).cols[position];
-		ArrayList<Rid> rids = new ArrayList<Rid>();
-		rids.add(new Rid(currPageId,currTupleId));
-		while(tps != null){
-			
-			currTupleId++;
-			if(key!=tps.get(currTupleId).cols[position]){
-				dataEntries.add(new DataEntry(key,rids));
-				key = tps.get(currTupleId).cols[position];
-				rids = new ArrayList<Rid>();
-				rids.add(new Rid(currPageId,currTupleId));
-			}
-			if(currTupleId >= tps.size()){
-				tps = tr.getNextPage();
-				currPageId++;
-				currTupleId = -1;
-			}
-		}
-		dataEntries.add(new DataEntry(key,rids));
-	}
+//	public void genClustDataEntries() throws IOException{
+//		int currPageId = 0;
+//		int currTupleId = 0;
+//		// generate all the data entries
+//		dataEntries = new ArrayList<DataEntry>();
+//		ArrayList<Tuple> tps = tr.getNextPage();	
+//		int key = tps.get(0).cols[position];
+//		ArrayList<Rid> rids = new ArrayList<Rid>();
+//		rids.add(new Rid(currPageId,currTupleId));
+//		while(tps != null){
+//			
+//			currTupleId++;
+//			if(key!=tps.get(currTupleId).cols[position]){
+//				dataEntries.add(new DataEntry(key,rids));
+//				key = tps.get(currTupleId).cols[position];
+//				rids = new ArrayList<Rid>();
+//				rids.add(new Rid(currPageId,currTupleId));
+//			}
+//			if(currTupleId >= tps.size()){
+//				tps = tr.getNextPage();
+//				currPageId++;
+//				currTupleId = -1;
+//			}
+//		}
+//		dataEntries.add(new DataEntry(key,rids));
+//	}
 	
 	public void createLeafLayer(){
 		if(dataEntries == null){
@@ -142,15 +140,9 @@ public class BPlusTree {
 		}
 		
 		// Now all the record ids are in the Map, the next step is to sort
-		// all the data entries in the map, and partition the entries to 
-		// different leaf pages.
-		Collection<DataEntry> dataEntries = entryMap.values();
-		
-		for (DataEntry d : dataEntries) {
-			System.out.println(d);
-		}
-		
-		
-		
+		// all the data entries in the map. Since the TreeMap already have 
+		// the entries in sorted order, we only can directly create the 
+		// arraylist.
+		dataEntries = new ArrayList<DataEntry>(entryMap.values());
 	}
 }

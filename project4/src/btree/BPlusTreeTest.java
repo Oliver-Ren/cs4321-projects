@@ -1,4 +1,4 @@
-package tests;
+package btree;
 
 import static org.junit.Assert.*;
 
@@ -7,8 +7,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import btree.BPlusTree;
-
 /**
  * This is the Unit Test for the B+ Tree Indexing.
  * @author Chengxiang Ren (cr486)
@@ -16,11 +14,24 @@ import btree.BPlusTree;
  */
 public class BPlusTreeTest {
 
-	@Test
+	//@Test
 	public void testUnclusteredLeafConstruct() {
 		File relation = new File("tests/unit/bplustree/Boats");
 		try {
 			BPlusTree tree = new BPlusTree(relation, "Boats", 1, 10, false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testClusteredLeafConstruct() {
+		File relation = new File("tests/unit/bplustree/Sailors");
+		try {
+			BPlusTree tree = new BPlusTree(relation, "Sailors", 0, 15, true);
+			for (DataEntry d : tree.dataEntries) {
+				System.out.println(d);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
