@@ -4,6 +4,8 @@ import java.util.ArrayList;
 /**
  * Data entry is one element inside the leaf node,
  * and it contains a key and a list of record ids. 
+ * its format: <key, [<pid,tid>, <pid,tid>, ...]> 
+ * 
  * @author Mingyuan Huang (mh2239), Chengxinag Ren (cr486)
  *
  */

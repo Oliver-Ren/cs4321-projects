@@ -25,6 +25,7 @@ public class BPlusTree {
 	BinaryTupleReader tr;
 	String name;
 	int order;
+	int capacity = 2 * order;// the total entries in each node
 	int position;
 	int currPageId;
 	int currTupleId;
@@ -87,12 +88,18 @@ public class BPlusTree {
 		}
 		dataEntries.add(new DataEntry(key,rids));
 	}
+	
 	public void createLeafLayer(){
 		if(dataEntries == null){
-			
+			throw new NullPointerException();
 		}
-		int capacity = 2 * order;// the total entries in each node
-		
+		int cnt = 0;
+		// for each sub dataentry list in each node
+		for(DataEntry entry : dataEntries){
+			if(cnt<capacity){
+				
+			}
+		}
 	}
 	
 	/**
