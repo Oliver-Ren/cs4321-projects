@@ -3,7 +3,8 @@ package btree;
 import java.util.ArrayList;
 /**
  * Data entry is one element inside the leaf node,
- * and it contains a key and a list of record ids. 
+ * and it contains a key and a list of record ids.
+ * its format: <key, [<pid,tid>, <pid,tid>, ...]> 
  * @author Mingyuanh
  *
  */
