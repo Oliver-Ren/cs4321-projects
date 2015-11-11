@@ -14,17 +14,23 @@ import org.junit.Test;
  */
 public class BPlusTreeTest {
 
-	//@Test
+	@Test
 	public void testUnclusteredLeafConstruct() {
 		File relation = new File("tests/unit/bplustree/Boats");
 		try {
 			BPlusTree tree = new BPlusTree(relation, "Boats", 1, 10, false);
+			for (LeafNode node : tree.leafLayer) {
+				System.out.println(node);
+			}
+//			for (DataEntry data : tree.dataEntries) {
+//				System.out.println(data);
+//			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	@Test
+	//@Test
 	public void testClusteredLeafConstruct() {
 		File relation = new File("tests/unit/bplustree/Sailors");
 		try {

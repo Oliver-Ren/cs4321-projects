@@ -26,7 +26,7 @@ public class BPlusTree {
 	BinaryTupleReader tr;
 	String name;
 	int order;
-	int capacity = 2 * order;// the total entries in each node
+	int capacity;// the total entries in each node
 	int position;
 	boolean isClust;
 	List<DataEntry> dataEntries; // dataentries for creating leaf nodes
@@ -44,15 +44,16 @@ public class BPlusTree {
 	public BPlusTree(File file,String name,int position, int order,boolean isClust) throws IOException{
 		this.file = file;
 		tr = new BinaryTupleReader(file);
+		leafLayer = new ArrayList<LeafNode>();
 		this.position = position;
 		this.name = name;
 		this.order = order;
 		this.isClust = isClust;
+		this.capacity = 2 * order;
 		
 		genUnclustDataEntries();
 		
-		
-		//createLeafLayer();
+		createLeafLayer();
 	}
 	/**
 	 * method to create all the data entries which would store in leaf nodes later
@@ -151,7 +152,6 @@ public class BPlusTree {
 			ArrayList<Tuple> tps;
 			int currPageId = 0;
 			while ((tps = tr.getNextPage()) != null) {
-				System.out.println("i am building" + currPageId);
 				for (int currTupleId = 0; currTupleId < tps.size(); currTupleId++) {
 					Tuple currTuple = tps.get(currTupleId);
 					int key = currTuple.cols[position];
