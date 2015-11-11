@@ -27,8 +27,6 @@ public class BPlusTree {
 	int order;
 	int capacity = 2 * order;// the total entries in each node
 	int position;
-	int currPageId;
-	int currTupleId;
 	boolean isClust;
 	ArrayList<DataEntry> dataEntries; // dataentries for creating leaf nodes
 	ArrayList<LeafNode> leafLayer; // leaflayer that stores all the leaf nodes
@@ -48,8 +46,6 @@ public class BPlusTree {
 		this.position = position;
 		this.name = name;
 		this.order = order;
-		currPageId = 0;
-		currTupleId = 0;
 		this.isClust = isClust;
 		if(isClust){
 			genClustDataEntries();
@@ -65,6 +61,8 @@ public class BPlusTree {
 	 * 
 	 */
 	public void genClustDataEntries() throws IOException{
+		int currPageId = 0;
+		int currTupleId = 0;
 		// generate all the data entries
 		dataEntries = new ArrayList<DataEntry>();
 		ArrayList<Tuple> tps = tr.getNextPage();	
@@ -93,13 +91,23 @@ public class BPlusTree {
 		if(dataEntries == null){
 			throw new NullPointerException();
 		}
-		int cnt = 0;
+		int cnt = 0;		
 		// for each sub dataentry list in each node
-		for(DataEntry entry : dataEntries){
-			if(cnt<capacity){
-				
+		ArrayList<DataEntry> nodeEntries = new ArrayList<DataEntry>();
+		for(int i = 0; i< dataEntries.size(); i++){
+			if(dataEntries.size()-i)
+			
+			if(cnt == capacity){
+				LeafNode node = new LeafNode(order,nodeEntries);
+				leafLayer.add(node);
+				nodeEntries.clear();
+				cnt = 0;
+			} else {
+				nodeEntries.add(dataEntries.get(i));
+				cnt++;
 			}
 		}
+		
 	}
 	
 	/**
