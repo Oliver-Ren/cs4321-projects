@@ -112,6 +112,35 @@ public final class BinaryTupleReader implements TupleReader {
 		
 		return null;	// if reached the end of the file, return null
 	}
+	/**
+	 * return a list of tuples contained in the current page of a file
+	 * @return
+	 * @author Mingyuanh
+	 */
+	public ArrayList<Tuple> getNextPage() throws IOException{
+		ArrayList<Tuple> tps = new ArrayList<Tuple>();
+		while(!endOfFile){
+			if(needNewPage){
+				try {
+					fetchPage();
+				} catch(EOFException e){
+					break;
+				}
+			}
+			while(buffer.hasRemaining()){ //  是不是根据当前的limit？
+				int[] cols = new int[numOfAttr];
+				for(int i =0; i < numOfAttr; i++){
+					cols[i] = buffer.getInt();
+				}
+				currTupleIdx++;
+				tps.add(new Tuple(cols));
+			}
+			return tps;
+			
+		}
+		// if reaches the end of the file
+		return null;
+	}
 
 	/**
 	 * Resets the reader to the specified tuple index. the index should be 
