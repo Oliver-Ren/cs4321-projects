@@ -189,17 +189,26 @@ public class BPlusTree {
 				List<TreeNode>secLastChildren = secondLast.children;
 				List<Integer> secLastKeys = secondLast.keys;
 				int numOfKeys =(secLastChildren.size() + children.size())/2-1;
+				
 				// build keys for last node
 				List<Integer> lastNodeKeys = secLastKeys.subList(numOfKeys, secLastKeys.size());
 				lastNodeKeys.addAll(keys);
-				// build children for last node
 				
+				// build children for last node
+				List<TreeNode> lastChildren = 
+						secLastChildren.subList(numOfKeys+1, secLastChildren.size()-1);
+				lastChildren.addAll(children);
+				
+				//update keys for second last node 
+				secLastKeys = secLastKeys.subList(0, numOfKeys);
+				//update children for second last node 
+				secLastChildren = secLastChildren.subList(0, numOfKeys+1);
+				//add two nodes to new Layer
+				newLayer.add(new IndexNode(order, secLastKeys, secLastChildren));
+				newLayer.add(new IndexNode(order,lastNodeKeys,lastChildren));
 				
 			}
 		}
-		
-		
-		
 		return newLayer;
 	}
 	/**
