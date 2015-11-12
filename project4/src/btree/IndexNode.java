@@ -7,6 +7,7 @@ public class IndexNode extends TreeNode {
 	
 	List<TreeNode> children;
 	List<Integer> keys;
+	List<Integer> address; // the address the children
 	int min; //the minimum key value for its parent
 	
 	public IndexNode(int order, List<Integer> keys,

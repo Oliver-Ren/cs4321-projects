@@ -155,7 +155,11 @@ public class BPlusTree {
 				keys.add(preLayer.get(i).getMin());
 				//create a index node
 				IndexNode node = new IndexNode(order,keys,children);
-				
+				newLayer.add(node);
+				//reset
+				cnt = 0;
+				keys.clear();
+				children.clear();
 			}
 			
 			if(cnt == 0){
@@ -169,6 +173,31 @@ public class BPlusTree {
 			} 
 			
 		}
+		//check the last node
+		if(keys.size() > order){
+			IndexNode node = new IndexNode(order, keys, children);
+			newLayer.add(node);
+		} else {
+			//the current lay only has one node
+			if(keys.size() != 0){
+				if(newLayer.size() == 0){
+					IndexNode node = new IndexNode (order, keys, children);
+					newLayer.add(node);
+				}
+			} else { // need redistribution
+				IndexNode secondLast =(IndexNode)newLayer.remove(newLayer.size()-1);
+				List<TreeNode>secLastChildren = secondLast.children;
+				List<Integer> secLastKeys = secondLast.keys;
+				int numOfKeys =(secLastChildren.size() + children.size())/2-1;
+				// build keys for last node
+				List<Integer> lastNodeKeys = secLastKeys.subList(numOfKeys, secLastKeys.size());
+				lastNodeKeys.addAll(keys);
+				// build children for last node
+				
+				
+			}
+		}
+		
 		
 		
 		return newLayer;
