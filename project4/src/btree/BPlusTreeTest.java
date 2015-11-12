@@ -21,6 +21,7 @@ public class BPlusTreeTest {
 			BPlusTree tree = new BPlusTree(relation, "Boats", 1, 10, false);
 			for (LeafNode node : tree.leafLayer) {
 				System.out.println(node);
+				System.out.println();
 			}
 //			for (DataEntry data : tree.dataEntries) {
 //				System.out.println(data);
