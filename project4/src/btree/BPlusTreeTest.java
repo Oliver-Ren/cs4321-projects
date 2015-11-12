@@ -51,7 +51,7 @@ public class BPlusTreeTest {
 	/**
 	 * Test case for verification of functionality of index layer.
 	 */
-	@Test
+	//@Test
 	public void testIndexLayer() {
 		File relation = new File("tests/unit/bplustree/Boats");
 		File output = null;
@@ -78,6 +78,24 @@ public class BPlusTreeTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Test case for deserializer.
+	 */
+	@Test
+	public void testDeserializeRoot() {
+		File indexFile = new File("tests/unit/deserialize/Sailors.A");
+		File output = null;
+		File result = new File("tests/unit/deserialize/result");
+		try {
+			PrintStream printer = new PrintStream(result);
+			TreeDeserializer td = new TreeDeserializer(indexFile);
+			td.dump(printer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	

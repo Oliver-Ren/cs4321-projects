@@ -26,7 +26,7 @@ public class LeafNode extends TreeNode {
 		for (DataEntry data : dataEntries) {
 			sb.append(data.toString() + "\n");
 		}
-		sb.append("]");
+		sb.append("]\n");
 		return sb.toString();
 	}
 

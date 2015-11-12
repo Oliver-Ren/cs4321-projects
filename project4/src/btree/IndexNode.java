@@ -19,6 +19,14 @@ public class IndexNode extends TreeNode {
 		this.address = new ArrayList<Integer>(address);
 		min = children.get(0).getMin();
 	}
+	
+	public IndexNode(int order, List<Integer> keys, List<Integer> address) {
+		super(order);
+		this.children = null;
+		this.keys = new ArrayList<Integer>(keys);
+		this.address = new ArrayList<Integer>(address);
+		min = 0;
+	}
 
 	@Override
 	public int getMin() {
