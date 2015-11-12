@@ -79,6 +79,13 @@ public class BPlusTreeTest {
 			e.printStackTrace();
 		}
 	}
+	@Test
+	public void testFullIndexLayer() throws IOException{
+		File relation = new File("tests/unit/bplustree/Boats");
+		File result = new File("tests/unit/bplustree/IndexLayerResult");
+		File output = null;
+		BPlusTree tree = new BPlusTree(relation, 1, 10, output);
+	}
 	
 	/**
 	 * Test case for deserializer.

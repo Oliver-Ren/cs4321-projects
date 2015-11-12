@@ -3,6 +3,7 @@ package btree;
 import java.io.File;
 //import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 //import java.util.Collection;
 //import java.util.HashMap;
@@ -30,6 +31,7 @@ public class BPlusTree {
 	File indexFile; // output idex file 
 	List<DataEntry> dataEntries; // dataentries for creating leaf nodes
 	List<TreeNode> leafLayer; // leaflayer that stores all the leaf nodes
+	TreeNode root;
 	TreeSerializer ts;
 	/**
 	 * constructor
@@ -53,7 +55,14 @@ public class BPlusTree {
 		genUnclustDataEntries();
 		
 		createLeafLayer();
-		createIndexLayer(leafLayer, ts);
+
+		List<TreeNode> layer = new ArrayList<TreeNode>(leafLayer);
+		while(layer.size()!=1){
+			layer = createIndexLayer(layer, ts);
+		}
+		
+		root = layer.get(0);
+		ts.serialize(root);
 		
 		ts.finishSerialization(order);
 		ts.close();
@@ -151,89 +160,90 @@ public class BPlusTree {
 	 * @throws IOException 
 	 */
 	public List<TreeNode> createIndexLayer(List<TreeNode> preLayer,TreeSerializer ts) throws IOException{
-		
-		List<TreeNode> newLayer = new ArrayList<TreeNode>();
-		int cnt = 0;
-		List<Integer> keys = new ArrayList<Integer>();
-		List<TreeNode> children = new ArrayList<TreeNode>();
-		List<Integer> address = new ArrayList<Integer>(); // list of address
-		for(int i = 0; i < preLayer.size(); i++){
-			if (cnt == capacity){
-				children.add(preLayer.get(i));
-				int ads = ts.serialize(preLayer.get(i));
-				address.add(ads);
-				//add last key
-				keys.add(preLayer.get(i).getMin());
-				//create a index node
-				IndexNode node = new IndexNode(order,keys,children,address);
-				newLayer.add(node);
-				//reset
-				cnt = 0;
-				keys.clear();
-				children.clear();
-				address.clear();
-				continue;
+		List<TreeNode> newLayer = new ArrayList<TreeNode>();		
+			int cnt = 0;
+			List<Integer> keys = new ArrayList<Integer>();
+			List<TreeNode> children = new ArrayList<TreeNode>();
+			List<Integer> address = new ArrayList<Integer>(); // list of address
+			for(int i = 0; i < preLayer.size(); i++){
+				if (cnt == capacity){
+					children.add(preLayer.get(i));
+					int ads = ts.serialize(preLayer.get(i));
+					address.add(ads);
+					//add last key
+					keys.add(preLayer.get(i).getMin());
+					//create a index node
+					IndexNode node = new IndexNode(order,keys,children,address);
+					newLayer.add(node);
+					//reset
+					cnt = 0;
+					keys.clear();
+					children.clear();
+					address.clear();
+					continue;
+				}
+				
+				if(cnt == 0){
+					children.add(preLayer.get(i));	
+					int ads = ts.serialize(preLayer.get(i));
+					address.add(ads);
+					cnt++;
+				} else if (cnt < capacity ){
+					//add key
+					keys.add(preLayer.get(i).getMin());
+					children.add(preLayer.get(i));
+					int ads = ts.serialize(preLayer.get(i));
+					address.add(ads);
+					cnt++;
+				} 
+				
 			}
 			
-			if(cnt == 0){
-				children.add(preLayer.get(i));	
-				int ads = ts.serialize(preLayer.get(i));
-				address.add(ads);
-				cnt++;
-			} else if (cnt < capacity ){
-				//add key
-				keys.add(preLayer.get(i).getMin());
-				children.add(preLayer.get(i));
-				int ads = ts.serialize(preLayer.get(i));
-				address.add(ads);
-				cnt++;
-			} 
-			
-		}
-		
-		if(keys.size()!=0){
-			//check the last node
-			if(keys.size() >= order){
-				IndexNode node = new IndexNode(order, keys, children,address);
-				newLayer.add(node);
-			} else {
-				//the current lay only has one node		
-				if(newLayer.size() == 0){
-					IndexNode node = new IndexNode (order, keys, children,address);
+			if(keys.size()!=0){
+				//check the last node
+				if(keys.size() >= order){
+					IndexNode node = new IndexNode(order, keys, children,address);
 					newLayer.add(node);
-					
-				} else { // need redistribution
-					IndexNode secondLast =(IndexNode)newLayer.remove(newLayer.size()-1);
-					List<TreeNode>secLastChildren = secondLast.children;
-					List<Integer> secLastKeys = secondLast.keys;
-					List<Integer> secLastAddress = secondLast.address;
-					int numOfKeys =(secLastChildren.size() + children.size())/2-1;
-					
-					// build keys for last node
-					List<Integer> lastNodeKeys = secLastKeys.subList(numOfKeys, secLastKeys.size());
-					lastNodeKeys.addAll(keys);
-					
-					// build children for last node
-					List<TreeNode> lastChildren = 
-							secLastChildren.subList(numOfKeys+1, secLastChildren.size()-1);
-					lastChildren.addAll(children);
-					// build address for last node 
-					List<Integer> lastAddress = secLastAddress.subList(numOfKeys, secLastAddress.size());
-					lastAddress.addAll(address);
-					
-					//update keys for second last node 
-					secLastKeys = secLastKeys.subList(0, numOfKeys);
-					//update children for second last node 
-					secLastChildren = secLastChildren.subList(0, numOfKeys+1);
-					// update address for second last node
-					secLastAddress  = secLastAddress.subList(0, numOfKeys+1);
-					//add two nodes to new Layer
-					newLayer.add(new IndexNode(order, secLastKeys, secLastChildren,secLastAddress));
-					newLayer.add(new IndexNode(order,lastNodeKeys,lastChildren, lastAddress));
-					
+				} else {
+					//the current lay only has one node		
+					if(newLayer.size() == 0){
+						IndexNode node = new IndexNode (order, keys, children,address);
+						newLayer.add(node);
+						
+					} else { // need redistribution
+						IndexNode secondLast =(IndexNode)newLayer.remove(newLayer.size()-1);
+						List<TreeNode>secLastChildren = secondLast.children;
+						List<Integer> secLastKeys = secondLast.keys;
+						List<Integer> secLastAddress = secondLast.address;
+						int numOfKeys =(secLastChildren.size() + children.size())/2-1;
+						
+						// build keys for last node
+						List<Integer> lastNodeKeys = secLastKeys.subList(numOfKeys, secLastKeys.size());
+						lastNodeKeys.addAll(keys);
+						
+						// build children for last node
+						List<TreeNode> lastChildren = 
+								secLastChildren.subList(numOfKeys+1, secLastChildren.size()-1);
+						lastChildren.addAll(children);
+						// build address for last node 
+						List<Integer> lastAddress = secLastAddress.subList(numOfKeys, secLastAddress.size());
+						lastAddress.addAll(address);
+						
+						//update keys for second last node 
+						secLastKeys = secLastKeys.subList(0, numOfKeys);
+						//update children for second last node 
+						secLastChildren = secLastChildren.subList(0, numOfKeys+1);
+						// update address for second last node
+						secLastAddress  = secLastAddress.subList(0, numOfKeys+1);
+						//add two nodes to new Layer
+						newLayer.add(new IndexNode(order, secLastKeys, secLastChildren,secLastAddress));
+						newLayer.add(new IndexNode(order,lastNodeKeys,lastChildren, lastAddress));
+						
+					}
 				}
 			}
-		}
+		
+		
 		
 		return newLayer;
 	}
