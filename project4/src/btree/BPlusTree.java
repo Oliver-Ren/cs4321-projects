@@ -28,6 +28,7 @@ public class BPlusTree {
 	int order;
 	int capacity;// the total entries in each node
 	int position;
+	String indexFile; // idex name 
 	//boolean isClust;
 	List<DataEntry> dataEntries; // dataentries for creating leaf nodes
 	List<LeafNode> leafLayer; // leaflayer that stores all the leaf nodes
@@ -41,7 +42,7 @@ public class BPlusTree {
 	 *   
 	 * @throws IOException 
 	 */
-	public BPlusTree(File file,String name,int position, int order) throws IOException{
+	public BPlusTree(File file,String name,int position, int order,String indexFile) throws IOException{
 		this.file = file;
 		tr = new BinaryTupleReader(file);
 		leafLayer = new ArrayList<LeafNode>();
@@ -142,10 +143,15 @@ public class BPlusTree {
 		
 	}
 	/**
-	 * generate the index layer 
+	 * generate the index layer according to the previous layer 
 	 */
-	public void genIndexLayer(){
+	public List<TreeNode> genIndexLayer(List<TreeNode> preLayer){
 		
+		List<TreeNode> newLayer = new ArrayList<TreeNode>();
+		TreeNode node = new IndexNode(order,);
+		
+		
+		return newLayer;
 	}
 	/**
 	 * Generates the list of data entries from an unclustered relation.
