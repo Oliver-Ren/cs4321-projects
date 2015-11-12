@@ -30,6 +30,7 @@ public class BPlusTree {
 	File indexFile; // output idex file 
 	List<DataEntry> dataEntries; // dataentries for creating leaf nodes
 	List<TreeNode> leafLayer; // leaflayer that stores all the leaf nodes
+	TreeSerializer ts;
 	/**
 	 * constructor
 	 * @param file: the input file used for construct the tree
@@ -48,7 +49,7 @@ public class BPlusTree {
 		this.indexFile = indexFile;
 		this.order = order;
 		this.capacity = 2 * order;
-		TreeSerializer ts = new TreeSerializer(indexFile);
+		this.ts = new TreeSerializer(indexFile);
 		genUnclustDataEntries();
 		
 		createLeafLayer();
