@@ -14,7 +14,18 @@ public class IndexNode extends TreeNode {
 		super(order);
 		this.children = new ArrayList<TreeNode>(children);
 		this.keys = new ArrayList<Integer>(keys);
+		min = children.get(0).getMin();
 	}
+
+	@Override
+	public int getMin() {
+		// TODO Auto-generated method stub
+		return min;
+	}
+	
+	
+	
+	
 	
 	
 }
