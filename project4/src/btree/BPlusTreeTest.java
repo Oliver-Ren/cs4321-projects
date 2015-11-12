@@ -17,8 +17,9 @@ public class BPlusTreeTest {
 	@Test
 	public void testUnclusteredLeafConstruct() {
 		File relation = new File("tests/unit/bplustree/Boats");
+		File output = null;
 		try {
-			BPlusTree tree = new BPlusTree(relation, "Boats", 1, 10, false);
+			BPlusTree tree = new BPlusTree(relation, 1, 10, output);
 			for (LeafNode node : tree.leafLayer) {
 				System.out.println(node);
 				System.out.println();
@@ -34,8 +35,9 @@ public class BPlusTreeTest {
 	//@Test
 	public void testClusteredLeafConstruct() {
 		File relation = new File("tests/unit/bplustree/Sailors");
+		File output = null;
 		try {
-			BPlusTree tree = new BPlusTree(relation, "Sailors", 0, 15, true);
+			BPlusTree tree = new BPlusTree(relation, 0, 15, output);
 			for (DataEntry d : tree.dataEntries) {
 				System.out.println(d);
 			}

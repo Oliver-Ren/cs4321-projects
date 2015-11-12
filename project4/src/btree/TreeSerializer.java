@@ -73,14 +73,12 @@ public class TreeSerializer {
 			for (Integer key : curr.keys) {
 				buffer.putInt(key);
 			}
-		
 		}
 		
 		// finally padding zeros at the end.
 		while(buffer.hasRemaining()){
 			buffer.putInt(0);
 		}
-		
 		return pageNum++;
 	}
 	
