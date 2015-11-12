@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
 
+import operators.SortOperator;
+
 import org.junit.Test;
 
 /**
@@ -79,7 +81,8 @@ public class BPlusTreeTest {
 			e.printStackTrace();
 		}
 	}
-	@Test
+	
+	//@Test
 	public void testFullIndexLayer() throws IOException{
 		File relation = new File("tests/unit/bplustree/Boats");
 		File result = new File("tests/unit/bplustree/IndexLayerResult");
@@ -107,7 +110,7 @@ public class BPlusTreeTest {
 	/**
 	 * Test case for serializer then deserializer.
 	 */
-	@Test
+	//@Test
 	public void testSerializeAndDeserialize() {
 		File relation = new File("tests/unit/bplustree/Boats");
 		File indexFile = new File("tests/unit/deserialize/DSBoats.E");
@@ -115,6 +118,24 @@ public class BPlusTreeTest {
 		try {
 			PrintStream printer = new PrintStream(result);
 			BPlusTree tree = new BPlusTree(relation, 1, 10, indexFile);
+			TreeDeserializer td = new TreeDeserializer(indexFile);
+			td.dump(printer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Test case for serializer then deserializer.
+	 */
+	@Test
+	public void testSerializeAndDeserialize2() {
+		File relation = new File("tests/unit/bplustree/Sailors");
+		File indexFile = new File("tests/unit/deserialize/DSSailors.A");
+		File result = new File("tests/unit/deserialize/result");
+		try {
+			PrintStream printer = new PrintStream(result);
+			BPlusTree tree = new BPlusTree(relation, 0, 15, indexFile);
 			TreeDeserializer td = new TreeDeserializer(indexFile);
 			td.dump(printer);
 		} catch (IOException e) {

@@ -33,7 +33,8 @@ public class TreeDeserializer {
 	private int order;						// The order of the tree.
 	
 	/**
-	 * Constructs the the deserializer using the given indexFile.
+	 * Constructs the the deserializer using the given indexFile. 
+	 * This constructor is used for deserialiing the full tree.
 	 * 
 	 * @param indexFile which stores the serialized tree index.
 	 * @throws FileNotFoundException 
@@ -47,6 +48,30 @@ public class TreeDeserializer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Constructs the the deserializer using the given indexFile and the given
+	 * range specified by the lowKey and highKey.
+	 * 
+	 * @param indexFile which stores the serialized tree index.
+	 * @param lowKey the lower bound (inclusive), no limit if set to null.
+	 * @param highKey the higher bound (exclusive), no limit if set to null.
+	 * @throws FileNotFoundException 
+	 */
+	public TreeDeserializer(File indexFile, Integer lowKey, Integer highKey) {
+		//TODO
+	}
+	
+	/**
+	 * Returns the next record id in the specified range, null if no more 
+	 * record id to return.
+	 * @return Rid the record id.
+	 * 				null if reached the end of the range.
+	 */
+	public Rid getNextRid() {
+		//TODO
+		return null;
 	}
 	
 	/**

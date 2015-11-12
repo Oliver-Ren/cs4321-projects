@@ -115,7 +115,7 @@ public class TreeSerializer {
 			fc.position(position);
 			eraseBuffer();
 			
-			buffer.putInt(pageNum);	// The address of the root.
+			buffer.putInt(pageNum - 1);	// The address of the root.
 			buffer.putInt(numOfLeaves);	// The number of leaves in the tree.
 			buffer.putInt(order);	// The order of the tree.
 			

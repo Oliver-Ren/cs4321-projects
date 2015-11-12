@@ -225,7 +225,7 @@ public class Project3Test {
 	 * Test case for block nested loop join and external merge sort
 	 * with the given grading test cases
 	 */
-	@Test
+	//@Test
 	public void test_BNLJ_EMSort_Grading() {
 		Harness harness = new Harness("grading_test_cases");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
@@ -255,7 +255,7 @@ public class Project3Test {
 	 * Test case for sort merge join and external merge sort
 	 * with the given grading test cases
 	 */
-	@Test
+	//@Test
 	public void test_SMJ_EMSort_Grading() {
 		Harness harness = new Harness("grading_test_cases");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
@@ -346,7 +346,7 @@ public class Project3Test {
 	 * Test case for block nested loop join and in memory sort
 	 * with the given grading test cases and with random generated large size table.
 	 */
-	@Test
+	//@Test
 	public void test_BNLJ_MemSort_Grading_Large() {
 		Harness harness = new Harness("grading_test_cases_large");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
@@ -377,7 +377,7 @@ public class Project3Test {
 	 * with the given grading test cases and with random 
 	 * generated large size table.
 	 */
-	@Test
+	//@Test
 	public void test_BNLJ_EMSort_Grading_Large() {
 		Harness harness = new Harness("grading_test_cases_large");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
@@ -408,7 +408,7 @@ public class Project3Test {
 	 * with the given grading test cases and with 
 	 * random generated large size table.
 	 */
-	@Test
+	//@Test
 	public void test_SMJ_EMSort_Grading_Large() {
 		Harness harness = new Harness("grading_test_cases_large");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
@@ -439,7 +439,7 @@ public class Project3Test {
 	 * with the given grading test cases and with 
 	 * random generated large size table.
 	 */
-	@Test
+	//@Test
 	public void test_SMJ_MemSort_Grading_Large() {
 		Harness harness = new Harness("grading_test_cases_large");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
