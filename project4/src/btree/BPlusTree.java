@@ -146,10 +146,28 @@ public class BPlusTree {
 		
 		List<TreeNode> newLayer = new ArrayList<TreeNode>();
 		int cnt = 0;
+		List<Integer> keys = new ArrayList<Integer>();
+		List<TreeNode> children = new ArrayList<TreeNode>();
 		for(int i = 0; i < preLayer.size(); i++){
-			if(cnt == 1){
+			if (cnt == capacity){
+				children.add(preLayer.get(i));
+				//add last key
+				keys.add(preLayer.get(i).getMin());
+				//create a index node
+				IndexNode node = new IndexNode(order,keys,children);
 				
 			}
+			
+			if(cnt == 0){
+				children.add(preLayer.get(i));	
+				cnt++;
+			} else if (cnt < capacity ){
+				//add key
+				keys.add(preLayer.get(i).getMin());
+				children.add(preLayer.get(i));
+				cnt++;
+			} 
+			
 		}
 		
 		
