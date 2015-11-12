@@ -28,7 +28,7 @@ public class BPlusTree {
 	int order;
 	int capacity;// the total entries in each node
 	int position;
-	boolean isClust;
+	//boolean isClust;
 	List<DataEntry> dataEntries; // dataentries for creating leaf nodes
 	List<LeafNode> leafLayer; // leaflayer that stores all the leaf nodes
 	/**
@@ -41,14 +41,14 @@ public class BPlusTree {
 	 *   
 	 * @throws IOException 
 	 */
-	public BPlusTree(File file,String name,int position, int order,boolean isClust) throws IOException{
+	public BPlusTree(File file,String name,int position, int order) throws IOException{
 		this.file = file;
 		tr = new BinaryTupleReader(file);
 		leafLayer = new ArrayList<LeafNode>();
 		this.position = position;
 		this.name = name;
 		this.order = order;
-		this.isClust = isClust;
+		//this.isClust = isClust;
 		this.capacity = 2 * order;
 		
 		genUnclustDataEntries();
