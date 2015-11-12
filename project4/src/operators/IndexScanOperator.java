@@ -1,21 +1,27 @@
 package operators;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import btree.DataEntry;
 import net.sf.jsqlparser.schema.Table;
 import util.Tuple;
 
 public class IndexScanOperator extends Operator{
-	int lowKey;
-	int highKey;
+	Integer lowKey;
+	Integer highKey;
+	File indexFile; // the index file for deserializer to lacate
 	Table tab =null;
 	Boolean isClustered = false; 
 	int position; // the index position
-	
+	DataEntry firstDataEntry;
 	@Override
-	public Tuple getNextTuple() {
+	public Tuple getNextTuple()  {
 		// TODO Auto-generated method stub
-		
+		if(this.firstDataEntry == null){
+			 return null;
+		}
 		return null;
 	}
 
@@ -30,13 +36,15 @@ public class IndexScanOperator extends Operator{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public IndexScanOperator(Table tab,int lowKey, 
-			int highKey,Boolean isClustered,int position){
+	public IndexScanOperator(Table tab,Integer lowKey, 
+			Integer highKey,Boolean isClustered,int position,File indexFile){
 		this.lowKey = lowKey;
 		this.highKey = highKey;
 		this.tab = tab;
 		this.isClustered = isClustered;
 		this.position = position;
+		this.indexFile = indexFile;
+		//call deserilizer to fetch the first data entry from the leafnode 
 		
 		
 		
