@@ -10,9 +10,19 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import btree.BPlusTree;
+import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.statement.select.OrderByElement;
 import nio.BinaryTupleReader;
+import nio.BinaryTupleWriter;
 import nio.NormalTupleReader;
 import nio.TupleReader;
+import operators.Operator;
+import operators.logic.LogicOperator;
+import operators.logic.LogicScanOp;
+import operators.logic.LogicSortOp;
+import visitors.PhysicalPlanBuilder;
 
 /**
  * The <tt>DBCat</tt> class represents a database catalog which keeps track
@@ -41,6 +51,8 @@ public class DBCat {
 	 */
 	public static String dataDir = "";
 	public static String schemaPath = "";
+	public static String idxInfoPath = "";
+	public static String idxsDir = "";
 	
 	public enum JoinMethod {
 		TNLJ, BNLJ, SMJ;
@@ -57,9 +69,16 @@ public class DBCat {
 	public static Integer sortBufPgs = null;
 	
 	public static boolean isBinary = true;
+	public static boolean buildIdxs = false;
+	public static boolean evalQry = false;
+	public static boolean idxSelect = false;
 	
-	public static HashMap<String, List<String>> schemas = new HashMap<String, List<String>>();
-	public static HashMap<String, String> aliases = new HashMap<String, String>();
+	public static HashMap<String, List<String>> schemas = 
+			new HashMap<String, List<String>>();
+	public static HashMap<String, String> aliases = 
+			new HashMap<String, String>();
+	public static HashMap<String, IndexInfo> idxInfo = 
+			new HashMap<String, IndexInfo>();
 	
 	/**
 	 * Reset the input and output directory.
@@ -74,6 +93,8 @@ public class DBCat {
 			dbDir = inputDir + "db" + File.separator;
 			dataDir = dbDir + "data" + File.separator;
 			schemaPath = dbDir + "schema.txt";
+			idxInfoPath = dbDir + "index_info.txt";
+			idxsDir = dbDir + "indexes" + File.separator;
 		}
 		
 		if (output != null) {
@@ -86,6 +107,7 @@ public class DBCat {
 		
 		resetConfig();
 		resetSchemas();
+		resetIdxInfo();
 	}
 	
 	private static void defConfig() {
@@ -153,6 +175,66 @@ public class DBCat {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	private static void resetIdxInfo() {
+		idxInfo.clear();
+		// need also to clear indexes directory
+		
+		try (BufferedReader br = new BufferedReader(
+				new FileReader(idxInfoPath))) {
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				String[] str = line.split(" ");
+				String relt = str[0];
+				String attr = str[1];
+				boolean clust = (str[2].equals("1"));
+				int ord = Integer.parseInt(str[3]);
+				
+				IndexInfo ii = new IndexInfo(relt, attr, clust, ord);
+				idxInfo.put(relt, ii);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		if (!buildIdxs) return;
+		
+		PhysicalPlanBuilder ppb = new PhysicalPlanBuilder();
+		
+		for (String relt : idxInfo.keySet()) {
+			String tabPath = dataDir + relt;
+			IndexInfo ii = idxInfo.get(relt);
+			int attrIdx = schemas.get(relt).indexOf(ii.attr);
+			String idxPath = idxsDir + relt + '.' + ii.attr;
+			
+			if (ii.clust) {
+				Expression exp = new Column(null, ii.attr);
+				OrderByElement obe = new OrderByElement();
+				obe.setExpression(exp);
+				LogicOperator lop = new LogicScanOp(getTable(relt));
+				lop = new LogicSortOp(lop, Arrays.asList(obe));
+				lop.accept(ppb);
+				Operator op = ppb.getPhyOp();
+				
+				try {
+					BinaryTupleWriter btw = 
+							new BinaryTupleWriter(tabPath);
+					op.dump(btw);
+					btw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			try {
+				BPlusTree blt = new BPlusTree(new File(tabPath), 
+						attrIdx, ii.order, new File(idxPath));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
