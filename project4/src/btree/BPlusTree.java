@@ -180,11 +180,11 @@ public class BPlusTree {
 			newLayer.add(node);
 		} else {
 			//the current lay only has one node
-			if(keys.size() != 0){
-				if(newLayer.size() == 0){
-					IndexNode node = new IndexNode (order, keys, children);
-					newLayer.add(node);
-				}
+			
+			if(newLayer.size() == 0){
+				IndexNode node = new IndexNode (order, keys, children);
+				newLayer.add(node);
+				
 			} else { // need redistribution
 				IndexNode secondLast =(IndexNode)newLayer.remove(newLayer.size()-1);
 				List<TreeNode>secLastChildren = secondLast.children;
