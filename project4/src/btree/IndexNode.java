@@ -25,7 +25,21 @@ public class IndexNode extends TreeNode {
 		return min;
 	}
 	
-	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("IndexNode with keys [");
+		for (Integer key : keys) {
+			sb.append(key + ", ");
+		}
+		sb.setLength(sb.length() - 2);
+		sb.append("] and child addresses [");
+//		for (Integer address : address) {
+//			sb.append(key + ", ");
+//		}
+		sb.append("]\n");
+		return sb.toString();
+	}
 	
 	
 	

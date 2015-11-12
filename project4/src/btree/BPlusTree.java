@@ -160,6 +160,7 @@ public class BPlusTree {
 				cnt = 0;
 				keys.clear();
 				children.clear();
+				continue;
 			}
 			
 			if(cnt == 0){
@@ -174,7 +175,7 @@ public class BPlusTree {
 			
 		}
 		//check the last node
-		if(keys.size() > order){
+		if(keys.size() >= order){
 			IndexNode node = new IndexNode(order, keys, children);
 			newLayer.add(node);
 		} else {

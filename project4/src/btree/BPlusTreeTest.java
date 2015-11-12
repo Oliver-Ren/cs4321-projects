@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -14,13 +16,13 @@ import org.junit.Test;
  */
 public class BPlusTreeTest {
 
-	@Test
+	//@Test
 	public void testUnclusteredLeafConstruct() {
 		File relation = new File("tests/unit/bplustree/Boats");
 		File output = null;
 		try {
 			BPlusTree tree = new BPlusTree(relation, 1, 10, output);
-			for (LeafNode node : tree.leafLayer) {
+			for (TreeNode node : tree.leafLayer) {
 				System.out.println(node);
 				System.out.println();
 			}
@@ -45,5 +47,39 @@ public class BPlusTreeTest {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Test case for verification of functionality of index layer.
+	 */
+	@Test
+	public void testIndexLayer() {
+		File relation = new File("tests/unit/bplustree/Boats");
+		File output = null;
+		File result = new File("tests/unit/bplustree/IndexLayerResult");
+		
+		try {
+			PrintStream printer = new PrintStream(result);
+			BPlusTree tree = new BPlusTree(relation, 1, 10, output);
+			List<TreeNode> index = tree.createIndexLayer(tree.leafLayer);
+			printer.println("---------Last Index layer " +
+					"is index nodes---------");
+			for (TreeNode node : index) {
+				printer.println(node);
+				printer.println();
+			}
+			
+			for (TreeNode node : tree.leafLayer) {
+				printer.println(node);
+				printer.println();
+			}
+			
+			printer.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 
 }
