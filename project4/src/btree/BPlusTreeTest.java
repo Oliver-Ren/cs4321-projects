@@ -83,7 +83,7 @@ public class BPlusTreeTest {
 	/**
 	 * Test case for deserializer.
 	 */
-	@Test
+	//@Test
 	public void testDeserializeRoot() {
 		File indexFile = new File("tests/unit/deserialize/Sailors.A");
 		File output = null;
@@ -95,9 +95,25 @@ public class BPlusTreeTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
+	/**
+	 * Test case for serializer then deserializer.
+	 */
+	@Test
+	public void testSerializeAndDeserialize() {
+		File relation = new File("tests/unit/bplustree/Boats");
+		File indexFile = new File("tests/unit/deserialize/DSBoats.E");
+		File result = new File("tests/unit/deserialize/result");
+		try {
+			PrintStream printer = new PrintStream(result);
+			BPlusTree tree = new BPlusTree(relation, 1, 10, indexFile);
+			TreeDeserializer td = new TreeDeserializer(indexFile);
+			td.dump(printer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 
 }

@@ -41,7 +41,7 @@ public class BPlusTree {
 	 *   
 	 * @throws IOException 
 	 */
-	public BPlusTree(File file,int position, int order,File indexFile) throws IOException{
+	public BPlusTree(File file, int position, int order,File indexFile) throws IOException{
 		this.file = file;
 		tr = new BinaryTupleReader(file);
 		leafLayer = new ArrayList<TreeNode>();
@@ -53,7 +53,13 @@ public class BPlusTree {
 		genUnclustDataEntries();
 		
 		createLeafLayer();
+		createIndexLayer(leafLayer, ts);
+		
+		ts.finishSerialization(order);
+		ts.close();
+		tr.close();
 	}
+	
 	/**
 	 * method to create all the data entries which would store in leaf nodes later
 	 * @throws IOException 

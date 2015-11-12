@@ -157,7 +157,6 @@ public class TreeDeserializer {
 		eraseBuffer();
 	}
 	
-	
 	// Helper method that erases the buffer by filling zeros.
 	private void eraseBuffer() {
 		buffer.clear();
