@@ -24,12 +24,10 @@ public class BPlusTree {
 	
 	File file; // input file 
 	BinaryTupleReader tr;
-	String name;
 	int order;
 	int capacity;// the total entries in each node
 	int position;
-	String indexFile; // idex name 
-	//boolean isClust;
+	File indexFile; // output idex file 
 	List<DataEntry> dataEntries; // dataentries for creating leaf nodes
 	List<LeafNode> leafLayer; // leaflayer that stores all the leaf nodes
 	/**
@@ -42,14 +40,13 @@ public class BPlusTree {
 	 *   
 	 * @throws IOException 
 	 */
-	public BPlusTree(File file,String name,int position, int order,String indexFile) throws IOException{
+	public BPlusTree(File file,int position, int order,File indexFile) throws IOException{
 		this.file = file;
 		tr = new BinaryTupleReader(file);
 		leafLayer = new ArrayList<LeafNode>();
 		this.position = position;
-		this.name = name;
+		this.indexFile = indexFile;
 		this.order = order;
-		//this.isClust = isClust;
 		this.capacity = 2 * order;
 		
 		genUnclustDataEntries();
@@ -148,7 +145,12 @@ public class BPlusTree {
 	public List<TreeNode> genIndexLayer(List<TreeNode> preLayer){
 		
 		List<TreeNode> newLayer = new ArrayList<TreeNode>();
-		TreeNode node = new IndexNode(order,);
+		int cnt = 0;
+		for(int i = 0; i < preLayer.size(); i++){
+			if(cnt == 1){
+				
+			}
+		}
 		
 		
 		return newLayer;
