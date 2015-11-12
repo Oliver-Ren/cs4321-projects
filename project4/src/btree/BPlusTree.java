@@ -24,11 +24,10 @@ public class BPlusTree {
 	
 	File file; // input file 
 	BinaryTupleReader tr;
-	String name;
 	int order;
 	int capacity;// the total entries in each node
 	int position;
-	boolean isClust;
+	File indexFile; // output idex file 
 	List<DataEntry> dataEntries; // dataentries for creating leaf nodes
 	List<LeafNode> leafLayer; // leaflayer that stores all the leaf nodes
 	/**
@@ -41,14 +40,13 @@ public class BPlusTree {
 	 *   
 	 * @throws IOException 
 	 */
-	public BPlusTree(File file,String name,int position, int order,boolean isClust) throws IOException{
+	public BPlusTree(File file,int position, int order,File indexFile) throws IOException{
 		this.file = file;
 		tr = new BinaryTupleReader(file);
 		leafLayer = new ArrayList<LeafNode>();
 		this.position = position;
-		this.name = name;
+		this.indexFile = indexFile;
 		this.order = order;
-		this.isClust = isClust;
 		this.capacity = 2 * order;
 		
 		genUnclustDataEntries();
@@ -142,10 +140,67 @@ public class BPlusTree {
 		
 	}
 	/**
-	 * generate the index layer 
+	 * generate the index layer according to the previous layer 
 	 */
-	public void genIndexLayer(){
+	public List<TreeNode> genIndexLayer(List<TreeNode> preLayer){
 		
+		List<TreeNode> newLayer = new ArrayList<TreeNode>();
+		int cnt = 0;
+		List<Integer> keys = new ArrayList<Integer>();
+		List<TreeNode> children = new ArrayList<TreeNode>();
+		for(int i = 0; i < preLayer.size(); i++){
+			if (cnt == capacity){
+				children.add(preLayer.get(i));
+				//add last key
+				keys.add(preLayer.get(i).getMin());
+				//create a index node
+				IndexNode node = new IndexNode(order,keys,children);
+				newLayer.add(node);
+				//reset
+				cnt = 0;
+				keys.clear();
+				children.clear();
+			}
+			
+			if(cnt == 0){
+				children.add(preLayer.get(i));	
+				cnt++;
+			} else if (cnt < capacity ){
+				//add key
+				keys.add(preLayer.get(i).getMin());
+				children.add(preLayer.get(i));
+				cnt++;
+			} 
+			
+		}
+		//check the last node
+		if(keys.size() > order){
+			IndexNode node = new IndexNode(order, keys, children);
+			newLayer.add(node);
+		} else {
+			//the current lay only has one node
+			if(keys.size() != 0){
+				if(newLayer.size() == 0){
+					IndexNode node = new IndexNode (order, keys, children);
+					newLayer.add(node);
+				}
+			} else { // need redistribution
+				IndexNode secondLast =(IndexNode)newLayer.remove(newLayer.size()-1);
+				List<TreeNode>secLastChildren = secondLast.children;
+				List<Integer> secLastKeys = secondLast.keys;
+				int numOfKeys =(secLastChildren.size() + children.size())/2-1;
+				// build keys for last node
+				List<Integer> lastNodeKeys = secLastKeys.subList(numOfKeys, secLastKeys.size());
+				lastNodeKeys.addAll(keys);
+				// build children for last node
+				
+				
+			}
+		}
+		
+		
+		
+		return newLayer;
 	}
 	/**
 	 * Generates the list of data entries from an unclustered relation.
