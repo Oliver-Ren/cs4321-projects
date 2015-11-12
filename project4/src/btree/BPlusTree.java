@@ -141,7 +141,12 @@ public class BPlusTree {
 		
 		
 	}
-	
+	/**
+	 * generate the index layer 
+	 */
+	public void genIndexLayer(){
+		
+	}
 	/**
 	 * Generates the list of data entries from an unclustered relation.
 	 */

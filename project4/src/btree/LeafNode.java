@@ -10,12 +10,13 @@ import java.util.List;
 public class LeafNode extends TreeNode {
 	
 	List<DataEntry> dataEntries;
-	
+	int min;
 	public LeafNode(int order,
 			List<DataEntry> dataEntries) {
 		super(order);
 		// TODO Auto-generated constructor stub
 		this.dataEntries = new ArrayList<DataEntry>(dataEntries);
+		min = dataEntries.get(0).key;
 	}
 	
 	@Override
@@ -28,6 +29,13 @@ public class LeafNode extends TreeNode {
 		sb.append("]");
 		return sb.toString();
 	}
+
+	@Override
+	public int getMin() {
+		// TODO Auto-generated method stub		
+		return min;
+	}
+	
 	
 
 }
