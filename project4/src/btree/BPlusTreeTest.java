@@ -60,11 +60,11 @@ public class BPlusTreeTest {
 		try {
 			PrintStream printer = new PrintStream(result);
 			BPlusTree tree = new BPlusTree(relation, 1, 10, output);
-			List<TreeNode> index = tree.createIndexLayer(tree.leafLayer);
+			List<TreeNode> index = tree.createIndexLayer(tree.leafLayer, tree.ts);
 			printer.println("---------Last Index layer " +
 					"is index nodes---------");
 			for (TreeNode node : index) {
-				printer.println(node);
+				printer.print(node);
 				printer.println();
 			}
 			

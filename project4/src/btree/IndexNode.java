@@ -36,9 +36,10 @@ public class IndexNode extends TreeNode {
 		}
 		sb.setLength(sb.length() - 2);
 		sb.append("] and child addresses [");
-//		for (Integer address : address) {
-//			sb.append(key + ", ");
-//		}
+		for (Integer addr : address) {
+			sb.append(addr + ", ");
+		}
+		sb.setLength(sb.length() - 2);
 		sb.append("]\n");
 		return sb.toString();
 	}

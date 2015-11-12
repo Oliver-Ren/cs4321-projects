@@ -31,54 +31,70 @@ public class TreeSerializer {
 	private ByteBuffer buffer;				// The buffer page.
 	private int pageNum;					// The current page number.
 
-	
+	/**
+	 * The constructor of the serializer.
+	 * @param indexFile
+	 * @throws FileNotFoundException
+	 */
 	public TreeSerializer(File indexFile) throws FileNotFoundException {
 		this.file = file;
-		fc = new FileOutputStream(file).getChannel();
-		// allocate the buffer size for output page
-		buffer = buffer.allocate(B_SIZE);
+//		fc = new FileOutputStream(file).getChannel();
+//		// allocate the buffer size for output page
+//		buffer = buffer.allocate(B_SIZE);
 		pageNum = 1;	// we want to firstly write the leaf node.
 		
 	}
 
+	/**
+	 * Serialzes the the node into the index file.
+	 * @param node
+	 * @return the address of the node to be serialzed in the index file.
+	 * @throws IOException
+	 */
 	public int serialize(TreeNode node) throws IOException {
 		long position = B_SIZE * (long) pageNum;
 		
-		// initialize the buffer.
-		fc.position(position);
-		eraseBuffer();
-		
-		
-		// searilize the leaf node.
-		if (node instanceof LeafNode) {
-			LeafNode curr = (LeafNode) node;
-			int numOfEntries = curr.dataEntries.size();
-			
-			// start writing.
-			buffer.putInt(LEAF_FLAG);
-			buffer.putInt(numOfEntries);
-			for (DataEntry data : curr.dataEntries) {
-				buffer.putInt(data.key);
-				buffer.putInt(data.rids.size());
-				for (Rid rid : data.rids) {
-					buffer.putInt(rid.pageId);
-					buffer.putInt(rid.tupleId);
-				}
-			}
-		} else if (node instanceof IndexNode) {
-			IndexNode curr = (IndexNode) node;
-			int numOfKeys = curr.keys.size();
-			buffer.putInt(IDX_FLAG);
-			buffer.putInt(numOfKeys);
-			for (Integer key : curr.keys) {
-				buffer.putInt(key);
-			}
-		}
-		
-		// finally padding zeros at the end.
-		while(buffer.hasRemaining()){
-			buffer.putInt(0);
-		}
+//		// initialize the buffer.
+//		fc.position(position);
+//		eraseBuffer();
+//		
+//		
+//		// searilize the leaf node.
+//		if (node instanceof LeafNode) {
+//			LeafNode curr = (LeafNode) node;
+//			int numOfEntries = curr.dataEntries.size();
+//			
+//			// start writing.
+//			buffer.putInt(LEAF_FLAG);
+//			buffer.putInt(numOfEntries);
+//			for (DataEntry data : curr.dataEntries) {
+//				buffer.putInt(data.key);
+//				buffer.putInt(data.rids.size());
+//				for (Rid rid : data.rids) {
+//					buffer.putInt(rid.pageId);
+//					buffer.putInt(rid.tupleId);
+//				}
+//			}
+//		} else if (node instanceof IndexNode) {
+//			IndexNode curr = (IndexNode) node;
+//			int numOfKeys = curr.keys.size();
+//			buffer.putInt(IDX_FLAG);
+//			buffer.putInt(numOfKeys);
+//			for (Integer key : curr.keys) {
+//				buffer.putInt(key);
+//			}
+//			for (Integer addr : curr.address) {
+//				buffer.putInt(addr);
+//			}
+//		}
+//		
+//		// finally padding zeros at the end.
+//		while(buffer.hasRemaining()){
+//			buffer.putInt(0);
+//		}
+//		
+//		buffer.flip();
+//		fc.write(buffer);
 		return pageNum++;
 	}
 	
