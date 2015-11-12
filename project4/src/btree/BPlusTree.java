@@ -1,13 +1,13 @@
 package btree;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+//import java.util.Collection;
+//import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+//import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -29,7 +29,7 @@ public class BPlusTree {
 	int position;
 	File indexFile; // output idex file 
 	List<DataEntry> dataEntries; // dataentries for creating leaf nodes
-	List<LeafNode> leafLayer; // leaflayer that stores all the leaf nodes
+	List<TreeNode> leafLayer; // leaflayer that stores all the leaf nodes
 	/**
 	 * constructor
 	 * @param file: the input file used for construct the tree
@@ -43,7 +43,7 @@ public class BPlusTree {
 	public BPlusTree(File file,int position, int order,File indexFile) throws IOException{
 		this.file = file;
 		tr = new BinaryTupleReader(file);
-		leafLayer = new ArrayList<LeafNode>();
+		leafLayer = new ArrayList<TreeNode>();
 		this.position = position;
 		this.indexFile = indexFile;
 		this.order = order;
@@ -115,7 +115,7 @@ public class BPlusTree {
 				if(leafLayer.size() == 0){ // only one node
 					leafLayer.add(new LeafNode(order,nodeEntries));					
 				} else {
-					LeafNode secondLast = leafLayer.remove(leafLayer.size()-1);
+					LeafNode secondLast = (LeafNode)leafLayer.remove(leafLayer.size()-1);
 					//num of entries should put in seond last node
 					int numOfEntry = (2*order + nodeEntries.size())/2;
 					
@@ -142,7 +142,7 @@ public class BPlusTree {
 	/**
 	 * generate the index layer according to the previous layer 
 	 */
-	public List<TreeNode> genIndexLayer(List<TreeNode> preLayer){
+	public List<TreeNode> createIndexLayer(List<TreeNode> preLayer){
 		
 		List<TreeNode> newLayer = new ArrayList<TreeNode>();
 		int cnt = 0;
