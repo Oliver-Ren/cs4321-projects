@@ -11,11 +11,12 @@ public class IndexNode extends TreeNode {
 	int min; //the minimum key value for its parent
 	
 	public IndexNode(int order, List<Integer> keys,
-			List<TreeNode> children) {
+			List<TreeNode> children, List<Integer> address) {
 		
 		super(order);
 		this.children = new ArrayList<TreeNode>(children);
 		this.keys = new ArrayList<Integer>(keys);
+		this.address = new ArrayList<Integer>(address);
 		min = children.get(0).getMin();
 	}
 
