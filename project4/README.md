@@ -1,0 +1,93 @@
+# CS 4321 Project 4 #
+
+Guantian Zheng (gz94), Chengxiang Ren (cr486), Mingyuan Huang (mh2239)
+
+In this project, we first switched the IO format from the original IO class to NIO class. We also implemented both binary and decimal format tuple reader and tuple writer, so that operators can execute binary files. We also wrote a physical query plan, which is used to determine the detail implementation method for different operators. Additionally, we implemented the block nested loop join(BNLJ), external sort and sort merge join(SMJ). 
+
+## Project Structure 
+
+The project is structured as follows:
+
+  * the _src_ directory for source files.
+  * the _sqltests_ directory for the test queries, database file, expected input and output directory.
+
+For packages for the project source file is arranged by the following rational:
+
+  * the _client_ package is for top-level class.
+  * the _btree_ directory is a building B+ tree index file. It also contains serializer, deserializer classes for index searching purpose. 
+  * the _operators_ package is for various Operator classes.
+  * the _test_ package contains unit tests, end-to-end test as well as the utilities and test test harness.
+  * the _util_ package contains various classes for dealing with queries, expressions, and trees as well as data-structures for storing query elements.
+  * the _visitors_ package contains generic visitor as well as different concrete visitors.
+
+## Interpreter
+
+The _top-level entry_ of the program is at the client.SQLInterpreter.main().
+
+The Interpreter is in charge of read the input file and transfer to the query evalutator, and finally output the result to a file.
+
+## Join Logic
+
+We categorize conditions from the WHERE clause into:
+	1. Comparison between constants.
+	2. In-table select condition.
+	3. Cross-table join condition.
+
+At the start of parsing, all conditions are extracted by recursively breaking up the AND expressions. Then for each table we record: 1) its select conditions, and 2) its join condition with all of the __preceding__ tables. This way, we could move along the FROM tables, and focus only on relevant conditions when a new table needs to be joined with the current left sub-tree. And of course, constant conditions are handled before everything.
+
+## ORDER BY & DISTINCT
+
+We implemented the SortOperator as per the instructions. If certain ordered elements are not projected (e.g., SELECT S.A FROM S ORDER BY S.B) and DISTINCT is required, we have another operator using HashSet to maintain the order.
+
+## B+ Tree Index File Builder
+We provide a BPlusTree class, and its constructor is able to build a serialized index file on one perticular attribute from the given relation data. 
+It also provides tree index deserialization functionality when user need to use index scan operator during the execution. This would shorten the tuple searching time.  
+
+## Index Scan Operator
+
+## Selection Logic in Physcial Plan Builder 
+
+## Testing
+
+We make use of two testing strategies
+
+1. At the very beginning use the Unit Test for the basic function of the operators including _ScanOperator_ and _SelectOperator_.
+2. At the later stage, we are highly dependent on the use of end-to-end tests to ensure well functioning of the whole system.
+
+### Unit Tests
+
+For the basic test, we manually construct operators and dump the tuples to prove that the operator could work with regard to the iterator model.
+
+### End-to-End Tests
+
+The end-to-end test is the test which takes the whole interpreter as the unit under test.
+The Test case will take the input query file and then execute the the query, finally print the result into the target file.
+
+### Test-Harness
+
+In order to better conduct the testing, we have written a bash script which dumps the result of the MySQL database as the expected output. Therefore, it is very easy for us to build relatively complex test cases.
+
+Also, we have created the util class _Diff_ for comparing two files which will automatically judge the correctness of the output.
+
+
+### Benchmarking 
+#### Testing Plan for Project 3 
+Compare BNLJ or SMJ with TNLJ with the following three queries and the generated data (about 5000 tuples per relations, in **/project3/benchmarking** directory). 
+
+**Tested Queries**  		
+	Query1: SELECT * FROM Sailors, Reserves WHERE Sailors.A = Reserves.G;   
+	Query2: SELECT * FROM Sailors, Reserves, Boats WHERE Sailors.A = Reserves.G AND Reserves.H = Boats.D;   
+	Query3: SELECT * FROM Sailors, Reserves, Boats WHERE Sailors.A = Reserves.G AND Reserves.H = Boats.D AND Sailors.B < 150;
+**Description of the Tested Data**  
+
+**See experiment.pdf and report.excel for detail results.**
+
+#### Testing Plan for Project 4 
+We would use three queries showing below to compare the execution time among full scan, unclustered index scan and clustered index scan. 
+
+**Tested Queries:**  
+1. SELECT * FROM Boats WHERE Boats.E < 10;   
+2. SELECT  * FROM Boats WHERE Boats.E < 300;  
+3. SELECT * FROM Sailors WHERE Sailors.A  > 100 and Sailors.A <150; 
+
+**See experiment.pdf and report.excel in Project 4 file for detail results.**
