@@ -261,7 +261,7 @@ public class DBCat {
 		return new Table(tabName, getSchema(tabName), btr);
 	}
 	
-	public static Table getIndexTable(String tabName, Expression selCond) {
+	public static Table getIndexTable(String tabName) {
 		String orig = origName(tabName);
 		if (!idxInfo.containsKey(orig))
 			throw new IllegalArgumentException();
@@ -270,7 +270,6 @@ public class DBCat {
 		String path = idxsDir + orig + '.' + attr;
 		// TODO
 		// make tr the reader of the index file at path
-		// determine low key and high key from selCond
 		TupleReader tr = null;
 		return new Table(tabName, getSchema(tabName), tr);
 	}
