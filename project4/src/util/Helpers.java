@@ -246,6 +246,39 @@ public class Helpers {
 		return false;
 	}
 	
+	public Integer[] bPlusKeys(String indexAttr, Expression selCond) {
+		if (selCond == null) return null;
+		List<Expression> conds = decompAnds(selCond);
+		
+		Integer[] ret = new Integer[2]; // low and high
+		
+		for (Expression expr : conds) {
+			Expression left = 
+					((BinaryExpression) expr).getLeftExpression();
+			Expression right = 
+					((BinaryExpression) expr).getRightExpression();
+			
+			String attr = null;
+			Integer val = null;
+			if (left instanceof Column) {
+				attr = left.toString();
+				val = Integer.parseInt(right.toString());
+			}
+			else {
+				attr = right.toString();
+				val = Integer.parseInt(left.toString());
+			}
+			if (attr.indexOf('.') != -1)
+				attr = attr.split("\\.")[1];
+			if (!indexAttr.equals(attr)) continue;
+			
+			// TODO
+			// update low key and high key
+		}
+		
+		return ret;
+	}
+	
 	/**
 	 * Check if the ordered elements are not selected.
 	 * @param sels the selected items
