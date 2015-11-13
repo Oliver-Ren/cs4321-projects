@@ -11,7 +11,7 @@ import btree.TreeSerializer;
 import util.Table;
 import util.Tuple;
 
-public class IndexScanOperator extends Operator{
+public class IndexScanOperator extends ScanOperator{
 	Integer lowKey;
 	Integer highKey;
 	File indexFile; // the index file for deserializer to lacate
@@ -30,7 +30,7 @@ public class IndexScanOperator extends Operator{
 		} else {
 			Rid temp = CurRid;
 			CurRid = ts.getNextRid(); 
-			return tab.nextTuple(temp);
+			return super.tab.nextTuple(temp);
 		}
 	}
 
@@ -47,9 +47,9 @@ public class IndexScanOperator extends Operator{
 	}
 	public IndexScanOperator(Table tab,Integer lowKey, 
 			Integer highKey,Boolean isClustered,File indexFile){
+		super(tab);
 		this.lowKey = lowKey;
 		this.highKey = highKey;
-		this.tab = tab;
 		this.isClustered = isClustered;
 		this.indexFile = indexFile;
 		//call deserilizer to fetch the first rid from the leafnode 
