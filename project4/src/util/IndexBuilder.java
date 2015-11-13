@@ -8,6 +8,7 @@ import java.util.Collection;
 
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.OrderByElement;
 import nio.BinaryTupleWriter;
 import operators.Operator;
@@ -67,7 +68,8 @@ public class IndexBuilder {
 			
 			
 			if (ii.clust) {
-				Expression exp = new Column(null, ii.attr);
+				Table tbl = new Table(null, relt);
+				Expression exp = new Column(tbl, ii.attr);
 				OrderByElement obe = new OrderByElement();
 				obe.setExpression(exp);
 				LogicOperator lop = new LogicScanOp(DBCat.getTable(relt));

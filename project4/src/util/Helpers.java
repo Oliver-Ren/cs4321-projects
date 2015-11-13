@@ -10,6 +10,7 @@ import visitors.JoinExpVisitor;
 import visitors.SelExpVisitor;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.GreaterThan;
@@ -240,6 +241,23 @@ public class Helpers {
 					((BinaryExpression) expr).getRightExpression();
 			
 			String str = null;
+			
+			if (left instanceof Column && right instanceof LongValue
+					|| left instanceof LongValue && right instanceof Column) {
+				if (   expr instanceof EqualsTo
+					|| expr instanceof GreaterThan
+					|| expr instanceof GreaterThanEquals
+					|| expr instanceof MinorThan
+					|| expr instanceof MinorThanEquals ) {
+					
+					str = (left instanceof Column) ? left.toString() : 
+						right.toString();
+					if (str.indexOf('.') != -1)
+						str = str.split("\\.")[1];
+					if (ii.attr.equals(str)) return true; 
+				}
+					
+			}
 //			//handle corner case mingyuan
 //			if(left instanceof Column && right instanceof Column){
 //				return false;
