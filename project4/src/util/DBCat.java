@@ -69,9 +69,8 @@ public class DBCat {
 	public static Integer sortBufPgs = null;
 	
 	public static boolean isBinary = true;
-	public static boolean buildIdxs = false;
-	public static boolean evalQry = false;
-	public static boolean idxSelect = false;
+	
+	public static boolean idxSelect = false;	// Should we use index for select
 	
 	public static HashMap<String, List<String>> schemas = 
 			new HashMap<String, List<String>>();
@@ -142,6 +141,7 @@ public class DBCat {
 				sortMethod = SortMethod.EXTERN;
 				sortBufPgs = Math.max(3, Integer.valueOf(sort[1]));
 			}
+			
 			
 			br.close();
 		} catch (Exception e) {

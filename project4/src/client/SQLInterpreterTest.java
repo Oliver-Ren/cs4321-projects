@@ -6,6 +6,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import util.DBCat;
+
 public class SQLInterpreterTest {
 
 	/**
@@ -27,7 +29,8 @@ public class SQLInterpreterTest {
 	public void testQuery(){
 		SQLInterpreter itpr = new SQLInterpreter();
 		try {
-			itpr.execute("tests/unit/interpreter/queryEvaluation/interpreter_config_file.txt");
+			itpr.execute("tests/unit/interpreter/samples/interpreter_config_file.txt");
+			System.out.println("use idex " + DBCat.idxSelect);
 		} catch(IOException e){
 			e.printStackTrace();
 		}
