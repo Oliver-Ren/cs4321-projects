@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 /**
  * The <tt>TreeDeserializer</tt> class represents the component
  * which deserializes the B+ tree in the index file into the memory.
@@ -61,6 +63,7 @@ public class TreeDeserializer {
 	 */
 	public TreeDeserializer(File indexFile, Integer lowKey, Integer highKey) {
 		//TODO
+		throw new NotImplementedException();
 	}
 	
 	/**
@@ -71,7 +74,7 @@ public class TreeDeserializer {
 	 */
 	public Rid getNextRid() {
 		//TODO
-		return null;
+		throw new NotImplementedException();
 	}
 	
 	/**

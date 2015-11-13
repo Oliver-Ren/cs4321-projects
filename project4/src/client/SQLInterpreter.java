@@ -74,7 +74,14 @@ public class SQLInterpreter {
 		DBCat.resetDirs(config.inPath, config.outPath, config.tempPath);
 		DBCat.getInstance();
 		
+		if (config.shouldBuildIdx) {
+			System.out.println("Building index");
+			
+		}
 		
+		if (config.shouldEvaluate) {
+			System.out.println("Evaluating query");
+		}
 		
 	}
 	

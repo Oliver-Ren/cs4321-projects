@@ -20,4 +20,12 @@ public class Rid {
 	public String toString() {
 		return "(" + pageId + "," + tupleId + ")";
 	}
+	
+	public int getPageId() {
+		return pageId;
+	}
+	
+	public int getTupleid() {
+		return tupleId;
+	}
 }	
