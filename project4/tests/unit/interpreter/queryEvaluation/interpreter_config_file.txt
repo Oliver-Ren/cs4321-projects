@@ -1,5 +1,0 @@
-/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/tests/unit/interpreter/queryEvaluation/input
-/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/tests/unit/interpreter/queryEvaluation/output
-/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/tests/unit/interpreter/queryEvaluation/temp
-1
-0

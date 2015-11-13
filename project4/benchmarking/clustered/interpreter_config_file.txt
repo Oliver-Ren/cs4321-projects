@@ -1,0 +1,5 @@
+/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/tests/unit/interpreter/queryEvaluation/clustered/input
+/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/tests/unit/interpreter/queryEvaluation/clustered/output
+/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/tests/unit/interpreter/queryEvaluation/clustered/temp
+1
+0

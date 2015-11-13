@@ -1,0 +1,5 @@
+/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/benchmarking/fullScan/input
+/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/benchmarking/fullScan/output
+/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/benchmarking/fullScan/temp
+0
+1
