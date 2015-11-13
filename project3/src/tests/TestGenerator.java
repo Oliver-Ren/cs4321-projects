@@ -267,9 +267,9 @@ public class TestGenerator {
 	}
 	
 	
-//	public static void main(String[] args) {
+	public static void main(String[] args) {
 //
-//		TestGenerator gen = new TestGenerator("grading_test_cases_large");
+		TestGenerator gen = new TestGenerator("project4");
 //		gen.genBoats(1000, 5000);
 //		gen.genSailors(400, 3000);
 //		gen.genReserves(150, 100);
@@ -279,9 +279,9 @@ public class TestGenerator {
 //		gen.genTable4(500, 200);
 //
 //		gen.genBinaryInput();
-//		gen.genExpected();
-//		gen.convertExpHuman();
-//		gen.convertExpSortedHuman();
-//	}
+		gen.genExpected();
+		gen.convertExpHuman();
+		gen.convertExpSortedHuman();
+	}
 	
 }
