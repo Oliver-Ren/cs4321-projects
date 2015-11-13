@@ -127,12 +127,13 @@ public class PhysicalPlanBuilder {
 		} else {
 			String currTableName = getTableName(lop);
 			System.out.println("============= Building Index Scan operator==============");
+			System.out.pritnln("Table name: " + currTableName);
 			boolean hasIdxAttr = Helpers.hasIdxAttr(currTableName, lop.exp);
 			System.out.println("has index attriburte: " + hasIdxAttr);
 			if (hasIdxAttr) {
 				Integer[] range 
 				= Helpers.bPlusKeys(DBCat.getIndexInfo(currTableName).attr, lop.exp);
-				System.out.println("The range is " + range);
+				System.out.println("The range is " + range[0] + ", " + range[1]);
 			}
 			System.out.println("============= End Building Index Scan operator==============");
 		}
