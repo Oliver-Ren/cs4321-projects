@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.util.List;
 
 import btree.DataEntry;
-import net.sf.jsqlparser.schema.Table;
+import btree.Rid;
+import btree.TreeDeserializer;
+import btree.TreeSerializer;
+import util.Table;
 import util.Tuple;
 
 public class IndexScanOperator extends Operator{
@@ -15,20 +18,27 @@ public class IndexScanOperator extends Operator{
 	Table tab =null;
 	Boolean isClustered = false; 
 	int position; // the index position
-	DataEntry firstDataEntry;
+	Rid CurRid;
+	TreeDeserializer ts;  // tree serializer used for get the dataentry
 	@Override
 	public Tuple getNextTuple()  {
 		// TODO Auto-generated method stub
-		if(this.firstDataEntry == null){
+		if(this.CurRid == null){
 			 return null;
 		}
-		return null;
+		if(isClustered){
+			return tab.nextTuple(CurRid);
+		} else {
+			Rid temp = CurRid;
+			CurRid = ts.getNextRid(); 
+			return tab.nextTuple(temp);
+		}
 	}
 
 	@Override
 	public void reset() {
 		// TODO Auto-generated method stub
-		
+		tab.reset();
 	}
 
 	@Override
@@ -44,8 +54,9 @@ public class IndexScanOperator extends Operator{
 		this.isClustered = isClustered;
 		this.position = position;
 		this.indexFile = indexFile;
-		//call deserilizer to fetch the first data entry from the leafnode 
-		
+		//call deserilizer to fetch the first rid from the leafnode 
+		ts = new TreeDeserializer(indexFile,lowKey,highKey);
+		CurRid = ts.getNextRid();
 		
 		
 	}
