@@ -167,26 +167,28 @@ public class Project4Test {
 		}
 		harness.convertToHumanReadable();
 		harness.convertToSortedHumanReadable();
+		harness.verifySortedReadable();
+		
 		//generate the clustered index scan test result 
-		Harness harness1 = new Harness("clustered");
-		try{
-			harness1.executeAllQueries();
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-		harness1.convertToHumanReadable();
-		harness1.convertToSortedHumanReadable();
-		
-		// generate the unclustered index scan test result
-		Harness harness2 = new Harness("unclustered");
-		try{
-			harness2 = new Harness("clustered");
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		harness2.convertToHumanReadable();
-		harness2.convertToSortedHumanReadable();
-		
+//		Harness harness1 = new Harness("clustered");
+//		try{
+//			harness1.executeAllQueries();
+//		} catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		harness1.convertToHumanReadable();
+//		harness1.convertToSortedHumanReadable();
+//		
+//		// generate the unclustered index scan test result
+//		Harness harness2 = new Harness("unclustered");
+//		try{
+//			harness2 = new Harness("clustered");
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		harness2.convertToHumanReadable();
+//		harness2.convertToSortedHumanReadable();
+//		
 		
 	}
 
