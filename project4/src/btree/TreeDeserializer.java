@@ -8,9 +8,12 @@ import java.io.PrintStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
+import javax.print.attribute.standard.Finishings;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -28,11 +31,19 @@ public class TreeDeserializer {
 	private static final int LEAF_FLAG = 0; // the flag indicating this is leaf
 	private static final int IDX_FLAG = 1;  // the flag indicating this is index.
 	private static final int HEADER_ID = 0; // the the page id of header page.
+	private static final int FIRST_LEAF = 1;// the id of the first leaf page.
 	private FileChannel fc;					// The file channel for reader
 	private ByteBuffer buffer;				// The buffer page.
 	private int rootId;						// the address of the root
 	private int numOfLeaves;				// The number of leaves in the tree
 	private int order;						// The order of the tree.
+	private Integer lowKey;					// The low key of the search range.
+	private Integer highKey;				// The high key of the search range.
+	private LeafNode currLeaf;				// Current leaf node.
+	private int currLeafPageAddr;			// Current 
+	private int dEntryPtr;				    // the pointer for dataEntry;
+	private int	ridPtr;						// The pointer for record id.
+	private boolean finished;				// is finished for get next rid.
 	
 	/**
 	 * Constructs the the deserializer using the given indexFile. 
@@ -62,8 +73,58 @@ public class TreeDeserializer {
 	 * @throws FileNotFoundException 
 	 */
 	public TreeDeserializer(File indexFile, Integer lowKey, Integer highKey) throws FileNotFoundException {
-		this.TreeDeserializer(indexFile);
-		
+		this(indexFile);
+		this.lowKey = lowKey;
+		this.highKey = highKey;
+		dEntryPtr = 0;
+		ridPtr = 0;
+		currLeafPageAddr = FIRST_LEAF;
+		finished = false;
+		moveToStartLeafPage();
+	}
+	
+	// locate to the starting leaf page using the given low key.
+	private void moveToStartLeafPage() {
+		try {
+			if (lowKey == null) {
+				currLeaf = (LeafNode) dsNode(currLeafPageAddr);
+			} else {
+				currLeaf = traverseToStartLeaf();
+				while (currLeaf != null 
+						&& currLeaf.dataEntries.get(dEntryPtr).key < lowKey) {
+					dEntryPtr++;
+					if (dEntryPtr >= currLeaf.dataEntries.size()) {
+						currLeaf = getNextLeafNode();
+						dEntryPtr = 0;
+					}
+				}
+				
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private LeafNode traverseToStartLeaf() throws IOException {
+		// precondition: lowKey is not null
+		if (lowKey == null) {
+			throw new IllegalArgumentException();
+		}
+		fetchPage(rootId);
+		IndexNode root = dsINode();
+		TreeNode curr = root;
+		int pageAddr = FIRST_LEAF;
+		while (curr instanceof IndexNode) {
+			IndexNode currIndexNode = (IndexNode) curr;
+			int pageIdx = Collections.binarySearch(currIndexNode.keys, lowKey + 1);
+			pageIdx = pageIdx >= 0 ? pageIdx : -(pageIdx + 1);
+			pageAddr = currIndexNode.address.get(pageIdx);
+			System.out.println("pageaddr: " + pageAddr);
+			curr = dsNode(pageAddr);
+		}
+		currLeafPageAddr = pageAddr;
+		return (LeafNode) curr;
 	}
 	
 	/**
@@ -71,10 +132,46 @@ public class TreeDeserializer {
 	 * record id to return.
 	 * @return Rid the record id.
 	 * 				null if reached the end of the range.
+	 * @throws IOException 
 	 */
-	public Rid getNextRid() {
-		//TODO
-		throw new NotImplementedException();
+	public Rid getNextRid() throws IOException {
+		if (finished || currLeaf == null) return null;
+		// Need to go to the next data entry.
+		if (ridPtr >= currLeaf.dataEntries.get(dEntryPtr).rids.size()) {
+			dEntryPtr++;
+			ridPtr = 0;
+		}
+		
+		// Need to go to the next leaf page.
+		if (dEntryPtr >= currLeaf.dataEntries.size()) {
+			currLeaf = getNextLeafNode();
+			// at the end of the leaf page.
+			if (currLeaf == null) {
+				finished = true;
+				return null;
+			}
+			dEntryPtr = 0;
+		}
+		
+		// now dEntryPtr is valid and ridPtr is valid.
+		// check if it is within the right bound.
+		if (highKey != null && currLeaf.dataEntries.get(dEntryPtr).key >= highKey) {
+			finished = true;
+			return null;
+		}
+		
+		// good to go.
+		return currLeaf.dataEntries.get(dEntryPtr).rids.get(ridPtr++);
+	}
+	
+	
+	private LeafNode getNextLeafNode() throws IOException {
+		currLeafPageAddr++;
+		if (currLeafPageAddr > 0 && currLeafPageAddr <= numOfLeaves) {
+			return (LeafNode) dsNode(currLeafPageAddr);
+		} else {
+			return null;
+		}
 	}
 	
 	/**

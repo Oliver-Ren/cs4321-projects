@@ -145,18 +145,21 @@ public class BPlusTreeTest {
 	}
 	
 	/**
-	 * Test case for serializer then deserializer.
+	 * Test case for traverse method of the deserializer.
 	 */
 	@Test
-	public void testSerializeAndDeserialize2() {
-		File relation = new File("tests/unit/bplustree/Sailors");
-		File indexFile = new File("tests/unit/deserialize/DSSailors.A");
+	public void testDeserializeTraverse() {
+		File relation = new File("tests/unit/bplustree/Boats");
+		File indexFile = new File("tests/unit/deserialize/Boats.E");
 		File result = new File("tests/unit/deserialize/result");
 		try {
 			PrintStream printer = new PrintStream(result);
-			BPlusTree tree = new BPlusTree(relation, 0, 15, indexFile);
-			TreeDeserializer td = new TreeDeserializer(indexFile);
-			td.dump(printer);
+			BPlusTree tree = new BPlusTree(relation, 1, 10, indexFile);
+			TreeDeserializer td = new TreeDeserializer(indexFile, 9981, 1000);
+			Rid rid;
+			while ((rid = td.getNextRid()) != null) {
+				System.out.println(rid);
+			}
 			printer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
