@@ -83,6 +83,7 @@ public class SQLInterpreter {
 		
 		if (config.shouldEvaluate) {
 			System.out.println("Evaluating query");
+			evaluateQuery();
 		}
 		
 	}
@@ -96,11 +97,14 @@ public class SQLInterpreter {
 	public void execute(String inPath, String outPath, String tempPath, boolean isMute) {
 		DBCat.resetDirs(inPath, outPath, tempPath);
 		DBCat.getInstance();
-
+		evaluateQuery();
+	}
+	
+	private void evaluateQuery() {
 		try {
 			
-			Diff.cleanFolder(outPath);
-			Diff.cleanFolder(tempPath);
+			Diff.cleanFolder(DBCat.outputDir);
+			Diff.cleanFolder(DBCat.tempDir);
 			
 			CCJSqlParser parser 
 				= new CCJSqlParser(new FileReader(DBCat.qryPath));
