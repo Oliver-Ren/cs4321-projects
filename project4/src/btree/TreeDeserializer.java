@@ -61,9 +61,9 @@ public class TreeDeserializer {
 	 * @param highKey the higher bound (exclusive), no limit if set to null.
 	 * @throws FileNotFoundException 
 	 */
-	public TreeDeserializer(File indexFile, Integer lowKey, Integer highKey) {
-		//TODO
-		throw new NotImplementedException();
+	public TreeDeserializer(File indexFile, Integer lowKey, Integer highKey) throws FileNotFoundException {
+		this.TreeDeserializer(indexFile);
+		
 	}
 	
 	/**
