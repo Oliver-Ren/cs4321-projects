@@ -11,7 +11,7 @@ public class SQLInterpreterTest {
 	/**
 	 * Tests if the configuration file is configured.
 	 */
-	@Test
+	//@Test
 	public void testConfig() {
 		SQLInterpreter itpr = new SQLInterpreter();
 		try {
@@ -20,5 +20,16 @@ public class SQLInterpreterTest {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * mingyuan test for test index build and query evaluation
+	 */
+	@Test
+	public void testQuery(){
+		SQLInterpreter itpr = new SQLInterpreter();
+		try {
+			itpr.execute("tests/unit/interpreter/queryEvaluation/interpreter_config_file.txt");
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+	}
 }
