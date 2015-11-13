@@ -12,6 +12,11 @@ import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
+import net.sf.jsqlparser.expression.operators.relational.GreaterThan;
+import net.sf.jsqlparser.expression.operators.relational.GreaterThanEquals;
+import net.sf.jsqlparser.expression.operators.relational.MinorThan;
+import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
+import net.sf.jsqlparser.expression.operators.relational.NotEqualsTo;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.select.AllColumns;
 import net.sf.jsqlparser.statement.select.FromItem;
@@ -235,6 +240,13 @@ public class Helpers {
 					((BinaryExpression) expr).getRightExpression();
 			
 			String str = null;
+//			//handle corner case mingyuan
+//			if(left instanceof Column && right instanceof Column){
+//				return false;
+//			}
+//			if(expr instanceof NotEqualsTo){
+//				return false;
+//			}
 			str = (left instanceof Column) ? left.toString() : 
 				right.toString();
 			if (str.indexOf('.') != -1)
@@ -246,7 +258,7 @@ public class Helpers {
 		return false;
 	}
 	
-	public Integer[] bPlusKeys(String indexAttr, Expression selCond) {
+	public static Integer[] bPlusKeys(String indexAttr, Expression selCond) {
 		if (selCond == null) return null;
 		List<Expression> conds = decompAnds(selCond);
 		
@@ -270,12 +282,40 @@ public class Helpers {
 			}
 			if (attr.indexOf('.') != -1)
 				attr = attr.split("\\.")[1];
-			if (!indexAttr.equals(attr)) continue;
-			
+			if (!indexAttr.equals(attr)) continue;			
 			// TODO
 			// update low key and high key
-		}
-		
+			//update low key
+			if(expr instanceof GreaterThan){ // inclusive low key
+				if(ret[0] == null){
+					ret[0] = val+1;
+				} else{
+					ret[0] = Math.max(ret[0], val+1);
+				}
+							
+			} else if (expr instanceof GreaterThanEquals) {
+				if(ret[0] == null){
+					ret[0] = val;
+				} else{
+					ret[0] = Math.max(ret[0], val);
+				}
+			}else if(expr instanceof MinorThan){
+				if(ret[1] == null){
+					ret[1] = val;
+				} else {
+					ret[1] = Math.min(ret[1],val);
+				}	
+			} else if(expr instanceof MinorThanEquals){ // exclusive high key
+				if(ret[1] == null){
+					ret[1] = val+1;
+				} else {
+					ret[1] = Math.min(ret[1], val+1);
+				}
+			} else if (expr instanceof EqualsTo){
+				ret[0] = val;
+				ret[1] = val;
+			}
+		}		
 		return ret;
 	}
 	
