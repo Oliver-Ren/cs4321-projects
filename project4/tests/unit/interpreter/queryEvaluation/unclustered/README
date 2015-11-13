@@ -1,7 +1,0 @@
-This folder contains a sample input directory and expected indexes. Intended usage is as follows:
-
-1) edit interpreter_config_file.txt to set input, output and temporary sort directories. Input should be set to the provided input subdirectory. 
-
-2) run your code.
-
-3) after execution, the input/db/indexes directory should contain files Sailors.A and Boats.E that match the provided ones. The _humanreadable files in the indexes directory are not files you need to generate, they are deserializations of the two index files to ease your debugging.
