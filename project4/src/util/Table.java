@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
+import btree.Rid;
 import nio.TupleReader;
 
 /**
@@ -17,6 +18,19 @@ public class Table {
 	public List<String> schema = null;
 	
 	private TupleReader tr = null;
+	/**
+	 * return a tuple based on its rid
+	 * @param rid
+	 * @return the satisfied tuple
+	 */
+//	public Tuple nextTuple(Rid rid){
+//		try{
+//			return tr.read(rid);
+//		} catch(IOException e){
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	/**
 	 * Read the next line of the table.

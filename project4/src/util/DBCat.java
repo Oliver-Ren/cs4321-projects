@@ -126,6 +126,8 @@ public class DBCat {
 			String[] join = br.readLine().split(" ");
 			String[] sort = br.readLine().split(" ");
 			
+			idxSelect = (br.readLine().equals("1"));
+			
 			System.out.println("join: " + Arrays.toString(join));
 			System.out.println("sort: " + Arrays.toString(sort));
 			
@@ -257,6 +259,24 @@ public class DBCat {
 		TupleReader btr = getTabReader(tabName);
 		if (btr == null) return null;
 		return new Table(tabName, getSchema(tabName), btr);
+	}
+	
+	public static Table getIndexTable(String tabName, Expression selCond) {
+		String orig = origName(tabName);
+		if (!idxInfo.containsKey(orig))
+			throw new IllegalArgumentException();
+		String attr = idxInfo.get(orig).attr;
+		
+		String path = idxsDir + orig + '.' + attr;
+		// TODO
+		// make tr the reader of the index file at path
+		// determine low key and high key from selCond
+		TupleReader tr = null;
+		return new Table(tabName, getSchema(tabName), tr);
+	}
+	
+	public static IndexInfo getIndexInfo(String tabName) {
+		return idxInfo.get(origName(tabName));
 	}
 	
 	// intentionally make the constructor private, which 
