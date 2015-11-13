@@ -23,14 +23,14 @@ public class Table {
 	 * @param rid
 	 * @return the satisfied tuple
 	 */
-	public Tuple nextTuple(Rid rid){
-		try{
-			return tr.read(rid);
-		} catch(IOException e){
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	public Tuple nextTuple(Rid rid){
+//		try{
+//			return tr.read(rid);
+//		} catch(IOException e){
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	/**
 	 * Read the next line of the table.

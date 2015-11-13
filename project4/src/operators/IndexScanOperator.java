@@ -17,7 +17,6 @@ public class IndexScanOperator extends Operator{
 	File indexFile; // the index file for deserializer to lacate
 	Table tab =null;
 	Boolean isClustered = false; 
-	int position; // the index position
 	Rid CurRid;
 	TreeDeserializer ts;  // tree serializer used for get the dataentry
 	@Override
@@ -47,12 +46,11 @@ public class IndexScanOperator extends Operator{
 		return null;
 	}
 	public IndexScanOperator(Table tab,Integer lowKey, 
-			Integer highKey,Boolean isClustered,int position,File indexFile){
+			Integer highKey,Boolean isClustered,File indexFile){
 		this.lowKey = lowKey;
 		this.highKey = highKey;
 		this.tab = tab;
 		this.isClustered = isClustered;
-		this.position = position;
 		this.indexFile = indexFile;
 		//call deserilizer to fetch the first rid from the leafnode 
 		ts = new TreeDeserializer(indexFile,lowKey,highKey);
