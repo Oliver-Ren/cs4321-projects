@@ -77,7 +77,8 @@ public class SQLInterpreter {
 		
 		if (config.shouldBuildIdx) {
 			System.out.println("Building index");
-			IndexBuilder.BuildIndex();
+			boolean withHumanReadable = true;
+			IndexBuilder.BuildIndex(withHumanReadable);
 		}
 		
 		if (config.shouldEvaluate) {

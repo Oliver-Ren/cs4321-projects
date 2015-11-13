@@ -46,8 +46,17 @@ public class IndexBuilder {
 //		this.indexInfo = indexInfo;
 //	}
 	
-	public static void BuildIndex() {
+	public static void BuildIndex(boolean withReadable) {
 		PhysicalPlanBuilder ppb = new PhysicalPlanBuilder();
+		
+		// create indexes directory if does not exist,
+		// else empty the directory.
+		File idxsDirFile = new File(DBCat.idxsDir);
+		if (!idxsDirFile.exists()) {
+			idxsDirFile.mkdir();
+		} else {
+			Diff.cleanFolder(DBCat.idxsDir);
+		}
 		
 		for (String relt : DBCat.idxInfo.keySet()) {
 			String tabPath = DBCat.dataDir + relt;
@@ -55,14 +64,7 @@ public class IndexBuilder {
 			int attrIdx = DBCat.schemas.get(relt).indexOf(ii.attr);
 			String idxPath = DBCat.idxsDir + relt + '.' + ii.attr;
 			
-			// create indexes directory if does not exist,
-			// else empty the directory.
-			File idxsDirFile = new File(DBCat.idxsDir);
-			if (!idxsDirFile.exists()) {
-				idxsDirFile.mkdir();
-			} else {
-				Diff.cleanFolder(DBCat.idxsDir);
-			}
+			
 			
 			if (ii.clust) {
 				Expression exp = new Column(null, ii.attr);
@@ -84,14 +86,16 @@ public class IndexBuilder {
 			}
 			
 			try {
+				File indexFile = new File(idxPath);
 				BPlusTree blt = new BPlusTree(new File(tabPath), 
-						attrIdx, ii.order, new File(idxPath));
-				File humanreadable = new File(idxPath + "_humanreadable");
-				PrintStream printer = new PrintStream(humanreadable);
-				TreeDeserializer td = new TreeDeserializer(new File(idxPath));
-				td.dump(printer);
-				printer.close();
-				break;
+						attrIdx, ii.order, indexFile);
+				if (withReadable) {
+					File humanreadable = new File(idxPath + "_humanreadable");
+					PrintStream printer = new PrintStream(humanreadable);
+					TreeDeserializer td = new TreeDeserializer(indexFile);
+					td.dump(printer);
+					printer.close();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
