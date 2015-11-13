@@ -127,7 +127,7 @@ public class PhysicalPlanBuilder {
 		} else {
 			String currTableName = getTableName(lop);
 			System.out.println("============= Building Index Scan operator==============");
-			System.out.pritnln("Table name: " + currTableName);
+			System.out.println("Table name: " + currTableName);
 			boolean hasIdxAttr = Helpers.hasIdxAttr(currTableName, lop.exp);
 			System.out.println("has index attriburte: " + hasIdxAttr);
 			if (hasIdxAttr) {
