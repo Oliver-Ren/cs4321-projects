@@ -15,7 +15,6 @@ public class IndexScanOperator extends ScanOperator{
 	Integer lowKey;
 	Integer highKey;
 	File indexFile; // the index file for deserializer to lacate
-	Table tab =null;
 	Boolean isClustered = false; 
 	Rid CurRid;
 	TreeDeserializer ts;  // tree serializer used for get the dataentry
@@ -26,7 +25,7 @@ public class IndexScanOperator extends ScanOperator{
 			 return null;
 		}
 		if(isClustered){
-			return tab.nextTuple(CurRid);
+			return super.tab.nextTuple(CurRid);
 		} else {
 			Rid temp = CurRid;
 			CurRid = ts.getNextRid(); 
