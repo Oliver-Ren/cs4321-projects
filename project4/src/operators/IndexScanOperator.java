@@ -7,7 +7,6 @@ import java.util.List;
 import btree.DataEntry;
 import btree.Rid;
 import btree.TreeDeserializer;
-import btree.TreeSerializer;
 import util.Table;
 import util.Tuple;
 
