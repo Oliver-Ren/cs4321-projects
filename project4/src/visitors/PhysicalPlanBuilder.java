@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.schema.Table;
 import operators.BlockJoinOperator;
 import operators.DuplicateEliminationOperator;
 import operators.ExternSortOperator;
@@ -120,12 +121,29 @@ public class PhysicalPlanBuilder {
 	
 	public void visit(LogicSelectOp lop) {
 		getChild(lop);
-
+		
 		if (!DBCat.idxSelect) {
 			phyOp = new SelectOperator((ScanOperator) phyOp, lop.exp);
 		} else {
-			throw new RuntimeException("Currently not able to use index for evaluation");
+			String currTableName = getTableName(lop);
+			System.out.println("============= Building Index Scan operator==============");
+			boolean hasIdxAttr = Helpers.hasIdxAttr(currTableName, lop.exp);
+			System.out.println("has index attriburte: " + hasIdxAttr);
+			if (hasIdxAttr) {
+				Integer[] range 
+				= Helpers.bPlusKeys(DBCat.getIndexInfo(currTableName).attr, lop.exp);
+				System.out.println("The range is " + range);
+			}
+			System.out.println("============= End Building Index Scan operator==============");
 		}
+	}
+	
+	// Helper method for getting table from the child of a select operator.
+	private String getTableName(LogicUnaryOp uop) {
+		if (uop.child instanceof LogicScanOp) {
+			return ((LogicScanOp) uop.child).tab.name;
+		}
+		return getTableName((LogicUnaryOp) uop.child);
 	}
 	
 	public void visit(LogicSortOp lop) {
