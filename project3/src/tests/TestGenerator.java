@@ -269,7 +269,7 @@ public class TestGenerator {
 	
 	public static void main(String[] args) {
 //
-		TestGenerator gen = new TestGenerator("project4");
+		TestGenerator gen = new TestGenerator("largeData");
 //		gen.genBoats(1000, 5000);
 //		gen.genSailors(400, 3000);
 //		gen.genReserves(150, 100);
