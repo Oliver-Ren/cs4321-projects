@@ -223,6 +223,29 @@ public class Helpers {
 		return genAnds(eqs);
 	}
 	
+	public static boolean hasIdxAttr(String tab, Expression selCond) {
+		IndexInfo ii = DBCat.getIndexInfo(tab);
+		if (selCond == null || ii == null) return false;
+		List<Expression> conds = decompAnds(selCond);
+		
+		for (Expression expr : conds) {
+			Expression left = 
+					((BinaryExpression) expr).getLeftExpression();
+			Expression right = 
+					((BinaryExpression) expr).getRightExpression();
+			
+			String str = null;
+			str = (left instanceof Column) ? left.toString() : 
+				right.toString();
+			if (str.indexOf('.') != -1)
+				str = str.split("\\.")[1];
+			
+			if (ii.attr.equals(str)) return true;
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * Check if the ordered elements are not selected.
 	 * @param sels the selected items

@@ -85,17 +85,25 @@ public class SelState {
 		return fnJoinCond.get(froms.get(idx));
 	}
 	
+	private LogicScanOp getScanOp(int idx) {
+		if (DBCat.idxSelect && Helpers.hasIdxAttr(froms.get(idx), 
+				getSelCond(idx)))
+			return new LogicScanOp(DBCat.getIndexTable
+					(froms.get(idx), getSelCond(idx)));
+		return new LogicScanOp(getTable(idx));
+	}
+	
 	/**
 	 * Build the operator tree according to conditions in fnSelCond 
 	 * and fnJoinCond.
 	 */	
 	private void buildOpTree() {
-		LogicOperator curRoot = new LogicScanOp(getTable(0));
+		LogicOperator curRoot = getScanOp(0);
 		if (getSelCond(0) != null)
 			curRoot = new LogicSelectOp(curRoot, getSelCond(0));
 		
 		for (int i = 1; i < froms.size(); i++) {
-			LogicOperator newOp = new LogicScanOp(getTable(i));
+			LogicOperator newOp = getScanOp(i);
 			if (getSelCond(i) != null)
 				newOp = new LogicSelectOp(newOp, getSelCond(i));
 			curRoot = new LogicJoinOp(curRoot, newOp, getJoinCond(i));
