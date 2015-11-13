@@ -45,6 +45,20 @@ public class Table {
 		
 		return null;
 	}
+	/**
+	 * take a rid to get a tuple
+	 * @param rid
+	 * @return tuple
+	 * @author Mingyuanh 
+	 */
+	public Tuple nextTuple(Rid rid){
+		try{
+			return tr.read(rid);
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	/**
 	 * Close the current buffered reader 
