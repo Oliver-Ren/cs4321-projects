@@ -120,7 +120,12 @@ public class PhysicalPlanBuilder {
 	
 	public void visit(LogicSelectOp lop) {
 		getChild(lop);
-		phyOp = new SelectOperator((ScanOperator) phyOp, lop.exp);
+
+		if (!DBCat.idxSelect) {
+			phyOp = new SelectOperator((ScanOperator) phyOp, lop.exp);
+		} else {
+			throw new RuntimeException("Currently not able to use index for evaluation");
+		}
 	}
 	
 	public void visit(LogicSortOp lop) {
