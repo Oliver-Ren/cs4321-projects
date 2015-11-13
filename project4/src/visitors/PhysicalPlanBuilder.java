@@ -120,23 +120,34 @@ public class PhysicalPlanBuilder {
 	}
 	
 	public void visit(LogicSelectOp lop) {
-		getChild(lop);
-		
-		if (!DBCat.idxSelect) {
-			phyOp = new SelectOperator((ScanOperator) phyOp, lop.exp);
-		} else {
-			String currTableName = getTableName(lop);
-			System.out.println("============= Building Index Scan operator==============");
-			System.out.println("Table name: " + currTableName);
-			boolean hasIdxAttr = Helpers.hasIdxAttr(currTableName, lop.exp);
-			System.out.println("has index attriburte: " + hasIdxAttr);
-			if (hasIdxAttr) {
-				Integer[] range 
-				= Helpers.bPlusKeys(DBCat.getIndexInfo(currTableName).attr, lop.exp);
-				System.out.println("The range is " + range[0] + ", " + range[1]);
-			}
-			System.out.println("============= End Building Index Scan operator==============");
-		}
+		// precondition: the child of a select operator must be a scan operator.
+		LogicScanOp child = (LogicScanOp) lop.child;
+		ScanOperator scanOp = new ScanOperator(child.tab);
+		phyOp = new SelectOperator(scanOp, lop.exp);
+//		if (DBCat.idxSelect) {
+//			String currTableName = getTableName(lop);
+//			
+//			boolean hasIdxAttr = Helpers.hasIdxAttr(currTableName, lop.exp);
+//			System.out.println("Table name: " + currTableName);
+//			System.out.println("has index attriburte: " + hasIdxAttr);
+//			if (hasIdxAttr) {
+//				System.out.println("============= Building Index Scan operator==============");
+//				
+//				Integer[] range 
+//				= Helpers.bPlusKeys(DBCat.getIndexInfo(currTableName).attr, lop.exp);
+//				System.out.println("The range is " + range[0] + ", " + range[1]);
+//				System.out.println("============= End Building Index Scan operator==============");
+//				phyOp = new 
+//			}
+//		}
+//		getScanChild(lop, )
+//		
+//		getChild(lop);
+//		
+//		
+//		
+//		System.out.println("============= Building Normal Scan operator==============");
+//		phyOp = new SelectOperator(phyOp, lop.exp);
 	}
 	
 	// Helper method for getting table from the child of a select operator.
