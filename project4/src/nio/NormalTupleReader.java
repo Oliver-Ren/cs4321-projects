@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
+import btree.Rid;
 import util.Tuple;
 
 /**
@@ -86,6 +87,7 @@ public final class NormalTupleReader implements TupleReader {
 	public void reset(long index) throws IOException {
 		throw new UnsupportedOperationException("not supported in normal reader");
 	}
+	
 
 	/**
 	 * Resets the file reader to the start of the file.
@@ -108,6 +110,11 @@ public final class NormalTupleReader implements TupleReader {
 
 	@Override
 	public Long getIndex() throws IOException {
+		throw new UnsupportedOperationException("not supported in normal reader");
+	}
+
+	@Override
+	public Tuple read(Rid rid) throws IOException {
 		throw new UnsupportedOperationException("not supported in normal reader");
 	}
 

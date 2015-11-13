@@ -138,6 +138,7 @@ public class BPlusTreeTest {
 			BPlusTree tree = new BPlusTree(relation, 0, 15, indexFile);
 			TreeDeserializer td = new TreeDeserializer(indexFile);
 			td.dump(printer);
+			printer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

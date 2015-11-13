@@ -199,43 +199,6 @@ public class DBCat {
 			e.printStackTrace();
 			return;
 		}
-		
-		if (!buildIdxs) return;
-		
-		PhysicalPlanBuilder ppb = new PhysicalPlanBuilder();
-		
-		for (String relt : idxInfo.keySet()) {
-			String tabPath = dataDir + relt;
-			IndexInfo ii = idxInfo.get(relt);
-			int attrIdx = schemas.get(relt).indexOf(ii.attr);
-			String idxPath = idxsDir + relt + '.' + ii.attr;
-			
-			if (ii.clust) {
-				Expression exp = new Column(null, ii.attr);
-				OrderByElement obe = new OrderByElement();
-				obe.setExpression(exp);
-				LogicOperator lop = new LogicScanOp(getTable(relt));
-				lop = new LogicSortOp(lop, Arrays.asList(obe));
-				lop.accept(ppb);
-				Operator op = ppb.getPhyOp();
-				
-				try {
-					BinaryTupleWriter btw = 
-							new BinaryTupleWriter(tabPath);
-					op.dump(btw);
-					btw.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			try {
-				BPlusTree blt = new BPlusTree(new File(tabPath), 
-						attrIdx, ii.order, new File(idxPath));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	/**

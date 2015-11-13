@@ -15,6 +15,7 @@ import nio.NormalTupleWriter;
 import nio.TupleWriter;
 import tests.Diff;
 import util.DBCat;
+import util.IndexBuilder;
 import util.SelState;
 import util.SortTuple;
 
@@ -76,7 +77,7 @@ public class SQLInterpreter {
 		
 		if (config.shouldBuildIdx) {
 			System.out.println("Building index");
-			
+			IndexBuilder.BuildIndex();
 		}
 		
 		if (config.shouldEvaluate) {

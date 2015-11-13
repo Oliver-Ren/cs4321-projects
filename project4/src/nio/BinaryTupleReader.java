@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import btree.Rid;
 import util.DBCat;
 import util.Tuple;
 
@@ -112,6 +113,31 @@ public final class BinaryTupleReader implements TupleReader {
 		
 		return null;	// if reached the end of the file, return null
 	}
+	
+	@Override
+	public Tuple read(Rid rid) throws IOException {
+		int pageId = rid.getPageId();
+		int tupleId = rid.getTupleid();
+		// precondition: the index should not exceed the number of tuples buffered
+		if (pageId < 0 || tupleId < 0) {
+			throw new IndexOutOfBoundsException("Index out of bound");
+		}
+		eraseBuffer();
+		needNewPage = true;
+		endOfFile = false;
+		// fetch the page 
+		try {
+			fetchPage(pageId);
+		} catch (EOFException e) {
+			e.printStackTrace();
+		}
+		int newPos = (tupleId * numOfAttr + 2) * INT_LEN;
+		buffer.position(newPos);
+		return read();
+	}
+	
+	
+	
 	/**
 	 * return a list of tuples contained in the current page of a file
 	 * @return
@@ -219,6 +245,14 @@ public final class BinaryTupleReader implements TupleReader {
 		fc.close();
 	}
 	
+	
+	// fetch page at specified page id.
+	private void fetchPage(int pageId) throws IOException {
+		long position = B_SIZE * (long) pageId;
+		fc.position(position);
+		fetchPage();
+	}
+	
 	// Helper method for reading a new page into the buffer
 	private void fetchPage() throws IOException {
 		endOfFile = (fc.read(buffer) < 0);
@@ -232,10 +266,6 @@ public final class BinaryTupleReader implements TupleReader {
 		offsets.add(offsets.get(offsets.size() - 1) + numOfTuples);
 		// set the limit according to the number of tuples and
 		// attributes actually in the page.
-		int newLim = (numOfAttr * numOfTuples + 2) * INT_LEN;
-		if (newLim >= 4096) {
-			//System.out.println(this.file.getAbsolutePath() + " the new limit is" + newLim);
-		}
 		buffer.limit((numOfAttr * numOfTuples + 2) * INT_LEN);
 	}
 	
