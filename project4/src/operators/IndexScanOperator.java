@@ -27,7 +27,12 @@ public class IndexScanOperator extends ScanOperator{
 			return super.tab.nextTuple(CurRid);
 		} else {
 			Rid temp = CurRid;
-			CurRid = ts.getNextRid(); 
+			try {
+				CurRid = ts.getNextRid();
+			} catch(IOException e){
+				e.printStackTrace();
+			}
+			 
 			return super.tab.nextTuple(temp);
 		}
 	}
@@ -51,8 +56,13 @@ public class IndexScanOperator extends ScanOperator{
 		this.isClustered = isClustered;
 		this.indexFile = indexFile;
 		//call deserilizer to fetch the first rid from the leafnode 
-		ts = new TreeDeserializer(indexFile,lowKey,highKey);
-		CurRid = ts.getNextRid();
+		try{
+			ts = new TreeDeserializer(indexFile,lowKey,highKey);
+			CurRid = ts.getNextRid();
+		} catch(IOException e ){
+			e.printStackTrace();
+		}
+		
 		
 		
 	}

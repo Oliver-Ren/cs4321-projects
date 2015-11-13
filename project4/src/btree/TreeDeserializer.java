@@ -15,7 +15,6 @@ import java.util.Queue;
 
 import javax.print.attribute.standard.Finishings;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * The <tt>TreeDeserializer</tt> class represents the component
