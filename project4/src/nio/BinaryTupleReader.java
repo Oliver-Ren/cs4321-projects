@@ -116,6 +116,8 @@ public final class BinaryTupleReader implements TupleReader {
 	
 	@Override
 	public Tuple read(Rid rid) throws IOException {
+		// precondition: rid is not null
+		if (rid == null) return null;
 		int pageId = rid.getPageId();
 		int tupleId = rid.getTupleid();
 		// precondition: the index should not exceed the number of tuples buffered
@@ -312,7 +314,7 @@ public final class BinaryTupleReader implements TupleReader {
 	@Override
 	public Long getIndex() throws IOException {
 		return currTupleIdx;
-		}
+	}
 	
 	
 

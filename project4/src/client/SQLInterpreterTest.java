@@ -26,7 +26,7 @@ public class SQLInterpreterTest {
 	 *test for test index build and query evaluation
 	 *@author mingyuan
 	 */
-	@Test
+	//@Test
 	public void testQuery(){
 		System.out.println("Build index on unclustered file and evaluate queries");
 		SQLInterpreter itpr = new SQLInterpreter();
