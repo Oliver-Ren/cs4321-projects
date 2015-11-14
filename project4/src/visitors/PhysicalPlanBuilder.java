@@ -1,5 +1,6 @@
 package visitors;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import net.sf.jsqlparser.schema.Table;
 import operators.BlockJoinOperator;
 import operators.DuplicateEliminationOperator;
 import operators.ExternSortOperator;
+import operators.IndexScanOperator;
 import operators.Operator;
 import operators.ProjectOperator;
 import operators.ScanOperator;
@@ -27,6 +29,7 @@ import util.DBCat;
 import util.Helpers;
 import util.DBCat.JoinMethod;
 import util.DBCat.SortMethod;
+import util.IndexInfo;
 
 public class PhysicalPlanBuilder {
 
@@ -122,32 +125,31 @@ public class PhysicalPlanBuilder {
 	public void visit(LogicSelectOp lop) {
 		// precondition: the child of a select operator must be a scan operator.
 		LogicScanOp child = (LogicScanOp) lop.child;
-		ScanOperator scanOp = new ScanOperator(child.tab);
+		ScanOperator scanOp = null;
+		if (DBCat.idxSelect) {
+			String currTableName = getTableName(lop);
+			IndexInfo idxinfo = DBCat.getIndexInfo(currTableName);
+			boolean hasIdxAttr = Helpers.hasIdxAttr(currTableName, lop.exp);
+			System.out.println("Table name: " + currTableName);
+			System.out.println("has index attriburte: " + hasIdxAttr);
+			if (hasIdxAttr) {
+				System.out.println("============= Building Index Scan operator==============");
+				
+				Integer[] range 
+				= Helpers.bPlusKeys(idxinfo.attr, lop.exp);
+				System.out.println("The range is " + range[0] + ", " + range[1]);
+				System.out.println("============= End Building Index Scan operator==============");
+				String idxPath = DBCat.idxsDir + idxinfo.relt + '.' + idxinfo.attr;
+				File idxFile = new File(idxPath);
+				scanOp = new IndexScanOperator(child.tab, range[0], range[1],
+						idxinfo.clust, idxFile);
+			}
+		} 
+		
+		// if not assigned with index scan.
+		if (scanOp == null) scanOp = new ScanOperator(child.tab);
+		
 		phyOp = new SelectOperator(scanOp, lop.exp);
-//		if (DBCat.idxSelect) {
-//			String currTableName = getTableName(lop);
-//			
-//			boolean hasIdxAttr = Helpers.hasIdxAttr(currTableName, lop.exp);
-//			System.out.println("Table name: " + currTableName);
-//			System.out.println("has index attriburte: " + hasIdxAttr);
-//			if (hasIdxAttr) {
-//				System.out.println("============= Building Index Scan operator==============");
-//				
-//				Integer[] range 
-//				= Helpers.bPlusKeys(DBCat.getIndexInfo(currTableName).attr, lop.exp);
-//				System.out.println("The range is " + range[0] + ", " + range[1]);
-//				System.out.println("============= End Building Index Scan operator==============");
-//				phyOp = new 
-//			}
-//		}
-//		getScanChild(lop, )
-//		
-//		getChild(lop);
-//		
-//		
-//		
-//		System.out.println("============= Building Normal Scan operator==============");
-//		phyOp = new SelectOperator(phyOp, lop.exp);
 	}
 	
 	// Helper method for getting table from the child of a select operator.
