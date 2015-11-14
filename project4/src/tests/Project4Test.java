@@ -30,6 +30,7 @@ public class Project4Test {
 			private String outSortedHumanPath;
 			private String resultPath;
 			private String tempPath;
+			private String configPath;
 			
 			private Harness(String part) {
 				this.testPart = "benchmarking" + File.separator + part;
@@ -41,11 +42,17 @@ public class Project4Test {
 				outHumanPath = testPart + File.separator + "output_humanreadable";
 				expSortedHumanPath = testPart + File.separator + "exp_sorted_human";
 				outSortedHumanPath = testPart + File.separator + "out_sorted_human";
+				configPath = testPart + File.separator + "interpreter_config_file.txt";
 			}
 			
 			private void executeAllQueries() {
 				SQLInterpreter itpr = new SQLInterpreter();
-				itpr.execute(inPath, outPath, tempPath, false);
+				//itpr.execute(inPath, outPath, tempPath, false);
+				try {
+					itpr.execute(configPath);
+				} catch (Exception e){
+					e.printStackTrace();
+				}
 			}
 			
 			private void convertToHumanReadable() {
@@ -156,18 +163,18 @@ public class Project4Test {
 			
 		}
 	
-	//@Test
+	@Test
 	public void test() {
 		// generate the full scan test result 
-		Harness  harness = new Harness("fullScan");
-		try{
-			harness.executeAllQueries();
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-		harness.convertToHumanReadable();
-		harness.convertToSortedHumanReadable();
-		harness.verifySortedReadable();
+//		Harness  harness = new Harness("fullScan");
+//		try{
+//			harness.executeAllQueries();
+//		} catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		harness.convertToHumanReadable();
+//		harness.convertToSortedHumanReadable();
+//		harness.verifySortedReadable();
 		
 		//generate the clustered index scan test result 
 		Harness harness1 = new Harness("clustered");
@@ -208,7 +215,7 @@ public class Project4Test {
 		h.verifySortedReadable();
 		
 	}
-	@Test
+	//@Test
 	public void largeData1Test(){
 		//TestGenerator gen = new TestGenerator("largeData1");
 
@@ -225,7 +232,8 @@ public class Project4Test {
 		h.verifySortedReadable();
 		
 	}
-	@Test
+    //@Test 
+	//use p4's generator 
 	public void largeData2Test(){
 		TestGenerator gen = new TestGenerator("largeData2");
 		gen.genBoats(5000, 200);

@@ -23,8 +23,10 @@ public class IndexScanOperator extends ScanOperator{
 		if(this.CurRid == null){
 			 return null;
 		}
-		if(isClustered){
-			return super.tab.nextTuple(CurRid);
+		if(isClustered) {
+			Tuple curr = super.tab.nextTuple();
+			if (curr != null && curr.cols[pos] < highKey) return curr;
+			return null;
 		} else {
 			Rid temp = CurRid;
 			try {
