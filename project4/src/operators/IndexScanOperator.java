@@ -49,7 +49,7 @@ public class IndexScanOperator extends ScanOperator{
 	@Override
 	public List<String> schema() {
 		// TODO Auto-generated method stub
-		return null;
+		return schema;
 	}
 	public IndexScanOperator(Table tab, int attrIdx, Integer lowKey, 
 			Integer highKey,Boolean isClustered,File indexFile){

@@ -1,5 +1,5 @@
 /Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/benchmarking/largeData1/input
 /Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/benchmarking/largeData1/output
 /Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/benchmarking/largeData1/temp
-0
+1
 1

@@ -209,7 +209,7 @@ public class DBCat {
 	 * @return the file path
 	 */
 	public static String tabPath(String tabName) {
-		return dataDir + tabName + ".csv";
+		return dataDir + tabName;
 	}
 	
 	/**
@@ -270,7 +270,14 @@ public class DBCat {
 		String path = idxsDir + orig + '.' + attr;
 		// TODO
 		// make tr the reader of the index file at path
+		String tablePath = DBCat.tabPath(tabName);
 		TupleReader tr = null;
+		try {
+			tr = new BinaryTupleReader(tablePath);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return new Table(tabName, getSchema(tabName), tr);
 	}
 	

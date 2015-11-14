@@ -163,7 +163,7 @@ public class Project4Test {
 			
 		}
 	
-	@Test
+	//@Test
 	public void test() {
 		// generate the full scan test result 
 //		Harness  harness = new Harness("fullScan");
@@ -177,26 +177,28 @@ public class Project4Test {
 //		harness.verifySortedReadable();
 		
 		//generate the clustered index scan test result 
-		Harness harness1 = new Harness("clustered");
-		try{
-			harness1.executeAllQueries();
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-		harness1.convertToHumanReadable();
-		harness1.convertToSortedHumanReadable();
-		
-		// generate the unclustered index scan test result
-//		Harness harness2 = new Harness("unclustered");
+//		Harness harness1 = new Harness("clustered");
 //		try{
-//			harness2 = new Harness("clustered");
-//		}catch(Exception e){
+//			harness1.executeAllQueries();
+//		} catch(Exception e){
 //			e.printStackTrace();
 //		}
-//		harness2.convertToHumanReadable();
-//		harness2.convertToSortedHumanReadable();
-//		
-//		
+//		harness1.convertToHumanReadable();
+//		harness1.convertToSortedHumanReadable();
+		
+		// generate the unclustered index scan test result
+		Harness harness2 = new Harness("unclustered");
+		try{
+			harness2.executeAllQueries();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		harness2.convertToHumanReadable();
+		harness2.convertToSortedHumanReadable();
+		harness2.verifySortedReadable();
+		
+		
 	}
 	//@Test 
 	public void largeDataTest(){
@@ -215,7 +217,7 @@ public class Project4Test {
 		h.verifySortedReadable();
 		
 	}
-	//@Test
+	@Test
 	public void largeData1Test(){
 		//TestGenerator gen = new TestGenerator("largeData1");
 
