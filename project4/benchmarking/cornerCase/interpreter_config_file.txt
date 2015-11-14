@@ -1,0 +1,5 @@
+/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/benchmarking/cornerCase/input
+/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/benchmarking/cornerCase/output
+/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/benchmarking/cornerCase/temp
+1
+1

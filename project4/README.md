@@ -44,8 +44,10 @@ We provide a BPlusTree class, and its constructor is able to build a serialized 
 It also provides tree index deserialization functionality when user need to use index scan operator during the execution. This would shorten the tuple searching time.  
 
 ## Index Scan Operator
+We implemented an index scan operator for index selection using B+ tree index. It evaluates expressions contains the index attribute, and would call deserilizer to fetch the first satified data entry from the leaf node of the B+ tree. After that, it would fetch tuples linearly if the file is clustered, other wise, it will continously fetch next satisfied data entry from the deserializer. 
 
 ## Selection Logic in Physcial Plan Builder 
+
 
 ## Testing
 

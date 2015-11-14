@@ -187,16 +187,16 @@ public class Project4Test {
 //		harness1.convertToSortedHumanReadable();
 		
 		// generate the unclustered index scan test result
-		Harness harness2 = new Harness("unclustered");
-		try{
-			harness2.executeAllQueries();
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		harness2.convertToHumanReadable();
-		harness2.convertToSortedHumanReadable();
-		harness2.verifySortedReadable();
+//		Harness harness2 = new Harness("unclustered");
+//		try{
+//			harness2.executeAllQueries();
+//			
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		harness2.convertToHumanReadable();
+//		harness2.convertToSortedHumanReadable();
+//		harness2.verifySortedReadable();
 		
 		
 	}
@@ -217,7 +217,7 @@ public class Project4Test {
 		h.verifySortedReadable();
 		
 	}
-	@Test
+	//@Test
 	public void largeData1Test(){
 		//TestGenerator gen = new TestGenerator("largeData1");
 
@@ -234,20 +234,43 @@ public class Project4Test {
 		h.verifySortedReadable();
 		
 	}
-    //@Test 
+   // @Test 
 	//use p4's generator 
 	public void largeData2Test(){
 		TestGenerator gen = new TestGenerator("largeData2");
-		gen.genBoats(5000, 200);
-		gen.genSailors(5000, 200);
-		gen.genReserves(5000, 200);
-		gen.genBinaryInput();
-		gen.genExpected();
-		gen.convertExpHuman();
-		gen.convertExpSortedHuman();
+//		gen.genBoats(10000, 1000);
+//		gen.genSailors(10000, 1000);
+//		gen.genReserves(10000, 1000);
+//		gen.genBinaryInput();
+//		gen.genExpected();
+//		gen.convertExpHuman();
+//		gen.convertExpSortedHuman();
 		// check full scan
 		System.out.println("Start execution");
 		Harness h = new Harness("largeData2");
+		try{
+			h.executeAllQueries();
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		h.convertToHumanReadable();
+		h.convertToSortedHumanReadable();
+		h.verifySortedReadable();
+	}
+    @Test 
+	//some corner cases
+	public void cornerCase(){
+		TestGenerator gen = new TestGenerator("cornerCase");
+//		gen.genBoats(10000, 1000);
+//		gen.genSailors(10000, 1000);
+//		gen.genReserves(10000, 1000);
+//		gen.genBinaryInput();
+		//gen.genExpected();
+		//gen.convertExpHuman();
+		//gen.convertExpSortedHuman();
+		// check full scan
+		System.out.println("Start execution");
+		Harness h = new Harness("cornerCase");
 		try{
 			h.executeAllQueries();
 		} catch(Exception e){

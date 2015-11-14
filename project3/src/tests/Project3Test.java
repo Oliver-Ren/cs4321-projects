@@ -195,7 +195,7 @@ public class Project3Test {
 	 * Test case for block nested loop join and in memory sort
 	 * with the given grading test cases
 	 */
-	@Test
+	//@Test
 	public void test_BNLJ_MemSort_Grading() {
 		Harness harness = new Harness("grading_test_cases");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
@@ -536,6 +536,36 @@ public class Project3Test {
 		}
 		assertEquals(true, finished);
 	}
-	
+	/**
+	 * for project 4
+	 */
+	@Test
+	public void testProject4() {
+		Harness harness = new Harness("largeData2");
+		//ConfigGen configGen = new ConfigGen(harness.inPath);
+		boolean finished = false;
+		try {
+			TestGenerator gen = new TestGenerator("largeData2");
+			gen.genBoats(10000, 200);
+			gen.genSailors(10000, 200);
+			gen.genReserves(10000, 200);
+			gen.genBinaryInput();
+			gen.genExpected();
+			gen.convertExpHuman();
+			gen.convertExpSortedHuman();
+			harness.clearOutputFolder();
+			harness.clearTempFolder();
+			//harness.genExpSortedHumanReadable();
+			harness.executeAllQueries();
+			harness.convertToHumanReadable();
+			harness.convertToSortedHumanReadable();
+			harness.verifyHumanReadable();
+			finished = true;
+		} catch (Exception e) {
+			finished = false;
+			e.printStackTrace();
+		}
+		assertEquals(true, finished);
+	}
 
 }

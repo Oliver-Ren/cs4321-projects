@@ -26,7 +26,9 @@ public class IndexScanOperator extends ScanOperator{
 		}
 		if(isClustered) {
 			Tuple curr = super.tab.nextTuple();
-			if (curr != null && curr.cols[attrIdx] < highKey) return curr;
+			if (curr != null
+					&& (highKey == null 
+					|| curr.cols[attrIdx] < highKey)) return curr;
 			return null;
 		} else {
 			Rid temp = CurRid;
