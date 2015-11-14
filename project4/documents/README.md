@@ -46,7 +46,17 @@ It also provides tree index deserialization functionality when user need to use 
 ## Index Scan Operator
 We implemented an index scan operator for index selection using B+ tree index. It evaluates expressions contains the index attribute, and would call deserilizer to fetch the first satified data entry from the leaf node of the B+ tree. After that, it would fetch tuples linearly if the file is clustered, other wise, it will continously fetch next satisfied data entry from the deserializer. 
 
-## Selection Logic in Physcial Plan Builder 
+## Selection Logic 
+
+In our previous design, we gave our logical selection operator a important constrain that the child of a logical selection operator must be a scan operator. Therefore, when we use the visitor pattern to build our physical plan, we only need to traverse down to the selection operator at most. And when the visitor traverse to the selection operator, the logic could decide whther the child of the selection operator should be full scan operator or index scan operator.
+
+As we have stored the information from configuration file into the catalog. Firstly, if the database catalog shows that index query is on, we should check for availability of the index on this query.
+
+We have a method called _hasIdxAttr_ which checks if the index applies to the selection condition. That is, if the selection condition for the this table contians _greater than_, _greater than equal to_, _equals_, _less than_, _less than equal to_ on the indexed attraibute, then we are good to build a _index scan operator_ as the child. Then we calculate the lowKey and highKey depend on all the selection conditiions and then build the operator.
+
+If the _hasIdxAttr_ returns false, we should build the normal full scan operator. 
+
+Finally we return to the uppper level.
 
 
 ## Testing
