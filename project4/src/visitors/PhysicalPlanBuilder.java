@@ -141,7 +141,8 @@ public class PhysicalPlanBuilder {
 				System.out.println("============= End Building Index Scan operator==============");
 				String idxPath = DBCat.idxsDir + idxinfo.relt + '.' + idxinfo.attr;
 				File idxFile = new File(idxPath);
-				scanOp = new IndexScanOperator(child.tab, range[0], range[1],
+				int attrIdx = DBCat.schemas.get(idxinfo.relt).indexOf(idxinfo.attr);
+				scanOp = new IndexScanOperator(child.tab, attrIdx, range[0], range[1],
 						idxinfo.clust, idxFile);
 			}
 		} 

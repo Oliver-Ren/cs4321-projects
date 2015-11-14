@@ -13,6 +13,7 @@ import util.Tuple;
 public class IndexScanOperator extends ScanOperator{
 	Integer lowKey;
 	Integer highKey;
+	int attrIdx;	// The index of the attribute column.
 	File indexFile; // the index file for deserializer to lacate
 	Boolean isClustered = false; 
 	Rid CurRid;
@@ -25,7 +26,7 @@ public class IndexScanOperator extends ScanOperator{
 		}
 		if(isClustered) {
 			Tuple curr = super.tab.nextTuple();
-			if (curr != null && curr.cols[pos] < highKey) return curr;
+			if (curr != null && curr.cols[attrIdx] < highKey) return curr;
 			return null;
 		} else {
 			Rid temp = CurRid;
@@ -50,9 +51,10 @@ public class IndexScanOperator extends ScanOperator{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public IndexScanOperator(Table tab,Integer lowKey, 
+	public IndexScanOperator(Table tab, int attrIdx, Integer lowKey, 
 			Integer highKey,Boolean isClustered,File indexFile){
 		super(tab);
+		this.attrIdx = attrIdx;
 		this.lowKey = lowKey;
 		this.highKey = highKey;
 		this.isClustered = isClustered;
