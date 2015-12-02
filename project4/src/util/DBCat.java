@@ -121,6 +121,8 @@ public class DBCat {
 		BufferedReader br;
 		
 		try {
+			String curr = new File(".").getCanonicalPath();
+			System.out.println(curr);
 			br = new BufferedReader(new FileReader(configPath));
 			String[] join = br.readLine().split(" ");
 			String[] sort = br.readLine().split(" ");
@@ -270,7 +272,7 @@ public class DBCat {
 		String path = idxsDir + orig + '.' + attr;
 		// TODO
 		// make tr the reader of the index file at path
-		String tablePath = DBCat.tabPath(tabName);
+		String tablePath = DBCat.tabPath(orig);
 		TupleReader tr = null;
 		try {
 			tr = new BinaryTupleReader(tablePath);

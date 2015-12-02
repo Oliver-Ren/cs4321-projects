@@ -33,12 +33,12 @@ public class Project4Test {
 			private String configPath;
 			
 			private Harness(String part) {
-				this.testPart = "benchmarking" + File.separator + part;
+				this.testPart = "." + File.separator + part;
 				inPath = testPart + File.separator + "input";
 				outPath = testPart + File.separator + "output";
 				//expectedPath = testPart + File.separator + "expected";
 				tempPath = testPart + File.separator + "temp";
-				expectedHumanPath = testPart + File.separator + "expected_humanreadable";
+				expectedHumanPath = testPart + File.separator + "expected_output";
 				outHumanPath = testPart + File.separator + "output_humanreadable";
 				expSortedHumanPath = testPart + File.separator + "exp_sorted_human";
 				outSortedHumanPath = testPart + File.separator + "out_sorted_human";
@@ -257,7 +257,7 @@ public class Project4Test {
 		h.convertToSortedHumanReadable();
 		h.verifySortedReadable();
 	}
-    @Test 
+    //@Test 
 	//some corner cases
 	public void cornerCase(){
 		TestGenerator gen = new TestGenerator("cornerCase");
@@ -280,4 +280,35 @@ public class Project4Test {
 		h.convertToSortedHumanReadable();
 		h.verifySortedReadable();
 	}
+	//@Test
+	public void testCases() throws IOException{
+		SQLInterpreter itpr = new SQLInterpreter();
+		itpr.execute("/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/2/interpreter_config_file.txt");
+	}
+	
+	
+	@Test 
+		//some corner cases
+		public void test2(){
+			TestGenerator gen = new TestGenerator("3");
+//			gen.genBoats(10000, 1000);
+//			gen.genSailors(10000, 1000);
+//			gen.genReserves(10000, 1000);
+//			gen.genBinaryInput();
+			//gen.genExpected();
+			//gen.convertExpHuman();
+			gen.convertExpSortedHuman();
+			// check full scan
+			System.out.println("Start execution");
+			Harness h = new Harness("3");
+			try{
+				h.executeAllQueries();
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+			h.convertToHumanReadable();
+			h.convertToSortedHumanReadable();
+			h.verifySortedReadable();
+			h.verifyHumanReadable();
+		}
 }

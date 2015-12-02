@@ -148,11 +148,15 @@ public class SQLInterpreter {
 	 * @param args argument list
 	 */
 	public static void main(String[] args) {
-		if (args.length != 3) {
+		if (args.length != 1) {
 			throw new IllegalArgumentException("Number of arguments not right");
 		}
 		
 		SQLInterpreter itpr = new SQLInterpreter();
-		itpr.execute(args[0], args[1], args[2], true);
+		try {
+			itpr.execute(args[0]);
+		} catch (IOException e) {
+			System.out.println("Failed to load config file");
+		}
 	}
 }
