@@ -45,7 +45,7 @@ public class TestGenerator {
 	 * @param part	the part to be tested
 	 */
 	public TestGenerator(String part) {
-		this.testPart = "." + File.separator + part;
+		this.testPart = "./samples" + File.separator + part;
 		inPath = testPart + File.separator + "input";
 		outPath = testPart + File.separator + "output";
 		expectedPath = testPart + File.separator + "expected";

@@ -286,11 +286,11 @@ public class Project4Test {
 		itpr.execute("/Users/Mingyuanh/Desktop/3rd-semester/db-practicum/cs4321-projects/project4/2/interpreter_config_file.txt");
 	}
 	
-	
+	//
 	@Test 
 		//some corner cases
 		public void test2(){
-			TestGenerator gen = new TestGenerator("1");
+			//TestGenerator gen = new TestGenerator("samples");
 //			gen.genBoats(10000, 1000);
 //			gen.genSailors(10000, 1000);
 //			gen.genReserves(10000, 1000);
@@ -300,7 +300,7 @@ public class Project4Test {
 			//gen.convertExpSortedHuman();
 			// check full scan
 			System.out.println("Start execution");
-			Harness h = new Harness("1");
+			Harness h = new Harness("samples");
 			try{
 				h.executeAllQueries();
 			} catch(Exception e){

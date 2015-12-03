@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashMap;
 
 import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.statement.Statement;
@@ -18,6 +19,8 @@ import util.DBCat;
 import util.IndexBuilder;
 import util.SelState;
 import util.SortTuple;
+import util.Stats;
+import util.TableInfo;
 
 /**
  * The <tt>SqlInterpreter</tt> class provides a client for accepting
@@ -85,7 +88,12 @@ public class SQLInterpreter {
 			System.out.println("Evaluating query");
 			evaluateQuery();
 		}
-		
+		Stats stat = new Stats();
+		stat.gatherInfo();
+		HashMap<String,TableInfo> map = stat.getMap();
+		TableInfo reserve = map.get("Reserves");
+		TableInfo sailor = map.get("Sailors");
+		TableInfo boat = map.get("Boats");
 	}
 	
 	/**
