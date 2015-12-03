@@ -45,12 +45,12 @@ public class TestGenerator {
 	 * @param part	the part to be tested
 	 */
 	public TestGenerator(String part) {
-		this.testPart = "benchmarking" + File.separator + part;
+		this.testPart = "." + File.separator + part;
 		inPath = testPart + File.separator + "input";
 		outPath = testPart + File.separator + "output";
 		expectedPath = testPart + File.separator + "expected";
 		tempPath = testPart + File.separator + "temp";
-		expectedHumanPath = testPart + File.separator + "expected_humanreadable";
+		expectedHumanPath = testPart + File.separator + "expected_output";
 		outHumanPath = testPart + File.separator + "output_humanreadable";
 		expSortedHumanPath = testPart + File.separator + "exp_sorted_human";
 		outSortedHumanPath = testPart + File.separator + "out_sorted_human";

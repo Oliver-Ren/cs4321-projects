@@ -88,6 +88,7 @@ public class IndexBuilder {
 			}
 			
 			try {
+				System.out.println("Curretnly is building index for table "+ idxPath);
 				File indexFile = new File(idxPath);
 				BPlusTree blt = new BPlusTree(new File(tabPath), 
 						attrIdx, ii.order, indexFile);
@@ -98,6 +99,10 @@ public class IndexBuilder {
 					td.dump(printer);
 					printer.close();
 				}
+				System.out.println("Building finished");
+				//System.out.println("Print leaf layer");
+				
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

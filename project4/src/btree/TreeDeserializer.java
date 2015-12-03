@@ -202,13 +202,23 @@ public class TreeDeserializer {
 					printer.println("---------Next layer is leaf nodes---------");
 				}
 				for (int i = 0; i < size; i++) {
-					TreeNode curr = nodeQueue.poll();
+					TreeNode curr = nodeQueue.poll();			
 					printer.println(curr);
 					if (curr instanceof IndexNode) {
 						for (Integer addr : ((IndexNode) curr).address) {
 							nodeQueue.offer(dsNode(addr));
 						}
-					}
+					} 
+				    //  ==== dubug====
+//					else {
+//						
+//						LeafNode lf  = (LeafNode)curr;
+//						if(lf.getMin() >= 9177) {
+//							System.out.println("Curr node is " + lf.toString());
+//						}
+//						
+//					}
+					//=========================================
 				}
 			}
 			
