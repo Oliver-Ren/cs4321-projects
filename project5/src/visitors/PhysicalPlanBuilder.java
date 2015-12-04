@@ -25,6 +25,7 @@ import operators.logic.LogicScanOp;
 import operators.logic.LogicSelectOp;
 import operators.logic.LogicSortOp;
 import operators.logic.LogicUnaryOp;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import util.DBCat;
 import util.Helpers;
 import util.DBCat.JoinMethod;
@@ -123,6 +124,7 @@ public class PhysicalPlanBuilder {
 	}
 	
 	public void visit(LogicSelectOp lop) {
+		throw new UnsupportedOperationException("visit is under construction");
 		// precondition: the child of a select operator must be a scan operator.
 		LogicScanOp child = (LogicScanOp) lop.child;
 		ScanOperator scanOp = null;
