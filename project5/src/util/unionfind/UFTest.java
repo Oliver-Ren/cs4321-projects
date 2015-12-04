@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class UFTest {
 
-	@Test
+	//@Test
 	public void testUF() {
 		UnionFind uf = new UnionFind();
 		assertEquals(false, uf.connected("S.A", "R.D"));
@@ -22,9 +22,13 @@ public class UFTest {
 		assertEquals(false, uf.connected("S.A", "R.E"));
 		assertEquals(2, uf.count());
 		
+	
+		
 		uf.union("S.B", "S.A");
 		assertEquals(1, uf.count());
 		assertEquals(true, uf.connected("S.A", "R.E"));
+		
+		
 		
 	}
 	
@@ -49,6 +53,11 @@ public class UFTest {
 		assertEquals(Integer.valueOf(6), e1.getLower());
 		assertEquals(Integer.valueOf(10), e1.getUpper());
 		assertEquals(Integer.valueOf(10), e2.getUpper());
+		e1.setEquality(8);
+		
+		for (String s : uf.componentsInfo()) {
+			System.out.println(s);
+		}
 		
 	}
 

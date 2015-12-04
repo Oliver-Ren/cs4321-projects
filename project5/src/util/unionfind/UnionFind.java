@@ -1,6 +1,9 @@
 package util.unionfind;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -121,6 +124,60 @@ public class UnionFind {
     public Set<String> attributeSet() {
         return elements.keySet();
     }
+    
+    /**
+     * Returns the list of uf elemets which represents the connected componenets.
+     * 
+     * @return UF list.
+     */
+    public Set<UFElement> parentSet() {
+    	Set<UFElement> result = new HashSet<UFElement>();
+    	for (String attr : attributeSet()) {
+    		UFElement curr = find(attr);
+    		if (!result.contains(curr)) {
+    			result.add(curr);
+    		}
+    	}
+    	return result;
+    }
+    
+    /**
+     * returns the list of information of each connected components in the 
+     * format of string.
+     * @return list of string
+     */
+    public List<String> componentsInfo() {
+    	List<String> result = new ArrayList<String>();
+    	Map<UFElement, List<String>> parentMap = new HashMap<UFElement, List<String>>();
+    	for (String attr : attributeSet()) {
+    		UFElement curr = find(attr);
+    		if (!parentMap.containsKey(curr)) {
+    			parentMap.put(curr, new ArrayList<String>());
+    		}
+    		
+    		parentMap.get(curr).add(attr);
+    	}
+    	
+    	for (UFElement e : parentMap.keySet()) {
+    		StringBuilder sb = new StringBuilder();
+    		sb.append("[[");
+    		for (String attr : parentMap.get(e)) {
+    			sb.append(attr + ", ");
+    		}
+    		sb.setLength(sb.length() - 2);
+    		sb.append("], equals ");
+    		sb.append(e.getEquality());
+    		sb.append(", min ");
+    		sb.append(e.getLower());
+    		sb.append(", max ");
+    		sb.append(e.getUpper());
+    		sb.append("]");
+    		result.add(sb.toString());
+    	}
+    	
+    	return result;
+    }
+    
 
   
 

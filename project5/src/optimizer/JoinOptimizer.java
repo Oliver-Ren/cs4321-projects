@@ -20,5 +20,9 @@ public class JoinOptimizer {
 	 */
 	public static void getOptJoinOrder(List<Operator> childrenList) {
 		
+		// iterate through the list
+		for (int i = 0; i < childrenList.size(); i++) {
+			
+		}
 	}
 }
