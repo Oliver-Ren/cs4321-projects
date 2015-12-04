@@ -174,6 +174,15 @@ public class TreeDeserializer {
 	}
 	
 	/**
+	 * Returns the number of leaf nodes.
+	 * 
+	 * @return number of leaf nodes.
+	 */
+	public int getNumOfLeaves() {
+		return numOfLeaves;
+	}
+	
+	/**
 	 * Dump the index file into human readable format.
 	 * 
 	 * @param printer The printstream specified.
@@ -298,5 +307,7 @@ public class TreeDeserializer {
 		buffer.put(new byte[B_SIZE]);
 		buffer.clear();
 	}
+	
+	
 
 }

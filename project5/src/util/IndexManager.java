@@ -193,6 +193,8 @@ public class IndexManager {
 						PrintStream printer = new PrintStream(humanreadable);
 						TreeDeserializer td = new TreeDeserializer(indexFile);
 						td.dump(printer);
+						// set the number of leaf nodes.
+						ii.setNumOfLeafNodes(td.getNumOfLeaves());
 						printer.close();
 					}
 					System.out.println("Building finished");
