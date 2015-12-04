@@ -2,6 +2,7 @@ package util.unionfind;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The <tt>UnionFind</tt> class represetns a <em>union-find data structure</em>.
@@ -112,5 +113,15 @@ public class UnionFind {
     public boolean connected(String attr1, String attr2) {
         return find(attr1) == find(attr2);
     }
+
+    /**
+     * Returns the set of all attributes in this union-find.
+     * @return set of all attributes in the union-find.
+     */
+    public Set<String> attributeSet() {
+        return elements.keySet();
+    }
+
+  
 
 }
