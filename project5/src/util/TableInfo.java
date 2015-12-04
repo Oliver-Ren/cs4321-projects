@@ -7,6 +7,7 @@ import java.util.Set;
 public class TableInfo {
 	String tabName;
 	HashMap<String,int[]> map;
+	int attNum = -1;
 	int tpNum;
 	public TableInfo(String tabName, String[] name, int[] low, int[] high ){
 		this.tabName = tabName;
@@ -22,9 +23,19 @@ public class TableInfo {
 			}
 			
 		}
+		attNum = name.length;
 //		if(map.isEmpty()){
 //			throw new IllegalArgumentException();
 //		}		
+	}
+	/** 
+	 * get the total number of attribute 
+	 */
+	public int getAttNum(){
+		if(attNum == -1){
+			throw new IllegalArgumentException();
+		}
+		return attNum;
 	}
 	/**
 	 * 
