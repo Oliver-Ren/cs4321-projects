@@ -91,10 +91,6 @@ public class SelState {
 	}
 	
 	private LogicScanOp getScanOp(int idx) {
-		if (DBCat.idxSelect && Helpers.hasIdxAttr(froms.get(idx), 
-				getSelCond(idx)))
-			return new LogicScanOp(DBCat.getIndexTable
-					(froms.get(idx)));
 		return new LogicScanOp(getTable(idx));
 	}
 	

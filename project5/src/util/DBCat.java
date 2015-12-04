@@ -278,29 +278,29 @@ public class DBCat {
 	
 	
 	
-	public static Table getIndexTable(String tabName) {
-		throw new UnsupportedOperationException("This method is not supported");
-		String orig = origName(tabName);
-		if (!idxInfo.containsKey(orig))
-			throw new IllegalArgumentException();
-		String attr = idxInfo.get(orig).attr;
-		
-		//String path = idxsDir + orig + '.' + attr;
-		// TODO
-		// make tr the reader of the index file at path
-		String tablePath = DBCat.tabPath(orig);
-		TupleReader tr = null;
-		try {
-			tr = new BinaryTupleReader(tablePath);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return new Table(tabName, getSchema(tabName), tr);
-	}
+//	public static Table getIndexTable(String tabName) {
+//		throw new UnsupportedOperationException("This method is not supported");
+//		String orig = origName(tabName);
+//		if (!idxInfo.containsKey(orig))
+//			throw new IllegalArgumentException();
+//		String attr = idxInfo.get(orig).attr;
+//		
+//		//String path = idxsDir + orig + '.' + attr;
+//		// TODO
+//		// make tr the reader of the index file at path
+//		String tablePath = DBCat.tabPath(orig);
+//		TupleReader tr = null;
+//		try {
+//			tr = new BinaryTupleReader(tablePath);
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return new Table(tabName, getSchema(tabName), tr);
+//	}
 	
 	public static IndexInfo getIndexInfo(String tabName) {
-		return idxInfo.get(origName(tabName));
+		throw new UnsupportedOperationException("This operation is not supported");
 	}
 	
 	// intentionally make the constructor private, which 

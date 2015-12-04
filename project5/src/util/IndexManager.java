@@ -46,20 +46,32 @@ public class IndexManager {
 		tableInfo = new HashMap<String, List<IndexInfo>>();
 	}
 	
-	
+	/**
+	 * Return true if the relation has index on the attribute.
+	 * @param relation
+	 * @param attr
+	 * @return true if has index.
+	 */
 	public boolean hasIndex(String relation, String attr) {
-		// transfer to the origin table name
-		String originTable = DBCat.origName(relation);
-		if (!tableInfo.containsKey(originTable)) {
-			return false;
-		}
-		List<IndexInfo> indexInfos = tableInfo.get(originTable);
+		List<IndexInfo> indexInfos = getIndexInfoList(relation);
+		if (indexInfos == null) return false;
+		
 		// find the index info with the attribute name
 		for (IndexInfo info : indexInfos) {
 			if (info.attr.equals(attr)) return true;
 		}
 		return false;
 	}
+	
+	/**
+	 * Return true if the relation has index.
+	 * @param relation
+	 * @return
+	 */
+	public boolean hasIndex(String relation) {
+		return (getIndexInfoList(relation) != null);
+	}
+	
 	/**
 	 * Get the index information from relation name and the attribute name.
 	 * @param relation
@@ -68,12 +80,8 @@ public class IndexManager {
 	 * 		   <tt>null</tt> if does not found.
 	 */
 	public IndexInfo getIndexInfo(String relation, String attr) {
-		// transfer to the origin table name
-		String originTable = DBCat.origName(relation);
-		if (!tableInfo.containsKey(originTable)) {
-			return null;
-		}
-		List<IndexInfo> indexInfos = tableInfo.get(originTable);
+		List<IndexInfo> indexInfos = getIndexInfoList(relation);
+		if (indexInfos == null) return null;
 		
 		// find the index info with the attribute name
 		for (IndexInfo info : indexInfos) {
@@ -82,6 +90,22 @@ public class IndexManager {
 		
 		// Does not found
 		return null;
+	}
+	
+	
+	/**
+	 * Get the list of the index information of this relation.
+	 * @param relation
+	 * @return list of index information which belong to this table
+	 * 		   <tt>null</tt> if does not found.
+	 */
+	public List<IndexInfo> getIndexInfoList(String relation) {
+		// transfer to the origin table name
+		String originTable = DBCat.origName(relation);
+		if (!tableInfo.containsKey(originTable)) {
+			return null;
+		}
+		return tableInfo.get(originTable);
 	}
 	
 	/**

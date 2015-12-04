@@ -81,7 +81,7 @@ public class SQLInterpreter {
 		if (config.shouldBuildIdx) {
 			System.out.println("Building index");
 			boolean withHumanReadable = true;
-			IndexBuilder.BuildIndex(withHumanReadable);
+			DBCat.idxManager.BuildIndex(withHumanReadable);
 		}
 		
 		if (config.shouldEvaluate) {
