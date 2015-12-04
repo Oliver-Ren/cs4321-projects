@@ -285,7 +285,7 @@ public class Project3Test {
 	 * Test case for block nested loop join and in memory sort
 	 * with the given grading test cases
 	 */
-	//@Test
+	@Test
 	public void test_SMJ_MemSort_Grading() {
 		Harness harness = new Harness("grading_test_cases");
 		ConfigGen configGen = new ConfigGen(harness.inPath);
@@ -539,7 +539,7 @@ public class Project3Test {
 	/**
 	 * for project 4
 	 */
-	@Test
+	//@Test
 	public void testProject4() {
 		Harness harness = new Harness("largeData2");
 		//ConfigGen configGen = new ConfigGen(harness.inPath);

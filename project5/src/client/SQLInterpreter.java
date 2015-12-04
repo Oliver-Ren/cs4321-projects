@@ -16,7 +16,6 @@ import nio.NormalTupleWriter;
 import nio.TupleWriter;
 import tests.Diff;
 import util.DBCat;
-import util.IndexBuilder;
 import util.SelState;
 import util.SortTuple;
 import util.Stats;
@@ -39,16 +38,16 @@ public class SQLInterpreter {
 		private String tempPath;
 		private boolean shouldBuildIdx;
 		private boolean shouldEvaluate;
+		private boolean shouldGenStats;
 		
 		public InterpreterConfig(String configPath) throws IOException {
 			BufferedReader br =  new BufferedReader(new FileReader(configPath));
 			inPath = br.readLine();
 			outPath = br.readLine();
 			tempPath = br.readLine();
-			int value = Integer.parseInt(br.readLine());
-			shouldBuildIdx = value == 0 ? false : true;
-			value = Integer.parseInt(br.readLine());
-			shouldEvaluate = value == 0 ? false : true;
+			shouldBuildIdx = true;
+			shouldEvaluate = true;
+			shouldGenStats = true;
 			br.close();
 		}
 		
@@ -58,6 +57,7 @@ public class SQLInterpreter {
 			System.out.println(this.tempPath);
 			System.out.println(this.shouldBuildIdx);
 			System.out.println(this.shouldEvaluate);
+			System.out.println(this.shouldGenStats);
 		}
 		
 	}
@@ -77,6 +77,11 @@ public class SQLInterpreter {
 		InterpreterConfig config = new InterpreterConfig(configPath);
 		DBCat.resetDirs(config.inPath, config.outPath, config.tempPath);
 		DBCat.getInstance();
+		
+		if (config.shouldGenStats) {
+			// for now, just print out the information.
+			System.out.println("Gathering statistics");
+		}
 		
 		if (config.shouldBuildIdx) {
 			System.out.println("Building index");

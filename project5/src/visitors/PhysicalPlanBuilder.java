@@ -20,6 +20,7 @@ import operators.TupleJoinOperator;
 import operators.logic.LogicBinaryOp;
 import operators.logic.LogicDupElimOp;
 import operators.logic.LogicJoinOp;
+import operators.logic.LogicMultiJoinOp;
 import operators.logic.LogicProjectOp;
 import operators.logic.LogicScanOp;
 import operators.logic.LogicSelectOp;
@@ -32,6 +33,11 @@ import util.DBCat.JoinMethod;
 import util.DBCat.SortMethod;
 import util.IndexInfo;
 
+/**
+ * The class for building physical plan.
+ * @author chengxiang
+ *
+ */
 public class PhysicalPlanBuilder {
 
 	private Operator phyOp = null;
@@ -62,6 +68,32 @@ public class PhysicalPlanBuilder {
 	public void visit(LogicDupElimOp lop) {
 		getChild(lop);
 		phyOp = new DuplicateEliminationOperator(phyOp);
+	}
+	
+	/**
+	 * Visits the logic multi join operator.
+	 * @param lop
+	 */
+	public void visit(LogicMultiJoinOp lop) {
+		List<Operator> childrenList = getChildrenList(lop);
+		getJoinOrder(childrenList);
+
+		
+		// precondition: The join operator has at least two children.
+		phyOp = childrenList.get(0);
+	
+		for (int i = 1; i < childrenList.size(); i++) {
+			Operator rightChild = childrenList.get(i);
+			phyOp = createPhyJoinOp(phyOp, rightChild);
+		}
+		
+	}
+	
+	// visits all the children of the MultiJoinOperator and
+	// returns the list of the chilren operators.
+	private List<Operator> getChildrenList(LogicMultiJoinOp lop) {
+		phyOp = null;
+		lop
 	}
 	
 	public void visit(LogicJoinOp lop) {
@@ -126,33 +158,33 @@ public class PhysicalPlanBuilder {
 	public void visit(LogicSelectOp lop) {
 		throw new UnsupportedOperationException("visit is under construction");
 		// precondition: the child of a select operator must be a scan operator.
-		LogicScanOp child = (LogicScanOp) lop.child;
-		ScanOperator scanOp = null;
-		if (DBCat.idxSelect) {
-			String currTableName = getTableName(lop);
-			IndexInfo idxinfo = DBCat.getIndexInfo(currTableName);
-			boolean hasIdxAttr = Helpers.hasIdxAttr(currTableName, lop.exp);
-			System.out.println("Table name: " + currTableName);
-			System.out.println("has index attriburte: " + hasIdxAttr);
-			if (hasIdxAttr) {
-				System.out.println("============= Building Index Scan operator==============");
-				
-				Integer[] range 
-				= Helpers.bPlusKeys(idxinfo.attr, lop.exp);
-				System.out.println("The range is " + range[0] + ", " + range[1]);
-				System.out.println("============= End Building Index Scan operator==============");
-				String idxPath = DBCat.idxsDir + idxinfo.relt + '.' + idxinfo.attr;
-				File idxFile = new File(idxPath);
-				int attrIdx = DBCat.schemas.get(idxinfo.relt).indexOf(idxinfo.attr);
-				scanOp = new IndexScanOperator(child.tab, attrIdx, range[0], range[1],
-						idxinfo.clust, idxFile);
-			}
-		} 
-		
-		// if not assigned with index scan.
-		if (scanOp == null) scanOp = new ScanOperator(child.tab);
-		
-		phyOp = new SelectOperator(scanOp, lop.exp);
+//		LogicScanOp child = (LogicScanOp) lop.child;
+//		ScanOperator scanOp = null;
+//		if (DBCat.idxSelect) {
+//			String currTableName = getTableName(lop);
+//			IndexInfo idxinfo = DBCat.getIndexInfo(currTableName);
+//			boolean hasIdxAttr = Helpers.hasIdxAttr(currTableName, lop.exp);
+//			System.out.println("Table name: " + currTableName);
+//			System.out.println("has index attriburte: " + hasIdxAttr);
+//			if (hasIdxAttr) {
+//				System.out.println("============= Building Index Scan operator==============");
+//				
+//				Integer[] range 
+//				= Helpers.bPlusKeys(idxinfo.attr, lop.exp);
+//				System.out.println("The range is " + range[0] + ", " + range[1]);
+//				System.out.println("============= End Building Index Scan operator==============");
+//				String idxPath = DBCat.idxsDir + idxinfo.relt + '.' + idxinfo.attr;
+//				File idxFile = new File(idxPath);
+//				int attrIdx = DBCat.schemas.get(idxinfo.relt).indexOf(idxinfo.attr);
+//				scanOp = new IndexScanOperator(child.tab, attrIdx, range[0], range[1],
+//						idxinfo.clust, idxFile);
+//			}
+//		} 
+//		
+//		// if not assigned with index scan.
+//		if (scanOp == null) scanOp = new ScanOperator(child.tab);
+//		
+//		phyOp = new SelectOperator(scanOp, lop.exp);
 	}
 	
 	// Helper method for getting table from the child of a select operator.

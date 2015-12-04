@@ -1,0 +1,5 @@
+./tests/index-gen/input
+./tests/index-gen/output
+./tests/index-gen/temp
+1
+0

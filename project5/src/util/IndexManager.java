@@ -176,6 +176,7 @@ public class IndexManager {
 						BinaryTupleWriter btw = 
 								new BinaryTupleWriter(tabPath);
 						op.dump(btw);
+						System.out.println("Sorted " + tabPath + " On " + ii.attr);
 						btw.close();
 					} catch (IOException e) {
 						e.printStackTrace();
