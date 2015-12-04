@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
 
@@ -16,6 +17,8 @@ import operators.logic.LogicProjectOp;
 import operators.logic.LogicScanOp;
 import operators.logic.LogicSelectOp;
 import operators.logic.LogicSortOp;
+import util.unionfind.UFElement;
+import util.unionfind.UnionFind;
 import visitors.PhysicalPlanBuilder;
 
 /**
@@ -39,6 +42,8 @@ public class SelState {
 	public List<Expression> ands = null;
 	public HashMap<String, List<Expression>> selConds = null, joinConds = null;
 	public HashMap<String, Expression> fnSelCond = null, fnJoinCond = null;
+	
+	public UnionFind uf = new UnionFind();
 	
 	public Operator root = null;
 	
@@ -218,14 +223,63 @@ public class SelState {
 		for (Expression exp : ands) {
 			List<String> tabs = Helpers.getExpTabs(exp);
 			int idx = lastIdx(tabs);
-			if (tabs == null)
+			
+			if (tabs == null) {
 				joinConds.get(froms.get(froms.size() - 1)).add(exp);
-			else if (tabs.size() <= 1)
+				return;
+			}
+			
+			switch (tabs.size()) {
+			case 0:
 				selConds.get(froms.get(idx)).add(exp);
-			else
+				break;
+			case 1:
+				String[] attr = new String[0];
+				Integer[] range = Helpers.getSelRange(exp, attr);
+				if (attr[0] == null || attr[0].isEmpty())
+					throw new IllegalStateException();
+				
+				UFElement ufe = uf.find(attr[0]);
+				if (range[0] != null && range[0].equals(range[1]))
+					ufe.setEquality(range[0]);
+				else {
+					if (range[0] != null)
+						ufe.setLowerBound(range[0]);
+					if (range[1] != null)
+						ufe.setUpperBound(range[1]);
+				}
+				break;
+			case 2:
 				joinConds.get(froms.get(idx)).add(exp);
+				if (exp instanceof EqualsTo)
+					uf.union(tabs.get(0), tabs.get(1));
+				break;
+			default:
+				throw new IllegalStateException();
+			}
 		}
-
+		
+		for (String attr : uf.attributeSet()) {
+			UFElement ufe = uf.find(attr);
+			String tab = attr.split("//.")[0];
+			String col = attr.split("//.")[1];
+			List<Expression> lst = selConds.get(tab);
+			
+			Integer eq = ufe.getEquality();
+			Integer lower = ufe.getLower();
+			Integer upper = ufe.getUpper();
+			
+			if (eq != null)
+				lst.add(Helpers.createCondition(
+						tab, col, eq, true, false));
+			if (lower != null)
+				lst.add(Helpers.createCondition(
+						tab, col, lower, false, true));
+			if (upper != null)
+				lst.add(Helpers.createCondition(
+						tab, col, upper, false, false));
+		}
+		
 		fnSelCond = new HashMap<String, Expression>();
 		fnJoinCond = new HashMap<String, Expression>();
 		for (String tab : froms) {

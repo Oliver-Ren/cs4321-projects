@@ -88,9 +88,9 @@ public class SQLInterpreter {
 			System.out.println("Evaluating query");
 			evaluateQuery();
 		}
-		// mingyuan: create stat file
-		Stats stat = new Stats();
-		stat.gatherInfo();
+
+//		Stats stat = new Stats();
+//		stat.gatherInfo();
 //		HashMap<String,TableInfo> map = stat.getMap();
 //		TableInfo reserve = map.get("Reserves");
 //		TableInfo sailor = map.get("Sailors");

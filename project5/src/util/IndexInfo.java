@@ -1,5 +1,10 @@
 package util;
 
+/**
+ * This is the index information for a certain table.
+ * @author chengxiang
+ *
+ */
 public class IndexInfo {
 
 	public String relt = "";
