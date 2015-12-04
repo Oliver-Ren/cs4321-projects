@@ -171,7 +171,12 @@ public class Helpers {
 			range[1] = (range[1] == null) ? val :
 				Math.min(range[1], val);
 	}
-	
+	/**
+	 * 
+	 * @param exp
+	 * @param attr
+	 * @return int[]rst  rst[0] max, rst[1] min
+	 */
 	public static Integer[] getSelRange(Expression exp, String[] attr) {
 		if (!isSelect(exp))
 			throw new IllegalArgumentException();
