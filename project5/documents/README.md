@@ -1,8 +1,14 @@
-# CS 4321 Project 4 #
+# CS 4321 Project 5 #
 
 Guantian Zheng (gz94), Chengxiang Ren (cr486), Mingyuan Huang (mh2239)
 
-In this project, we first switched the IO format from the original IO class to NIO class. We also implemented both binary and decimal format tuple reader and tuple writer, so that operators can execute binary files. We also wrote a physical query plan, which is used to determine the detail implementation method for different operators. Additionally, we implemented the block nested loop join(BNLJ), external sort and sort merge join(SMJ). 
+In this project, we first created a Stat.java class for gathering input statistics. After first executing our interpreter, stat.txt would be generated in the ./db directory. We also refactored the our code using a hashmap<String, List<IndexInfo>> so that it supported multi index per relation. The key of the hashmap is the table name, and the corresponding value is a list of indexInfo objects which provide detailed index information.
+
+We also implemented the union find for optimizing the selections in the logical plan builder. After we built our optimized logical plan builder, we optimized the physical plan builder by optimizing the slection and join/sort oprator. We followed the logic that in most case we would use SMJ first, then choose BNLJ if SMJ is not applicable. For the selection optimization, out first priority is to use indexing, then scan if indexing is not applicable.
+
+After that we implemnted the dynamic programming to choose optimized join order based on its total IO cost. We created a class called VValue to calculate the v value for each relation to help determine the cost of each join subset. 
+
+  
 
 ## Project Structure 
 
@@ -82,24 +88,3 @@ In order to better conduct the testing, we have written a bash script which dump
 Also, we have created the util class _Diff_ for comparing two files which will automatically judge the correctness of the output.
 
 
-### Benchmarking 
-#### Testing Plan for Project 3 
-Compare BNLJ or SMJ with TNLJ with the following three queries and the generated data (about 5000 tuples per relations, in **/project3/benchmarking** directory). 
-
-**Tested Queries**  		
-	Query1: SELECT * FROM Sailors, Reserves WHERE Sailors.A = Reserves.G;   
-	Query2: SELECT * FROM Sailors, Reserves, Boats WHERE Sailors.A = Reserves.G AND Reserves.H = Boats.D;   
-	Query3: SELECT * FROM Sailors, Reserves, Boats WHERE Sailors.A = Reserves.G AND Reserves.H = Boats.D AND Sailors.B < 150;
-**Description of the Tested Data**  
-
-**See experiment.pdf and report.excel for detail results.**
-
-#### Testing Plan for Project 4 
-We would use three queries showing below to compare the execution time among full scan, unclustered index scan and clustered index scan. 
-
-**Tested Queries:**  
-1. SELECT * FROM Boats WHERE Boats.E < 10;   
-2. SELECT  * FROM Boats WHERE Boats.E < 300;  
-3. SELECT * FROM Sailors WHERE Sailors.A  > 100 and Sailors.A <150; 
-
-**See experiment.pdf and report.excel in Project 4 file for detail results.**
