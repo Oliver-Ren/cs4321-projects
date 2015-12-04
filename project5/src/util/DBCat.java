@@ -78,6 +78,7 @@ public class DBCat {
 			new HashMap<String, String>();
 	public static HashMap<String, IndexInfo> idxInfo = 
 			new HashMap<String, IndexInfo>();
+	public static HashMap<String, TableInfo> tabInfo = null;
 	
 	/**
 	 * Reset the input and output directory.
@@ -107,6 +108,16 @@ public class DBCat {
 		resetConfig();
 		resetSchemas();
 		resetIdxInfo();
+		
+		tabInfo = null;
+		Stats st = null;
+		try {
+			st = new Stats();
+			st.gatherInfo();
+			tabInfo = st.getMap();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private static void defConfig() {
