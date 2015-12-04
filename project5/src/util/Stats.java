@@ -88,6 +88,7 @@ public class Stats {
 				bw.write(min[i-1]+",");
 				bw.write(max[i-1] + " ");
 				tabInfo.addAttr(names[i], min[i-1], max[i-1]);
+				tabInfo.setTpNum(cntTp);
 			}
 			stat.put(tabName, tabInfo);
 			bw.newLine(); // switch table

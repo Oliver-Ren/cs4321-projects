@@ -3,6 +3,9 @@ package util;
 import java.util.HashMap;
 
 import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.LongValue;
+import net.sf.jsqlparser.expression.operators.relational.GreaterThan;
+import net.sf.jsqlparser.schema.Column;
 
 /**
  * this class is used for calculate vvalues
@@ -32,10 +35,32 @@ public class VValue {
 			String attName = tab.split("\\.")[1];
 			int[] range = map.get(tabName).getRange(attName);
 			//calculate v value 
-			rst.put(tabName + "." + attName, ) 
 			
+			rst.put(tab, range[1] - range[0] + 1); 
 		}
-		
+		// process case 2:  selection condition
+		for(Expression ex : selecTable){
+			Column left = null;
+			int right = 0;
+			if(ex instanceof GreaterThan ){
+				if(((GreaterThan) ex).getLeftExpression() instanceof Column){
+					left =(Column) ((GreaterThan)ex).getLeftExpression();
+					LongValue value =(LongValue)((GreaterThan)ex).getRightExpression();
+					right = (int)value.getValue();
+				} else{ // left is value 
+					left =(Column) ((GreaterThan)ex).getRightExpression();
+					LongValue value =(LongValue)((GreaterThan)ex).getLeftExpression();
+					right= (int)value.getValue();
+				}
+				//
+				String tabName = left.toString().split("\\.")[0];
+				String attName = left.toString().split("\\.")[1];
+				int[] range = map.get(tabName).getRange(attName);
+				// calculate reduction factor
+				int rf = (range[1] - right) /map.get(tabName).g 
+				
+			}
+		}
 		
 		
 		

@@ -7,7 +7,7 @@ import java.util.Set;
 public class TableInfo {
 	String tabName;
 	HashMap<String,int[]> map;
-	
+	int tpNum;
 	public TableInfo(String tabName, String[] name, int[] low, int[] high ){
 		this.tabName = tabName;
 		map = new HashMap<String, int[]>();
@@ -69,5 +69,21 @@ public class TableInfo {
 			map.put(attrName,range);
 		}
 	}
+	
+	/**
+	 * set the tuple number for this table
+	 */
+	public void setTpNum(int num){
+		tpNum = num;
+	}
+	/**
+	 * 
+	 * @return num of tps in this table
+	 */
+	public int getTpNum(){
+		return tpNum;
+	}
+	
+	
 }
 	
