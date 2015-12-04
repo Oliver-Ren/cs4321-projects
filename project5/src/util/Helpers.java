@@ -142,6 +142,76 @@ public class Helpers {
 		return ret;
 	}
 	
+	public static boolean isSelect(Expression exp) {
+		List<String> tmp = getExpTabs(exp);
+		return (tmp != null && tmp.size() == 1);
+	}
+	
+	public static boolean isJoin(Expression exp) {
+		List<String> tmp = getExpTabs(exp);
+		return (tmp != null && tmp.size() == 2);
+	}
+
+	private static void updateRange(Integer[] range, int val, 
+			boolean isLower, boolean inclusive, boolean oppo) {
+		if (oppo) {
+			updateRange(range, val, !isLower, inclusive, false);
+			return;
+		}
+		
+		if (!inclusive)
+			val = (isLower) ? val + 1 : val - 1;
+		
+		if (isLower)
+			range[0] = (range[0] == null) ? val : 
+				Math.max(range[0], val);
+		else
+			range[1] = (range[1] == null) ? val :
+				Math.min(range[1], val);
+	}
+	
+	public static Integer[] getSelRange(Expression exp, String[] attr) {
+		if (!isSelect(exp))
+			throw new IllegalArgumentException();
+		
+		Expression left = 
+				((BinaryExpression) exp).getLeftExpression();
+		Expression right = 
+				((BinaryExpression) exp).getRightExpression();
+		
+		Integer val = null;
+		if (left instanceof Column) {
+			attr[0] = left.toString();
+			val = Integer.parseInt(right.toString());
+		}
+		else {
+			attr[0] = right.toString();
+			val = Integer.parseInt(left.toString());
+		}
+		
+		boolean oppo = !(left instanceof Column);
+		boolean inclusive = !(exp instanceof MinorThan) && 
+				!(exp instanceof GreaterThan);
+		boolean isLower = (exp instanceof MinorThan ||
+				exp instanceof MinorThanEquals || 
+				exp instanceof EqualsTo);
+		boolean isUpper = (exp instanceof GreaterThan ||
+				exp instanceof GreaterThan || 
+				exp instanceof EqualsTo);
+		
+		if (!isLower && !isUpper)
+			throw new IllegalArgumentException();
+		
+		Integer[] ret = new Integer[2];
+		
+		if (isLower)
+			updateRange(ret, val, true, inclusive, oppo);
+		if (isUpper)
+			updateRange(ret, val, false, inclusive, oppo);
+		
+		return ret;
+	}
+	
 	/**
 	 * Decompose an AND expression recursively into a list of 
 	 * binary expressions.
@@ -336,7 +406,7 @@ public class Helpers {
 		}		
 		return ret;
 	}
-	
+		
 	/**
 	 * Check if the ordered elements are not selected.
 	 * @param sels the selected items

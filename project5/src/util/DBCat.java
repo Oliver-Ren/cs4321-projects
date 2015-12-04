@@ -76,9 +76,13 @@ public class DBCat {
 			new HashMap<String, List<String>>();
 	public static HashMap<String, String> aliases = 
 			new HashMap<String, String>();
+
 	
 	// The index manager
 	public static IndexManager idxManager;
+
+	public static HashMap<String, TableInfo> tabInfo = null;
+
 	
 	/**
 	 * Reset the input and output directory.
@@ -108,6 +112,16 @@ public class DBCat {
 		resetConfig();
 		resetSchemas();
 		resetIdxInfo();
+		
+		tabInfo = null;
+		Stats st = null;
+		try {
+			st = new Stats();
+			st.gatherInfo();
+			tabInfo = st.getMap();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private static void defConfig() {
