@@ -10,6 +10,7 @@ import visitors.JoinExpVisitor;
 import visitors.SelExpVisitor;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.ExpressionVisitor;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
@@ -19,6 +20,7 @@ import net.sf.jsqlparser.expression.operators.relational.MinorThan;
 import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
 import net.sf.jsqlparser.expression.operators.relational.NotEqualsTo;
 import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.AllColumns;
 import net.sf.jsqlparser.statement.select.FromItem;
 import net.sf.jsqlparser.statement.select.OrderByElement;
@@ -210,6 +212,19 @@ public class Helpers {
 			updateRange(ret, val, false, inclusive, oppo);
 		
 		return ret;
+	}
+	
+	public static Expression createCondition(String tab, String col, 
+			int val, boolean isEq, boolean isGE) {
+		Table t = new Table(null, tab);
+		Column c = new Column(t, col);
+		LongValue v = new LongValue(String.valueOf(val));
+		
+		if (isEq)
+			return new EqualsTo(c, v);
+		if (isGE)
+			return new GreaterThanEquals(c, v);
+		return new MinorThanEquals(c, v);
 	}
 	
 	/**

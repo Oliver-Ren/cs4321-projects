@@ -259,6 +259,27 @@ public class SelState {
 			}
 		}
 		
+		for (String attr : uf.attributeSet()) {
+			UFElement ufe = uf.find(attr);
+			String tab = attr.split("//.")[0];
+			String col = attr.split("//.")[1];
+			List<Expression> lst = selConds.get(tab);
+			
+			Integer eq = ufe.getEquality();
+			Integer lower = ufe.getLower();
+			Integer upper = ufe.getUpper();
+			
+			if (eq != null)
+				lst.add(Helpers.createCondition(
+						tab, col, eq, true, false));
+			if (lower != null)
+				lst.add(Helpers.createCondition(
+						tab, col, lower, false, true));
+			if (upper != null)
+				lst.add(Helpers.createCondition(
+						tab, col, upper, false, false));
+		}
+		
 		fnSelCond = new HashMap<String, Expression>();
 		fnJoinCond = new HashMap<String, Expression>();
 		for (String tab : froms) {
