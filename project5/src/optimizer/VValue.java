@@ -1,7 +1,9 @@
-package util;
+package optimizer;
 
 import java.util.HashMap;
 
+import util.DBCat;
+import util.TableInfo;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;

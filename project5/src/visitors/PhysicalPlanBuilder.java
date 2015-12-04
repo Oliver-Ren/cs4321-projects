@@ -21,11 +21,13 @@ import operators.logic.LogicBinaryOp;
 import operators.logic.LogicDupElimOp;
 import operators.logic.LogicJoinOp;
 import operators.logic.LogicMultiJoinOp;
+import operators.logic.LogicOperator;
 import operators.logic.LogicProjectOp;
 import operators.logic.LogicScanOp;
 import operators.logic.LogicSelectOp;
 import operators.logic.LogicSortOp;
 import operators.logic.LogicUnaryOp;
+import optimizer.JoinOptimizer;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import util.DBCat;
 import util.Helpers;
@@ -76,7 +78,9 @@ public class PhysicalPlanBuilder {
 	 */
 	public void visit(LogicMultiJoinOp lop) {
 		List<Operator> childrenList = getChildrenList(lop);
-		getJoinOrder(childrenList);
+		
+		// rearrange the join order to be the optimal.
+		JoinOptimizer.getOptJoinOrder(childrenList);
 
 		
 		// precondition: The join operator has at least two children.
@@ -90,10 +94,16 @@ public class PhysicalPlanBuilder {
 	}
 	
 	// visits all the children of the MultiJoinOperator and
-	// returns the list of the chilren operators.
+	// returns the list of the physical children operators.
 	private List<Operator> getChildrenList(LogicMultiJoinOp lop) {
-		phyOp = null;
-		lop
+		List<LogicOperator> logicalChildren = lop.getChildrenList();
+		List<Operator> physicalChildren = new ArrayList<Operator>();
+		for (LogicOperator logChild : logicalChildren) {
+			phyOp = null;
+			logChild.accept(this);
+			physicalChildren.add(phyOp);
+		}
+		return physicalChildren;
 	}
 	
 	public void visit(LogicJoinOp lop) {
