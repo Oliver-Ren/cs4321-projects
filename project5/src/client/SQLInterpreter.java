@@ -88,6 +88,7 @@ public class SQLInterpreter {
 			System.out.println("Evaluating query");
 			evaluateQuery();
 		}
+
 //		Stats stat = new Stats();
 //		stat.gatherInfo();
 //		HashMap<String,TableInfo> map = stat.getMap();

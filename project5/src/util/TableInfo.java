@@ -32,6 +32,7 @@ public class TableInfo {
 	 * related to the current attr name, return null if the attr
 	 * is not in the table  
 	 * @input: attribute name 
+	 * @return: int[] int[0] is min; int[1] is high
 	 */
 	public int[]  getRange(String attrName){
 		if(map.containsKey(attrName)){
