@@ -35,5 +35,4 @@ public class IndexInfo {
 	public void setNumOfLeafNodes(int num) {
 		numOfLeaveNodes = num;
 	}
-	}
 }
