@@ -76,8 +76,9 @@ public class DBCat {
 			new HashMap<String, List<String>>();
 	public static HashMap<String, String> aliases = 
 			new HashMap<String, String>();
-	public static HashMap<String, IndexInfo> idxInfo = 
-			new HashMap<String, IndexInfo>();
+	
+	// The index manager
+	public static IndexManager idxManager;
 	
 	/**
 	 * Reset the input and output directory.
@@ -183,7 +184,7 @@ public class DBCat {
 	}
 	
 	private static void resetIdxInfo() {
-		idxInfo.clear();
+		idxManager = new IndexManager();
 		// need also to clear indexes directory
 		
 		try (BufferedReader br = new BufferedReader(
@@ -195,9 +196,7 @@ public class DBCat {
 				String attr = str[1];
 				boolean clust = (str[2].equals("1"));
 				int ord = Integer.parseInt(str[3]);
-				
-				IndexInfo ii = new IndexInfo(relt, attr, clust, ord);
-				idxInfo.put(relt, ii);
+				idxManager.addIndexInfo(relt, attr, clust, ord);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -219,7 +218,7 @@ public class DBCat {
 	 * @param tabName the table name or an alias
 	 * @return the original name
 	 */
-	private static String origName(String tabName) {
+	public static String origName(String tabName) {
 		if (aliases.containsKey(tabName))
 			return aliases.get(tabName);
 		return tabName;
