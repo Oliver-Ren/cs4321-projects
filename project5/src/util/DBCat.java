@@ -276,13 +276,16 @@ public class DBCat {
 		return new Table(tabName, getSchema(tabName), btr);
 	}
 	
+	
+	
 	public static Table getIndexTable(String tabName) {
+		throw new UnsupportedOperationException("This method is not supported");
 		String orig = origName(tabName);
 		if (!idxInfo.containsKey(orig))
 			throw new IllegalArgumentException();
 		String attr = idxInfo.get(orig).attr;
 		
-		String path = idxsDir + orig + '.' + attr;
+		//String path = idxsDir + orig + '.' + attr;
 		// TODO
 		// make tr the reader of the index file at path
 		String tablePath = DBCat.tabPath(orig);
