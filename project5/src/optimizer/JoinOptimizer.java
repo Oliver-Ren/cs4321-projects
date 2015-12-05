@@ -1,6 +1,8 @@
 package optimizer;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import operators.Operator;
 
@@ -25,4 +27,28 @@ public class JoinOptimizer {
 			
 		}
 	}
+	
+	
+	 /**
+     * Helper method to enumerate all of the subsets of a given list.
+     * 
+     * @return a set of all subsets of the specified size
+     */
+    private Set<Set<Operator>> enumerateSubsets(List<Operator> childrenList, int size) {
+    	Set<Set<Operator>> oldSet = new HashSet<Set<Operator>>();
+    	oldSet.add(new HashSet<Operator>());
+    	
+    	for (int i = 0; i < size; i++) {
+    		Set<Set<Operator>> newSet = new HashSet<Set<Operator>>();
+    		for (Set<Operator> subset : oldSet) {
+    			for (Operator op : childrenList) {
+    				Set<Operator> newSubset = (Set<Operator>) (((HashSet<Operator>) subset).clone());
+    				if (newSubset.add(op)) newSet.add(newSubset);
+    			}
+    		}
+    		oldSet = newSet;
+    	}
+    	
+    	return oldSet;
+    }
 }

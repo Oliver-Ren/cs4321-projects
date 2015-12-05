@@ -1,0 +1,27 @@
+SELECT * FROM Sailors;
+SELECT Sailors.A FROM Sailors;
+SELECT Boats.F, Boats.D FROM Boats;
+SELECT Reserves.G, Reserves.H FROM Reserves;
+SELECT * FROM Sailors WHERE Sailors.B >= Sailors.C;
+SELECT Sailors.A FROM Sailors WHERE Sailors.B >= Sailors.C
+SELECT Sailors.A FROM Sailors WHERE Sailors.B >= Sailors.C AND Sailors.B < Sailors.C;
+SELECT * FROM Reserves, Boats;
+SELECT * FROM Reserves, Boats WHERE Reserves.G = 4;
+SELECT * FROM Sailors, Reserves WHERE Sailors.A = Reserves.G;
+SELECT * FROM Sailors, Reserves, Boats WHERE Sailors.A = Reserves.G AND Reserves.H = Boats.D;
+SELECT * FROM Sailors, Reserves, Boats WHERE Sailors.A = Reserves.G AND Reserves.H = Boats.D AND Sailors.B < 150;
+SELECT Sailors.C, Reserves.H FROM Sailors, Reserves, Boats WHERE Sailors.A = Reserves.G AND Reserves.H = Boats.D AND Sailors.B < 150;
+SELECT * FROM TestTable3;
+SELECT * FROM TestTable3, Boats WHERE TestTable3.N < Boats.D;
+SELECT * FROM TestTable3, TestTable4;
+SELECT * FROM Sailors S;
+SELECT * FROM Sailors S WHERE S.A < 3;
+SELECT S.A FROM Sailors S;
+SELECT * FROM Sailors S, Reserves R WHERE S.A = R.G;
+SELECT S.C, R.H FROM Sailors S, Reserves R, Boats B WHERE S.A = R.G AND R.H = B.D AND S.B < 150;
+SELECT * FROM Sailors S1, Sailors S2 WHERE S1.A < S2.A;
+SELECT * FROM Sailors S1, Sailors S2, Reserves R WHERE S1.A < S2.A AND S1.A = R.G;
+SELECT S1.A, S2.A, S3.A FROM Sailors S1, Sailors S2, Sailors S3 WHERE S1.A < S2.A AND S2.A < S3.A AND S3.A < 5;
+SELECT DISTINCT Reserves.G FROM Reserves;
+SELECT DISTINCT R.G FROM Reserves R;
+SELECT DISTINCT * FROM Sailors;

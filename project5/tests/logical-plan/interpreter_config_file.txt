@@ -1,0 +1,3 @@
+./tests/logical-plan/input
+./tests/logical-plan/output
+./tests/logical-plan/temp

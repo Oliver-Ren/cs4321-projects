@@ -162,9 +162,22 @@ public class Project5Test {
 	/**
 	 * Test case for index generation.
 	 */
-	@Test
+	//@Test
 	public void testIndexGen() {
 		Harness h = new Harness("index-gen");
+		try{
+			h.executeAllQueries();
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Test case for logical plan
+	 */
+	@Test
+	public void testLogicalPlan() {
+		Harness h = new Harness("logical-plan");
 		try{
 			h.executeAllQueries();
 		} catch(Exception e){
