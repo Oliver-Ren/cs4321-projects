@@ -22,10 +22,27 @@ For packages for the project source file is arranged by the following rational:
   * the _client_ package is for top-level class.
   * the _btree_ directory is a building B+ tree index file. It also contains serializer, deserializer classes for index searching purpose. 
   * the _operators_ package is for various Operator classes.
+  * the _optimizer_ package contains three major classes, JoinOptimizer, SelectionOptimizer, and VValue. These three classese are created for determining the best join order. 
   * the _test_ package contains unit tests, end-to-end test as well as the utilities and test test harness.
   * the _util_ package contains various classes for dealing with queries, expressions, and trees as well as data-structures for storing query elements.
-  * the _visitors_ package contains generic visitor as well as different concrete visitors.
+  * the _visitors_ package contains generic visitor as well as different concrete visitors.  
 
+## New Functionalities Added in Ptoject 5
+
+### The Selection Pushing
+
+In order to push selection to proper position in our logical plan, We implemented the union find data structure to group attributes with same range condition. The selection condition, which contains equalsTo, greaterThan, MinorThan expression between one relation and a number or between two attribute of the same relation would be pushed down after the join condition. Uneqality and other usable selection condtion would be pushed up to the join operator. 
+
+### Selection Implementation
+
+We created a class called selectionOptimizer to handle which selection method to use. We first check indexing availability for all the attributes of one relation involved in the selection. If there are no proper indexing for these attributes, we would choose the plain scan method. If there are indexing options on these attributes, we would compare the cost their costs, and choose the one with the lowest cost.
+
+### Join Order choice
+We had some problems implenting the dynamic programing method to choose the best join order. The compromised solution we curretnly implemented is to choose join order based on each table size. 
+
+### Join Implementation
+Our logic is to use Sort Merg Join if it is applicable. If SMJ is not applicable, we choose to use Block Nested Loop Join. 
+  
 ## Interpreter
 
 The _top-level entry_ of the program is at the client.SQLInterpreter.main().
