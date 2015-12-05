@@ -209,9 +209,9 @@ public class SelState {
 		
 		logicRoot = curRoot;
 		
-		PhysicalPlanBuilder ppb = new PhysicalPlanBuilder();
-		curRoot.accept(ppb);
-		root = ppb.getPhyOp();
+//		PhysicalPlanBuilder ppb = new PhysicalPlanBuilder();
+//		curRoot.accept(ppb);
+//		root = ppb.getPhyOp();
 		
 		System.out.println("plan built");
 	}
