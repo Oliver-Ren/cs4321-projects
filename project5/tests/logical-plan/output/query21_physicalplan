@@ -1,0 +1,4 @@
+DupElim
+-InMemSort[]
+--Project[Reserves.G]
+---TableScan[Reserves]

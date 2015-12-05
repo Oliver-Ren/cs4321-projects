@@ -145,7 +145,7 @@ public class SQLInterpreter {
 					selState.logicRoot.printTree(logicalPlanStream, 0);
 					logicalPlanStream.close();
 					
-					System.out.println("-----");
+					System.out.println(".....");
 					
 					selState.root.printTree(System.out, 0);
 					selState.root.printTree(physicalPlanStream, 0);
@@ -155,7 +155,7 @@ public class SQLInterpreter {
 					
 					// begin time
 					long beginTime = System.currentTimeMillis();
-					selState.root.dump(writer);
+					//selState.root.dump(writer);
 					// end time
 					long endTime = System.currentTimeMillis();
 					System.out.println("The running time for query " 
@@ -165,7 +165,7 @@ public class SQLInterpreter {
 					counter++;
 				} catch (Exception e) {
 					System.out.println("Exception when parsing query" + counter);
-					// e.printStackTrace();
+					e.printStackTrace();
 					continue;
 				}
 			}

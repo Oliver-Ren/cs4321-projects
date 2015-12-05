@@ -1,0 +1,7 @@
+Project[S1.A, S2.A, S3.A]
+-TNLJ[S2.A < S3.A]
+--TNLJ[S1.A < S2.A]
+---TableScan[Sailors]
+---TableScan[Sailors]
+--Select[S3.A <= 4]
+---IndexScan[Sailors]

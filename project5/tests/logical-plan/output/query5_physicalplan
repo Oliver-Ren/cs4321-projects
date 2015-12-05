@@ -1,0 +1,4 @@
+Project[*]
+-TNLJ[]
+--TableScan[Reserves]
+--TableScan[Boats]

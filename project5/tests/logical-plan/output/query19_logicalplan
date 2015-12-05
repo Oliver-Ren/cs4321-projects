@@ -1,0 +1,6 @@
+Project[*]
+-Join[null AND S1.A < S2.A]
+[[S1.A, R.G], equals null, min null, max null]
+--Leaf[Sailors]
+--Leaf[Sailors]
+--Leaf[Reserves]

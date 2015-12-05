@@ -1,0 +1,7 @@
+Project[S1.A, S2.A, S3.A]
+-Join[S2.A < S3.A AND S1.A < S2.A]
+[[S3.A], equals null, min null, max 4]
+--Leaf[Sailors]
+--Leaf[Sailors]
+--Select[S3.A <= 4]
+---Leaf[Sailors]

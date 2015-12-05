@@ -20,6 +20,7 @@ public class SelectionOptimizer {
 	static HashMap<String, Integer[]> attInfo; 
 	static List<String> attName;
 	static List<Double> cost;
+	static double plainScanCost;
 	public static IndexInfo whichIndexToUse(String tableName, Expression exp) {
 		//TODO
 		/**
@@ -28,6 +29,7 @@ public class SelectionOptimizer {
 		attInfo = new HashMap<String, Integer[]>();
 		attName = new ArrayList<String>();
 		cost = new ArrayList<Double>();
+		plainScanCost = -1;
 		List<Expression> exps = Helpers.decompAnds(exp);
 		if(exps == null) {
 			throw new NullPointerException();
@@ -43,9 +45,16 @@ public class SelectionOptimizer {
 //				
 //			}
 			if(left instanceof Column && right instanceof LongValue) {
-				attr = ((Column)left).toString().split("\\,")[1];				
+				//String[] split =((Column)left).toString().split("\\.");
+				attr = ((Column)left).toString().split("\\.")[1];				
 			} else if(right instanceof Column && left instanceof LongValue){
 				attr = ((Column)right).toString().split("\\.")[1];
+			} else if(right instanceof Column && left instanceof Column){
+				//calculate plain cost
+				
+				plainScanCost = (DBCat.tabInfo.get(tableName).getTpNum() *
+						DBCat.tabInfo.get(tableName).getAttNum() * 4)/4096;
+				continue;
 			}
 			String[] in = {attr};
 			// !!!!!! 可能有问题
@@ -95,10 +104,22 @@ public class SelectionOptimizer {
 			cost.add(localCost);	
 		}
 		// check which attr has the lowerest cost
+		if(plainScanCost !=-1) {
+			if(cost.size()!=0){
+				for(double c : cost){
+					if(plainScanCost < c){
+						return null;
+					}
+				}
+			}
+		}
+		if(cost.size()==0){
+			return null;
+		}
 		if(attName.size() != cost.size()){
 			throw new IllegalArgumentException();
 		}
-		int minIndex = -1;
+		int minIndex = 0;
 		double minCost = cost.get(0);
 		for(int i = 1; i < cost.size(); i++){
 			if(minCost > cost.get(i)){

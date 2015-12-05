@@ -56,5 +56,7 @@ public abstract class JoinOperator extends BinaryOperator {
 		this.exp = exp;
 		jv = new JoinExpVisitor(left.schema(), right.schema());
 	}
+	
+	
 
 }
