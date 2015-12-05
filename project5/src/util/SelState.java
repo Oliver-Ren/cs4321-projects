@@ -329,6 +329,7 @@ public class SelState {
 		}
 		
 		buildOpTree2();
+		buildOpTree();
 		
 		selConds.clear(); joinConds.clear();
 		fnSelCond.clear(); fnJoinCond.clear();

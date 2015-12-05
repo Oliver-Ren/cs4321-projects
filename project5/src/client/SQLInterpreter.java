@@ -130,7 +130,10 @@ public class SQLInterpreter {
 							+ File.separator + "query" + counter);
 					File logicalPlan = new File(DBCat.outputDir
 							+ File.separator + "query" + counter + "_logicalplan");
+					File physicalPlan = new File(DBCat.outputDir
+							+ File.separator + "query" + counter + "_physicalplan");
 					PrintStream logicalPlanStream = new PrintStream(logicalPlan);
+					PrintStream physicalPlanStream = new PrintStream(physicalPlan);
 					
 					// if (!isMute) {
 						System.out.println("Parsing: " + statement);
@@ -141,6 +144,12 @@ public class SQLInterpreter {
 					selState.logicRoot.printTree(System.out, 0);
 					selState.logicRoot.printTree(logicalPlanStream, 0);
 					logicalPlanStream.close();
+					
+					System.out.println("-----");
+					
+					selState.root.printTree(System.out, 0);
+					selState.root.printTree(physicalPlanStream, 0);
+					physicalPlanStream.close();
 					
 					TupleWriter writer = new BinaryTupleWriter(file.getAbsolutePath());
 					

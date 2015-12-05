@@ -1,5 +1,6 @@
 package operators;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +63,12 @@ public class ScanOperator extends Operator {
 	@Override
 	public String print() {
 		return "TableScan[" + DBCat.origName(tab.name) + "]";
+	}
+
+	@Override
+	public void printTree(PrintStream ps, int lv) {
+		printIndent(ps, lv);
+		ps.println(print());
 	}
 	
 }

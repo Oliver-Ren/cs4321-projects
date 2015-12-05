@@ -7,6 +7,7 @@ import java.util.List;
 import btree.DataEntry;
 import btree.Rid;
 import btree.TreeDeserializer;
+import util.DBCat;
 import util.Table;
 import util.Tuple;
 
@@ -69,7 +70,10 @@ public class IndexScanOperator extends ScanOperator{
 			e.printStackTrace();
 		}
 		
-		
-		
+	}
+	
+	@Override
+	public String print() {
+		return "IndexScan[" + DBCat.origName(tab.name) + "]";
 	}
 }
