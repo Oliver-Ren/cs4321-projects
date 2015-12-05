@@ -1,5 +1,6 @@
 package optimizer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -9,7 +10,6 @@ import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.schema.Column;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import util.DBCat;
 import util.Helpers;
 import util.IndexInfo;
@@ -18,15 +18,16 @@ import util.IndexInfo;
 public class SelectionOptimizer {
 	// this is used for keep track each attr's name and its range
 	static HashMap<String, Integer[]> attInfo; 
-	static String[] attName;
-	static Double[] cost;
+	static List<String> attName;
+	static List<Double> cost;
 	public static IndexInfo whichIndexToUse(String tableName, Expression exp) {
 		//TODO
 		/**
 		 *Integer[0] is max; Integer[1] is min
 		 */
 		attInfo = new HashMap<String, Integer[]>();
-		
+		attName = new ArrayList<String>();
+		cost = new ArrayList<Double>();
 		List<Expression> exps = Helpers.decompAnds(exp);
 		if(exps == null) {
 			throw new NullPointerException();
@@ -51,33 +52,61 @@ public class SelectionOptimizer {
 			Integer[] range = Helpers.getSelRange(ex,in);
 			updateAttInfo(attr,range);			
 		}
+
+		// tpsize: tuple number  * 4 bytes * attribute number
+		double tpsize = DBCat.tabInfo.get(tableName).getTpNum() *
+				DBCat.tabInfo.get(tableName).getAttNum() * 4;
+		// page number 
+		double pageNum = tpsize / 4096;
 		// calculate each attr's cost
 		Set<Entry<String,Integer[]>> set = attInfo.entrySet();
 		// each entry is a attr name : range
 		for(Entry<String,Integer[]> entry : set){
-			IndexInfo indexInfo = DBCat.idxManager.getIndexInfo(tableName, entry.getKey());
-			int[] minMax = DBCat.tabInfo.get(tableName).getRange(entry.getKey());
-			double maxRange = minMax[1] - minMax[0];
-			double curLow = 0;
-			double curHigh = 0;
-			//check max
-			if(entry.getValue()[0] == null){
-				curHigh = minMax[1];
-			}
-			//check min
-			if(entry.getValue()[1] == null){
-				curLow = minMax[0];
-			}
-			double rf =(curHigh - curLow) /maxRange;
-			double localCost = 0;
+			IndexInfo indexInfo = DBCat.idxManager.getIndexInfo(tableName, entry.getKey());	
+			double localCost = -1;
 			if(indexInfo == null){ // only plain scan
-				localCost = ((double)DBCat.tabInfo.get(tableName).getTpNum())/;
-			} else {
-				if(indexInfo.clust){ // if cur attr has clust index
-					localCost = 3 + 
+				
+				localCost = pageNum;
+				
+			} else { // has index 
+				int[] minMax = DBCat.tabInfo.get(tableName).getRange(entry.getKey());
+				double maxRange = minMax[1] - minMax[0];
+				double curLow = 0;
+				double curHigh = 0;	
+				//check max
+				if(entry.getValue()[0] == null){
+					curHigh = minMax[1];
+				}
+				//check min
+				if(entry.getValue()[1] == null){
+					curLow = minMax[0];
+				}
+				// calculate reduction factor
+				double rf =(curHigh - curLow) /maxRange;
+				
+				if(indexInfo.clust){ // if cur attr has clustered index
+					localCost = 3 + pageNum * rf;
+				} else {
+					double leafNum = indexInfo.getNumOfLeafNodes();
+					localCost = 3 + (leafNum + DBCat.tabInfo.get(tableName).getTpNum())*rf;
 				}
 			}
+			attName.add(entry.getKey());
+			cost.add(localCost);	
 		}
+		// check which attr has the lowerest cost
+		if(attName.size() != cost.size()){
+			throw new IllegalArgumentException();
+		}
+		int minIndex = -1;
+		double minCost = cost.get(0);
+		for(int i = 1; i < cost.size(); i++){
+			if(minCost > cost.get(i)){
+				minCost = cost.get(i);
+				minIndex = i;
+			}
+		}
+		return DBCat.idxManager.getIndexInfo(tableName, attName.get(minIndex));
 		
 		
 		
