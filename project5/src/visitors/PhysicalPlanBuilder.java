@@ -2,6 +2,8 @@ package visitors;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import net.sf.jsqlparser.expression.Expression;
@@ -29,7 +31,6 @@ import operators.logic.LogicSortOp;
 import operators.logic.LogicUnaryOp;
 import optimizer.JoinOptimizer;
 import optimizer.SelectionOptimizer;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import util.DBCat;
 import util.Helpers;
 import util.DBCat.JoinMethod;
@@ -78,20 +79,21 @@ public class PhysicalPlanBuilder {
 	 * @param lop
 	 */
 	public void visit(LogicMultiJoinOp lop) {
-//		List<Operator> childrenList = getChildrenList(lop);
-//		
-//		// rearrange the join order to be the optimal.
-//		JoinOptimizer.getOptJoinOrder(childrenList);
-//
-//		
-//		// precondition: The join operator has at least two children.
-//		phyOp = childrenList.get(0);
-//	
-//		for (int i = 1; i < childrenList.size(); i++) {
-//			Operator rightChild = childrenList.get(i);
-//			phyOp = createPhyJoinOp(phyOp, rightChild);
-//		}
+		Collections.sort(lop.children, new TableComp());
 		
+		List<Operator> childrenList = getChildrenList(lop);
+		
+		// rearrange the join order to be the optimal.
+		// JoinOptimizer.getOptJoinOrder(childrenList);
+		
+		
+		// precondition: The join operator has at least two children.
+		phyOp = childrenList.get(0);
+	
+		for (int i = 1; i < childrenList.size(); i++) {
+			Operator rightChild = childrenList.get(i);
+			phyOp = createPhyJoinOp(phyOp, rightChild);
+		}
 	}
 	
 	// visits all the children of the MultiJoinOperator and
@@ -216,6 +218,31 @@ public class PhysicalPlanBuilder {
 			phyOp = new InMemSortOperator(phyOp, lop.orders);
 		else
 			phyOp = new ExternSortOperator(phyOp, lop.orders);
+	}
+	
+	private static class TableComp implements Comparator<LogicOperator> {
+
+		@Override
+		public int compare(LogicOperator o1, LogicOperator o2) {
+			if (o1 instanceof LogicSelectOp)
+				o1 = ((LogicSelectOp) o1).child;
+			if (o2 instanceof LogicSelectOp)
+				o2 = ((LogicSelectOp) o2).child;
+			
+			if (!(o1 instanceof LogicScanOp))
+				throw new UnsupportedOperationException();
+			if (!(o2 instanceof LogicScanOp))
+				throw new UnsupportedOperationException();
+			
+			String t1 = ((LogicScanOp) o1).tab.name;
+			String t2 = ((LogicScanOp) o2).tab.name;
+			
+			int sz1 = DBCat.getTabInfo(t1).getTpNum();
+			int sz2 = DBCat.getTabInfo(t2).getTpNum();
+			
+			return Integer.compare(sz1, sz2);
+		}
+		
 	}
 	
 }

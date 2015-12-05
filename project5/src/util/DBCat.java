@@ -299,6 +299,11 @@ public class DBCat {
 //		return new Table(tabName, getSchema(tabName), tr);
 //	}
 	
+	public static TableInfo getTabInfo(String tabName) {
+		tabName = origName(tabName);
+		return tabInfo.get(tabName);
+	}
+	
 	public static IndexInfo getIndexInfo(String tabName) {
 		throw new UnsupportedOperationException("This operation is not supported");
 	}

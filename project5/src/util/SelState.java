@@ -45,6 +45,9 @@ public class SelState {
 	public HashMap<String, List<Expression>> selConds = null, joinConds = null;
 	public HashMap<String, Expression> fnSelCond = null, fnJoinCond = null;
 	
+	public HashMap<String, List<Expression>> oldJoinConds;
+	public HashMap<String, Expression> oldFnJoinCond;
+	
 	public UnionFind uf = new UnionFind();
 	
 	public LogicOperator logicRoot = null;
@@ -93,6 +96,10 @@ public class SelState {
 		return fnJoinCond.get(froms.get(idx));
 	}
 	
+	private Expression getOldJoinCond(int idx) {
+		return oldFnJoinCond.get(froms.get(idx));
+	}
+	
 	private LogicScanOp getScanOp(int idx) {
 		return new LogicScanOp(getTable(idx));
 	}
@@ -110,7 +117,7 @@ public class SelState {
 			LogicOperator newOp = getScanOp(i);
 			if (getSelCond(i) != null)
 				newOp = new LogicSelectOp(newOp, getSelCond(i));
-			curRoot = new LogicJoinOp(curRoot, newOp, getJoinCond(i));
+			curRoot = new LogicJoinOp(curRoot, newOp, getOldJoinCond(i));
 		}
 		
 		boolean isLossy = false; // Helpers.projLossy(sels, orders);
@@ -261,9 +268,11 @@ public class SelState {
 		
 		selConds = new HashMap<String, List<Expression>>();
 		joinConds = new HashMap<String, List<Expression>>();
+		oldJoinConds = new HashMap<String, List<Expression>>();
 		for (String tab : froms) {
 			selConds.put(tab, new ArrayList<Expression>());
 			joinConds.put(tab, new ArrayList<Expression>());
+			oldJoinConds.put(tab, new ArrayList<Expression>());
 		}
 		
 		ands = Helpers.decompAnds(where);
@@ -303,6 +312,8 @@ public class SelState {
 				}
 				break;
 			case 2:
+				oldJoinConds.get(froms.get(idx)).add(exp);
+				
 				if (exp instanceof EqualsTo) {
 					BinaryExpression be = (BinaryExpression) exp;
 					uf.union(be.getLeftExpression().toString(), 
@@ -339,16 +350,18 @@ public class SelState {
 		
 		fnSelCond = new HashMap<String, Expression>();
 		fnJoinCond = new HashMap<String, Expression>();
+		oldFnJoinCond = new HashMap<String, Expression>();
 		for (String tab : froms) {
 			fnSelCond.put(tab, Helpers.genAnds(selConds.get(tab)));
 			fnJoinCond.put(tab, Helpers.genAnds(joinConds.get(tab)));
+			oldFnJoinCond.put(tab, Helpers.genAnds(oldJoinConds.get(tab)));
 		}
 		
 		buildOpTree2();
 		buildOpTree();
 		
-		selConds.clear(); joinConds.clear();
-		fnSelCond.clear(); fnJoinCond.clear();
+		selConds.clear(); joinConds.clear(); oldJoinConds.clear();
+		fnSelCond.clear(); fnJoinCond.clear(); oldFnJoinCond.clear();
 	}
 	
 }
