@@ -19,8 +19,8 @@ public class LogicSelectOp extends LogicUnaryOp {
 
 	@Override
 	public String print() {
-		return String.format("Select%s", 
-				((exp == null) ? "[null]" : exp.toString()));
+		return String.format("Select[%s]", 
+				((exp == null) ? "null" : exp.toString()));
 	}
 	
 }
