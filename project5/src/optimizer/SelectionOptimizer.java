@@ -9,6 +9,7 @@ import java.util.Set;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
+import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.schema.Column;
 import util.DBCat;
 import util.Helpers;
@@ -30,7 +31,9 @@ public class SelectionOptimizer {
 		attName = new ArrayList<String>();
 		cost = new ArrayList<Double>();
 		plainScanCost = -1;
+		
 		List<Expression> exps = Helpers.decompAnds(exp);
+		System.out.println("listlistlist: " + exps);
 		if(exps == null) {
 			throw new NullPointerException();
 		}
@@ -55,9 +58,14 @@ public class SelectionOptimizer {
 				plainScanCost = (DBCat.tabInfo.get(tableName).getTpNum() *
 						DBCat.tabInfo.get(tableName).getAttNum() * 4)/4096;
 				continue;
+			}else if (ex instanceof EqualsTo){
+				plainScanCost = (DBCat.tabInfo.get(tableName).getTpNum() *
+						DBCat.tabInfo.get(tableName).getAttNum() * 4)/4096;
+				continue;
 			}
 			String[] in = {attr};
 			// !!!!!! 可能有问题
+			System.out.println("get range " + ex);
 			Integer[] range = Helpers.getSelRange(ex,in);
 			updateAttInfo(attr,range);			
 		}

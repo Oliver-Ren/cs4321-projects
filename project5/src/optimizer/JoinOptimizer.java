@@ -14,6 +14,16 @@ import operators.Operator;
  *
  */
 public class JoinOptimizer {
+	// the class represeting the optimal plan.
+	private static class OptimalPlan {
+		private double cost;	// the cost of the optimal sub problem.
+		private List<Operator> plan;	// the optimal plan.
+
+        public OptimalPlan() {
+            cost = Double.MAX_VALUE;
+            plan = null;
+        }
+	}
 	
 	/**
 	 * Rearrange the children list for the optimal join order.
@@ -24,7 +34,9 @@ public class JoinOptimizer {
 		
 		// iterate through the list
 		for (int i = 0; i < childrenList.size(); i++) {
-			
+		    for (Set<Operator> set : enumerateSubsets(childrenList, childrenList.size())) {
+                OptimalPlan opt = new OptimalPlan();
+            }
 		}
 	}
 	
@@ -34,7 +46,7 @@ public class JoinOptimizer {
      * 
      * @return a set of all subsets of the specified size
      */
-    private Set<Set<Operator>> enumerateSubsets(List<Operator> childrenList, int size) {
+    private static Set<Set<Operator>> enumerateSubsets(List<Operator> childrenList, int size) {
     	Set<Set<Operator>> oldSet = new HashSet<Set<Operator>>();
     	oldSet.add(new HashSet<Operator>());
     	

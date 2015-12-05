@@ -3,9 +3,13 @@ package util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
+import operators.logic.LogicOperator;
+import operators.logic.LogicScanOp;
+import operators.logic.LogicSelectOp;
 import visitors.JoinExpVisitor;
 import visitors.SelExpVisitor;
 import net.sf.jsqlparser.expression.BinaryExpression;
@@ -475,6 +479,21 @@ public class Helpers {
 		
 		ordCols.removeAll(selCols);
 		return !ordCols.isEmpty();
+	}
+	
+	public static class TableComp implements Comparator<String> {
+
+		@Override
+		public int compare(String t1, String t2) {
+			int sz1 = DBCat.getTabInfo(t1).getTpNum();
+			int sz2 = DBCat.getTabInfo(t2).getTpNum();
+			
+//			System.out.println("sz1: " + sz1);
+//			System.out.println("sz2: " + sz2);
+			
+			return Integer.compare(sz1, sz2);
+		}
+		
 	}
 	
 }

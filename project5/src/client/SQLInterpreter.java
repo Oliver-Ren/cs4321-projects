@@ -45,7 +45,7 @@ public class SQLInterpreter {
 			inPath = br.readLine();
 			outPath = br.readLine();
 			tempPath = br.readLine();
-			shouldBuildIdx = false; // true;
+			shouldBuildIdx = true;
 			shouldEvaluate = true;
 			shouldGenStats = true;
 			br.close();
@@ -155,7 +155,7 @@ public class SQLInterpreter {
 					
 					// begin time
 					long beginTime = System.currentTimeMillis();
-					//selState.root.dump(writer);
+					selState.root.dump(writer);
 					// end time
 					long endTime = System.currentTimeMillis();
 					System.out.println("The running time for query " 

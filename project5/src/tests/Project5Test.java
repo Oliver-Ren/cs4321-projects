@@ -180,6 +180,8 @@ public class Project5Test {
 		Harness h = new Harness("logical-plan");
 		try{
 			h.executeAllQueries();
+			h.convertToHumanReadable();
+			h.convertToSortedHumanReadable();
 		} catch(Exception e){
 			e.printStackTrace();
 		}

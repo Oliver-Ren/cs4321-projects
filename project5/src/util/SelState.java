@@ -1,6 +1,7 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
-
 import operators.*;
 import operators.logic.LogicDupElimOp;
 import operators.logic.LogicJoinOp;
@@ -266,6 +266,10 @@ public class SelState {
 			}
 		}
 		
+		// System.out.println("before: " + froms);
+		Collections.sort(froms, new Helpers.TableComp());
+		// System.out.println("after: " + froms);
+		
 		selConds = new HashMap<String, List<Expression>>();
 		joinConds = new HashMap<String, List<Expression>>();
 		oldJoinConds = new HashMap<String, List<Expression>>();
@@ -340,12 +344,14 @@ public class SelState {
 			if (eq != null)
 				lst.add(Helpers.createCondition(
 						tab, col, eq, true, false));
-			if (lower != null)
-				lst.add(Helpers.createCondition(
-						tab, col, lower, false, true));
-			if (upper != null)
-				lst.add(Helpers.createCondition(
-						tab, col, upper, false, false));
+			else {
+				if (lower != null)
+					lst.add(Helpers.createCondition(
+							tab, col, lower, false, true));
+				if (upper != null)
+					lst.add(Helpers.createCondition(
+							tab, col, upper, false, false));
+			}
 		}
 		
 		fnSelCond = new HashMap<String, Expression>();

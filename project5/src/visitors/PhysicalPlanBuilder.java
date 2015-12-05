@@ -78,23 +78,23 @@ public class PhysicalPlanBuilder {
 	 * Visits the logic multi join operator.
 	 * @param lop
 	 */
-	public void visit(LogicMultiJoinOp lop) {
-		Collections.sort(lop.children, new TableComp());
-		
-		List<Operator> childrenList = getChildrenList(lop);
-		
-		// rearrange the join order to be the optimal.
-		// JoinOptimizer.getOptJoinOrder(childrenList);
-		
-		
-		// precondition: The join operator has at least two children.
-		phyOp = childrenList.get(0);
-	
-		for (int i = 1; i < childrenList.size(); i++) {
-			Operator rightChild = childrenList.get(i);
-			phyOp = createPhyJoinOp(phyOp, rightChild);
-		}
-	}
+//	public void visit(LogicMultiJoinOp lop) {
+//		Collections.sort(lop.children, new TableComp());
+//		
+//		List<Operator> childrenList = getChildrenList(lop);
+//		
+//		// rearrange the join order to be the optimal.
+//		// JoinOptimizer.getOptJoinOrder(childrenList);
+//		
+//		
+//		// precondition: The join operator has at least two children.
+//		phyOp = childrenList.get(0);
+//	
+//		for (int i = 1; i < childrenList.size(); i++) {
+//			Operator rightChild = childrenList.get(i);
+//			phyOp = createPhyJoinOp(phyOp, rightChild);
+//		}
+//	}
 	
 	// visits all the children of the MultiJoinOperator and
 	// returns the list of the physical children operators.
@@ -112,6 +112,23 @@ public class PhysicalPlanBuilder {
 	public void visit(LogicJoinOp lop) {
 		Operator[] children = getLR(lop);
 		
+		DBCat.joinMethod = JoinMethod.BNLJ;
+		
+		List<Integer> outIdxs = new ArrayList<Integer>();
+		List<Integer> inIdxs = new ArrayList<Integer>();
+		Expression newExp = Helpers.procJoinConds(
+				lop.exp, children[0].schema(), 
+				children[1].schema(), outIdxs, inIdxs);
+		
+//		System.out.println("lop" + lop.exp);
+//		System.out.println(newExp);
+		
+		if (outIdxs.size() != inIdxs.size())
+			throw new IllegalArgumentException();
+		
+		if (!outIdxs.isEmpty())
+			DBCat.joinMethod = JoinMethod.SMJ;
+		
 		switch(DBCat.joinMethod) {
 		case TNLJ:
 			phyOp = new TupleJoinOperator(children[0], 
@@ -122,15 +139,6 @@ public class PhysicalPlanBuilder {
 					children[1], lop.exp);
 			break;
 		case SMJ:
-			List<Integer> outIdxs = new ArrayList<Integer>();
-			List<Integer> inIdxs = new ArrayList<Integer>();
-			Expression newExp = Helpers.procJoinConds(
-					lop.exp, children[0].schema(), 
-					children[1].schema(), outIdxs, inIdxs);
-			
-			if (outIdxs.size() != inIdxs.size())
-				throw new IllegalArgumentException();
-			
 			if (!outIdxs.isEmpty()) {
 				lop.exp = newExp;
 				if (DBCat.sortMethod == SortMethod.INMEM) {
@@ -178,7 +186,7 @@ public class PhysicalPlanBuilder {
 			String origTableName = DBCat.origName(currTableName);
 			
 			//TODO
-			IndexInfo idxinfo = null; // = SelectionOptimizer.whichIndexToUse(origTableName, lop.exp);
+			IndexInfo idxinfo = SelectionOptimizer.whichIndexToUse(origTableName, lop.exp);
 			boolean hasIdxAttr = (idxinfo != null);
 			
 			System.out.println("Table name: " + currTableName);
@@ -218,31 +226,6 @@ public class PhysicalPlanBuilder {
 			phyOp = new InMemSortOperator(phyOp, lop.orders);
 		else
 			phyOp = new ExternSortOperator(phyOp, lop.orders);
-	}
-	
-	private static class TableComp implements Comparator<LogicOperator> {
-
-		@Override
-		public int compare(LogicOperator o1, LogicOperator o2) {
-			if (o1 instanceof LogicSelectOp)
-				o1 = ((LogicSelectOp) o1).child;
-			if (o2 instanceof LogicSelectOp)
-				o2 = ((LogicSelectOp) o2).child;
-			
-			if (!(o1 instanceof LogicScanOp))
-				throw new UnsupportedOperationException();
-			if (!(o2 instanceof LogicScanOp))
-				throw new UnsupportedOperationException();
-			
-			String t1 = ((LogicScanOp) o1).tab.name;
-			String t2 = ((LogicScanOp) o2).tab.name;
-			
-			int sz1 = DBCat.getTabInfo(t1).getTpNum();
-			int sz2 = DBCat.getTabInfo(t2).getTpNum();
-			
-			return Integer.compare(sz1, sz2);
-		}
-		
 	}
 	
 }

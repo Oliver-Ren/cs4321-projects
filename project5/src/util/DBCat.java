@@ -65,7 +65,7 @@ public class DBCat {
 		INMEM, EXTERN;
 	}
 	
-	public static SortMethod sortMethod = SortMethod.INMEM;
+	public static SortMethod sortMethod = SortMethod.EXTERN;
 	public static Integer sortBufPgs = null;
 	
 	public static boolean isBinary = true;

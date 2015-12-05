@@ -133,7 +133,7 @@ public class SortMergeJoinOperator extends JoinOperator {
 			Operator right, Expression exp,List<Integer> leftOrders,
 			List<Integer> rightOrders) {
 		super(left, right, exp);
-		
+		this.exp = exp;
 		this.leftOrders = leftOrders;
 		this.rightOrders = rightOrders;
 		cp  = new TupleComp(leftOrders,rightOrders);
