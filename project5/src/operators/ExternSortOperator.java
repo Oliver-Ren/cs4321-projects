@@ -184,4 +184,15 @@ public class ExternSortOperator extends SortOperator {
 		}
 	}
 
+    @Override
+    public String print() {
+        if (orders2 != null) {
+            return String.format("ExternalSort%s", orders2.toString());
+        } else if (orders != null) {
+            return String.format("ExternalSort%s", orders.toString());
+        } else {
+            return String.format("ExternalSort[]");
+        }
+    }
+
 }

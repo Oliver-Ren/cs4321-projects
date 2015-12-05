@@ -3,6 +3,7 @@ package operators;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.DBCat;
 import util.Table;
 import util.Tuple;
 
@@ -56,6 +57,11 @@ public class ScanOperator extends Operator {
 		for (String col : tab.schema) {
 			schema.add(tab.name + '.' + col);
 		}
+	}
+	
+	@Override
+	public String print() {
+		return "TableScan[" + DBCat.origName(tab.name) + "]";
 	}
 	
 }

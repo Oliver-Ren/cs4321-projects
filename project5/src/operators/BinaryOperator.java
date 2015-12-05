@@ -1,5 +1,6 @@
 package operators;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,5 +39,13 @@ public abstract class BinaryOperator extends Operator {
 		this.left = left; this.right = right;
 		schema = new ArrayList<String>(left.schema());
 		schema.addAll(right.schema());
+	}
+	
+	@Override
+	public void printTree(PrintStream ps, int lv) {
+		printIndent(ps, lv);
+		ps.println(print());
+		left.printTree(ps, lv + 1);
+		right.printTree(ps, lv + 1);
 	}
 }

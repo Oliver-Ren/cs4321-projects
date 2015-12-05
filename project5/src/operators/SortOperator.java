@@ -11,11 +11,13 @@ import util.Tuple;
 
 public abstract class SortOperator extends UnaryOperator {
 
-	List<Integer> orders = new ArrayList<Integer>();
+	protected List<Integer> orders = new ArrayList<Integer>();
+	protected List<?> orders2;
 	TupleComp tpCmp = null;
 	
 	public SortOperator(Operator child, List<?> orders) {
 		super(child);
+		orders2 = orders;
 		if (!orders.isEmpty()) {
 			if (orders.get(0) instanceof OrderByElement) {
 				for (Object obj : orders) {

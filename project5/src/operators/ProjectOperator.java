@@ -19,6 +19,7 @@ import util.Tuple;
  *
  */
 public class ProjectOperator extends UnaryOperator {
+    private List<SelectItem> sis;
 	
 	/**
 	 * Generate a projected tuple from the schema.
@@ -47,7 +48,7 @@ public class ProjectOperator extends UnaryOperator {
 	 */
 	public ProjectOperator(Operator child, List<SelectItem> sis) {
 		super(child);
-		
+	    this.sis = new ArrayList<SelectItem>(sis);	
 		List<String> chdScm = child.schema();
 		List<String> tmpScm = new ArrayList<String>();
 		HashSet<String> allTabCols = new HashSet<String>();
@@ -88,6 +89,13 @@ public class ProjectOperator extends UnaryOperator {
 					schema.add(tabCol);
 			}
 		}
+	}
+
+
+	@Override
+	public String print() {
+		return String.format("Project%s", 
+				((sis == null) ? "[null]" : sis.toString()));
 	}
 	
 }

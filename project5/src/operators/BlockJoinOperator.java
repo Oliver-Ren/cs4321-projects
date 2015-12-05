@@ -59,4 +59,10 @@ public class BlockJoinOperator extends JoinOperator {
 		next();
 	}
 
+    @Override
+    public String print() {
+        String expression = (exp != null) ? exp.toString() : "";
+        return String.format("BNLJ[" + expression + "]");
+    }
+
 }

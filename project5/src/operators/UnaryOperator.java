@@ -1,5 +1,6 @@
 package operators;
 
+import java.io.PrintStream;
 import java.util.List;
 
 /**
@@ -36,5 +37,12 @@ public abstract class UnaryOperator extends Operator {
 	 */
 	public UnaryOperator(Operator child) {
 		this.child = child;
+	}
+	
+	@Override
+	public void printTree(PrintStream ps, int lv) {
+		printIndent(ps, lv);
+		ps.println(print());
+		child.printTree(ps, lv + 1);
 	}
 }

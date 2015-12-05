@@ -180,4 +180,9 @@ public class SortMergeJoinOperator extends JoinOperator {
 		throw new UnsupportedOperationException();
 	}
 	
+    @Override
+    public String print() {
+        String expression = (exp != null) ? exp.toString() : "";
+        return String.format("SMJ[" + expression + "]");
+    }
 }

@@ -42,6 +42,13 @@ public class TupleJoinOperator extends JoinOperator {
 		curLeft = left.getNextTuple();
 		curRight = right.getNextTuple();
 	}
+
+
+    @Override
+    public String print() {
+        String expression = (exp != null) ? exp.toString() : "";
+        return String.format("TNLJ[" + expression + "]");
+    }
 	
 }
 

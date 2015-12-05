@@ -53,5 +53,23 @@ public abstract class Operator {
 				break;
 			}
 	}
+
+	// print out the indentation.
+	protected static void printIndent(PrintStream ps, int lv) {
+		while (lv-- > 0)
+			ps.print('-');
+	}
 	
+	/**
+	 * Prints this operator
+	 * @return
+	 */
+	public abstract String print();
+	
+	/**
+	 * Print the plan
+	 * @param ps
+	 * @param lv
+	 */
+	public abstract void printTree(PrintStream ps, int lv);
 }

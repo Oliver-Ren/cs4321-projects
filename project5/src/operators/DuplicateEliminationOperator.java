@@ -1,5 +1,7 @@
 package operators;
 
+import java.io.PrintStream;
+
 import util.Tuple;
 
 /**
@@ -38,6 +40,13 @@ public class DuplicateEliminationOperator extends UnaryOperator {
 	public DuplicateEliminationOperator(Operator sop) {
 		super(sop);
 	}
+	
+	@Override
+	public String print() {
+		return "DupElim";
+	}
+
+
 	
 }
 

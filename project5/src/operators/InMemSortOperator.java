@@ -60,5 +60,15 @@ public class InMemSortOperator extends SortOperator {
 		Collections.sort(tps, tpCmp);
 	}
 	
+    @Override
+    public String print() {
+        if (orders2 != null) {
+            return String.format("InMemSort%s", orders2.toString());
+        } else if (orders != null) {
+            return String.format("InMemSort%s", orders.toString());
+        } else {
+            return String.format("InMemSort[]");
+        }
+    }
 }
 

@@ -29,5 +29,11 @@ public class HshDupElimOperator extends UnaryOperator {
 	public HshDupElimOperator(Operator child) {
 		super(child);
 	}
+
+	@Override
+	public String print() {
+		// TODO Auto-generated method stub
+		return "HashDupElim";
+	}
 	
 }

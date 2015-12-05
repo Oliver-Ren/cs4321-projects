@@ -43,5 +43,10 @@ public class SelectOperator extends UnaryOperator {
 		sv = new SelExpVisitor(child.schema());
 	}
 	
+    @Override
+    public String print() {
+        String expression = (exp != null) ? exp.toString() : "";
+        return String.format("Select[" + expression + "]");
+    }
 }
 
