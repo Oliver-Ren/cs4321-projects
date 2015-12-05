@@ -18,5 +18,11 @@ public class LogicProjectOp extends LogicUnaryOp {
 	public void accept(PhysicalPlanBuilder ppb) {
 		ppb.visit(this);
 	}
+
+	@Override
+	public String print() {
+		return String.format("Project%s", 
+				((sis == null) ? "[null]" : sis.toString()));
+	}
 	
 }

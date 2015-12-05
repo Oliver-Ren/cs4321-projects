@@ -134,6 +134,9 @@ public class SQLInterpreter {
 					// }
 					SelState selState = new SelState(statement);
 					
+					// print logic and physical plans
+					// selState.logicRoot.printTree(file print stream, 0);
+					
 					TupleWriter writer = new BinaryTupleWriter(file.getAbsolutePath());
 					
 					// begin time

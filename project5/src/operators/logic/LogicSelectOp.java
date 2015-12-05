@@ -16,5 +16,11 @@ public class LogicSelectOp extends LogicUnaryOp {
 	public void accept(PhysicalPlanBuilder ppb) {
 		ppb.visit(this);
 	}
+
+	@Override
+	public String print() {
+		return String.format("Select%s", 
+				((exp == null) ? "[null]" : exp.toString()));
+	}
 	
 }

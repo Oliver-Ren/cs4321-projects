@@ -19,5 +19,11 @@ public class LogicSortOp extends LogicUnaryOp {
 	public void accept(PhysicalPlanBuilder ppb) {
 		ppb.visit(this);
 	}
+
+	@Override
+	public String print() {
+		return String.format("Sort%s", 
+				((orders == null) ? "[null]" : orders.toString()));
+	}
 	
 }

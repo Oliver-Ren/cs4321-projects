@@ -12,6 +12,7 @@ import net.sf.jsqlparser.statement.select.*;
 import operators.*;
 import operators.logic.LogicDupElimOp;
 import operators.logic.LogicJoinOp;
+import operators.logic.LogicMultiJoinOp;
 import operators.logic.LogicOperator;
 import operators.logic.LogicProjectOp;
 import operators.logic.LogicScanOp;
@@ -45,6 +46,7 @@ public class SelState {
 	
 	public UnionFind uf = new UnionFind();
 	
+	public LogicOperator logicRoot = null;
 	public Operator root = null;
 	
 	/**
@@ -172,6 +174,48 @@ public class SelState {
 //		root = curRoot;
 	}
 	
+	private void buildOpTree2() {
+		List<LogicOperator> tables = new ArrayList<>();
+		for (int i = 0; i < froms.size(); i++) {
+			LogicOperator tmp = getScanOp(i);
+			if (getSelCond(i) != null)
+				tmp = new LogicSelectOp(tmp, getSelCond(i));
+			tables.add(tmp);
+		}
+		
+		LogicOperator curRoot = new LogicMultiJoinOp(
+				froms, tables, fnJoinCond, uf);
+		
+		boolean isLossy = false; // Helpers.projLossy(sels, orders);
+		
+//		if (orders != null && isLossy)
+//			curRoot = new LogicSortOp(curRoot, orders);
+		
+		if (sels != null)
+			curRoot = new LogicProjectOp(curRoot, sels);
+		
+		if (orders != null && !isLossy)
+			curRoot = new LogicSortOp(curRoot, orders);
+		
+		if (dist != null) {
+			if (orders == null)
+				curRoot = new LogicSortOp(curRoot, new ArrayList<OrderByElement>());
+			
+//			if (isLossy)
+//				curRoot = new HshDupElimOperator(curRoot);
+//			else
+				curRoot = new LogicDupElimOp(curRoot);
+		}
+		
+		logicRoot = curRoot;
+		
+		PhysicalPlanBuilder ppb = new PhysicalPlanBuilder();
+		curRoot.accept(ppb);
+		root = ppb.getPhyOp();
+		
+		System.out.println("plan built");
+	}
+	
 	/**
 	 * Constructor. It extracts all the binary expressions and 
 	 * analyze the relevant ones at each joining stage.
@@ -246,9 +290,10 @@ public class SelState {
 				}
 				break;
 			case 2:
-				joinConds.get(froms.get(idx)).add(exp);
 				if (exp instanceof EqualsTo)
 					uf.union(tabs.get(0), tabs.get(1));
+				else
+					joinConds.get(froms.get(idx)).add(exp);
 				break;
 			default:
 				throw new IllegalStateException();
