@@ -328,7 +328,7 @@ public class SelState {
 			fnJoinCond.put(tab, Helpers.genAnds(joinConds.get(tab)));
 		}
 		
-		buildOpTree();
+		buildOpTree2();
 		
 		selConds.clear(); joinConds.clear();
 		fnSelCond.clear(); fnJoinCond.clear();
