@@ -47,6 +47,8 @@ public class LogicMultiJoinOp extends LogicOperator {
 		sb.append("Join");
 		if (exp != null)
 			sb.append(String.format("[%s]", exp.toString()));
+		else
+			sb.append("[]");
 		for (String s : uf.componentsInfo())
 			sb.append('\n' + s);
 		

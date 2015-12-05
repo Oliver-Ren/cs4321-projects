@@ -45,7 +45,7 @@ public class SQLInterpreter {
 			inPath = br.readLine();
 			outPath = br.readLine();
 			tempPath = br.readLine();
-			shouldBuildIdx = true;
+			shouldBuildIdx = false; // true;
 			shouldEvaluate = true;
 			shouldGenStats = true;
 			br.close();
@@ -156,7 +156,7 @@ public class SQLInterpreter {
 					counter++;
 				} catch (Exception e) {
 					System.out.println("Exception when parsing query" + counter);
-					e.printStackTrace();
+					// e.printStackTrace();
 					continue;
 				}
 			}

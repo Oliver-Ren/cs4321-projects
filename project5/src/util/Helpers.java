@@ -154,6 +154,15 @@ public class Helpers {
 		return (tmp != null && tmp.size() == 2);
 	}
 
+	public static boolean isValidCmp(Expression exp) {
+		if (exp == null) return false;
+		return (exp instanceof EqualsTo) || 
+				(exp instanceof MinorThan) || 
+				(exp instanceof MinorThanEquals) || 
+				(exp instanceof GreaterThan) || 
+				(exp instanceof GreaterThanEquals);
+	}
+	
 	private static void updateRange(Integer[] range, int val, 
 			boolean isLower, boolean inclusive, boolean oppo) {
 		if (oppo) {
@@ -199,10 +208,10 @@ public class Helpers {
 		boolean oppo = !(left instanceof Column);
 		boolean inclusive = !(exp instanceof MinorThan) && 
 				!(exp instanceof GreaterThan);
-		boolean isLower = (exp instanceof MinorThan ||
+		boolean isUpper = (exp instanceof MinorThan ||
 				exp instanceof MinorThanEquals || 
 				exp instanceof EqualsTo);
-		boolean isUpper = (exp instanceof GreaterThan ||
+		boolean isLower = (exp instanceof GreaterThan ||
 				exp instanceof GreaterThan || 
 				exp instanceof EqualsTo);
 		
@@ -260,8 +269,12 @@ public class Helpers {
 	public static Expression genAnds(List<Expression> exps) {
 		if (exps.isEmpty()) return null;
 		Expression ret = exps.get(0);
-		for (int i = 1; i < exps.size(); i++)
-			ret = new AndExpression(ret, exps.get(i));
+		for (int i = 1; i < exps.size(); i++) {
+			if (exps.get(i) != null) {
+				ret = new AndExpression(ret, exps.get(i));
+			}
+		}
+			
 		return ret;
 	}
 	

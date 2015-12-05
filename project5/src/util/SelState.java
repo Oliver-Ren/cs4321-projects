@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.statement.Statement;
@@ -183,8 +184,14 @@ public class SelState {
 			tables.add(tmp);
 		}
 		
-		LogicOperator curRoot = new LogicMultiJoinOp(
-				froms, tables, fnJoinCond, uf);
+		LogicOperator curRoot = null;
+		if (froms.size() > 1) {
+			curRoot = new LogicMultiJoinOp(
+					froms, tables, fnJoinCond, uf);
+		}
+		else {
+			curRoot = tables.get(0);
+		}
 		
 		boolean isLossy = false; // Helpers.projLossy(sels, orders);
 		
@@ -274,8 +281,14 @@ public class SelState {
 				selConds.get(froms.get(idx)).add(exp);
 				break;
 			case 1:
-				String[] attr = new String[0];
+				if (!Helpers.isValidCmp(exp)) {
+					selConds.get(froms.get(idx)).add(exp);
+					break;
+				}
+				
+				String[] attr = new String[1];
 				Integer[] range = Helpers.getSelRange(exp, attr);
+				
 				if (attr[0] == null || attr[0].isEmpty())
 					throw new IllegalStateException();
 				
@@ -290,8 +303,11 @@ public class SelState {
 				}
 				break;
 			case 2:
-				if (exp instanceof EqualsTo)
-					uf.union(tabs.get(0), tabs.get(1));
+				if (exp instanceof EqualsTo) {
+					BinaryExpression be = (BinaryExpression) exp;
+					uf.union(be.getLeftExpression().toString(), 
+							be.getRightExpression().toString());
+				}	
 				else
 					joinConds.get(froms.get(idx)).add(exp);
 				break;
@@ -302,8 +318,8 @@ public class SelState {
 		
 		for (String attr : uf.attributeSet()) {
 			UFElement ufe = uf.find(attr);
-			String tab = attr.split("//.")[0];
-			String col = attr.split("//.")[1];
+			String tab = attr.split("\\.")[0];
+			String col = attr.split("\\.")[1];
 			List<Expression> lst = selConds.get(tab);
 			
 			Integer eq = ufe.getEquality();
