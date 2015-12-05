@@ -281,7 +281,7 @@ public class SelState {
 				selConds.get(froms.get(idx)).add(exp);
 				break;
 			case 1:
-				if (!Helpers.isValidCmp(exp)) {
+				if (!Helpers.isValidCmp(exp) || Helpers.isSelfCmp(exp)) {
 					selConds.get(froms.get(idx)).add(exp);
 					break;
 				}

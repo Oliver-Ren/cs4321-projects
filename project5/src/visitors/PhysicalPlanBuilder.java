@@ -174,8 +174,11 @@ public class PhysicalPlanBuilder {
 		if (DBCat.idxSelect) {
 			String currTableName = getTableName(lop);
 			String origTableName = DBCat.origName(currTableName);
-			IndexInfo idxinfo = SelectionOptimizer.whichIndexToUse(origTableName, lop.exp);
+			
+			//TODO
+			IndexInfo idxinfo = null; // = SelectionOptimizer.whichIndexToUse(origTableName, lop.exp);
 			boolean hasIdxAttr = (idxinfo != null);
+			
 			System.out.println("Table name: " + currTableName);
 			System.out.println("has index attriburte: " + hasIdxAttr);
 			if (hasIdxAttr) {

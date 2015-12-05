@@ -1,4 +1,0 @@
-Project[*]
--Join[TestTable3.N < Boats.D]
---Leaf[TestTable3]
---Leaf[Boats]

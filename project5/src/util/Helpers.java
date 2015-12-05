@@ -163,6 +163,14 @@ public class Helpers {
 				(exp instanceof GreaterThanEquals);
 	}
 	
+	public static boolean isSelfCmp(Expression exp) {
+		if (exp == null || !isSelect(exp))
+			return false;
+		Expression left = ((BinaryExpression) exp).getLeftExpression();
+		Expression right = ((BinaryExpression) exp).getRightExpression();
+		return (left instanceof Column) && (right instanceof Column);
+	}
+	
 	private static void updateRange(Integer[] range, int val, 
 			boolean isLower, boolean inclusive, boolean oppo) {
 		if (oppo) {
@@ -196,6 +204,10 @@ public class Helpers {
 				((BinaryExpression) exp).getRightExpression();
 		
 		Integer val = null;
+		
+		System.out.println(left);
+		System.out.println(right);
+		
 		if (left instanceof Column) {
 			attr[0] = left.toString();
 			val = Integer.parseInt(right.toString());

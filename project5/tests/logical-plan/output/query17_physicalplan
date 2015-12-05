@@ -1,7 +1,0 @@
-Project[S.C, R.H]
--TNLJ[]
---TNLJ[]
----Select[S.B <= 149]
-----IndexScan[Sailors]
----TableScan[Reserves]
---TableScan[Boats]
